@@ -1,94 +1,20 @@
-/**
- * Not my code! Learning from http://zetcode.com/tutorials/javagamestutorial/animation/
- */
-
-import java.awt.*;
-import java.awt.geom.*;
-import java.*;
-import javax.swing.*;
-
-public class Test extends JFrame {
-  public Test() {
-    add(new Board());
-    setTitle("TEST");
-    setDefaultCloseOperation(EXIT_ON_CLOSE);
-    setSize(500, 500);
-    setLocationRelativeTo(null);
-    setVisible(true);
-    setResizable(false);
-  }
-
+public class Test {
   public static void main(String[] args) {
-    new Test();
+    Keyboard k = new Keyboard();
+    while (true) {
+      String key = k.getKey();
+      if (key != null) {
+        System.out.println(" * " + Keyboard.getKey() + " * ");
+      }
+    }
   }
-}
 
-class Board extends JPanel implements Runnable {
+  public static void vectorGetXTest(Vector v) {
+    System.out.println("Degrees: " + v.getDirection().getDegrees() + " Magnitude: " + v.getMagnitude() + " X: " + v.getX() + " Y: " + v.getY());
+  }
 
-    private Thread animator;
-    private int x, y;
-
-    private final int DELAY = 50;
-
-
-    public Board() {
-        setBackground(Color.BLACK);
-        setDoubleBuffered(true);
-
-        x = y = 10;
-    }
-
-    public void addNotify() {
-        super.addNotify();
-        animator = new Thread(this);
-        animator.start();
-    }
-
-    public void paint(Graphics g) {
-        super.paint(g);
-
-        Graphics2D g2d = (Graphics2D)g;
-        g2d.setColor(Color.blue);
-        g2d.fillRect(x, y, 100, 100);
-        Toolkit.getDefaultToolkit().sync();
-        g.dispose();
-    }
-
-
-    public void cycle() {
-
-        x += 10;
-        y += 10;
-
-        if (y > 240) {
-            y = -45;
-            x = -45;
-        }
-    }
-
-    public void run() {
-
-        long beforeTime, timeDiff, sleep;
-
-        beforeTime = System.currentTimeMillis();
-
-        while (true) {
-
-            cycle();
-            repaint();
-
-            timeDiff = System.currentTimeMillis() - beforeTime;
-            sleep = DELAY - timeDiff;
-
-            if (sleep < 0)
-                sleep = 2;
-            try {
-                Thread.sleep(sleep);
-            } catch (InterruptedException e) {
-                System.out.println("interrupted");
-            }
-
-            beforeTime = System.currentTimeMillis();
-        }
-    }
+  public static void setDegreesTest(double degrees) {
+    Direction d = new Direction(degrees);
+    System.out.println(degrees + " " + d.getDegrees());
+  }
 }
