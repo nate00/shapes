@@ -1,2 +1,6 @@
-test :
-	javac Test.java; java Test
+all :
+	javac shapes/*.java;
+	javac *.java;
+
+run: all
+	java MyGame
