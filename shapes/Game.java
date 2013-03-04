@@ -1,5 +1,6 @@
+package shapes;
 /**
- * Not my code! Learning from http://zetcode.com/tutorials/javagamestutorial/animation/
+ * Adapted from http://zetcode.com/tutorials/javagamestutorial/animation/
  */
 
 import java.awt.*;

@@ -1,3 +1,4 @@
+import shapes.*;
 import java.awt.Color;
 
 public class MyGame extends Game {

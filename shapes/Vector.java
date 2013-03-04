@@ -1,4 +1,6 @@
-public class Vector {
+package shapes;
+
+class Vector {
   private Direction direction;
   private double magnitude;
 

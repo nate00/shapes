@@ -1,3 +1,5 @@
+package shapes;
+
 public class Point {
   private double x, y;
 

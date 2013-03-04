@@ -1,3 +1,5 @@
+package shapes;
+
 public class Direction {
   double degrees;
 
