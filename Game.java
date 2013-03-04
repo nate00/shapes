@@ -21,7 +21,8 @@ public class Game {
     frame.addKeyListener(new Keyboard());
     frame.add(canvas);
     frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
-    frame.setSize(800, 800);    // TODO: should be global constants
+    frame.pack();
+    //frame.setSize(Settings.CANVAS_WIDTH, Settings.CANVAS_HEIGHT);
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
     frame.setResizable(false);
@@ -61,6 +62,8 @@ class Canvas extends JPanel implements Runnable {
 
     setBackground(Color.BLUE);
     setDoubleBuffered(true);
+    setPreferredSize(new Dimension(Settings.CANVAS_WIDTH, Settings.CANVAS_HEIGHT));
+    setSize(Settings.CANVAS_WIDTH, Settings.CANVAS_HEIGHT);
   }
 
   public void addShape(Shape s) {

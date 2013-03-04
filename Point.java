@@ -23,6 +23,14 @@ public class Point {
   public double getY() {
     return y;
   }
+  
+  public double getCanvasX() {
+    return x;
+  }
+
+  public double getCanvasY() {
+    return Settings.CANVAS_HEIGHT - y;
+  }
 
   public void setX(double x) {
     this.x = x;

@@ -53,7 +53,6 @@ public class Keyboard extends KeyAdapter {
   public void keyPressed(KeyEvent keyPressed) {
     keysPressed.add(keyPressed);
     mostRecentKeyPressed = keyPressed;
-    System.out.println(keysPressed.size());
   }
 
   @Override
