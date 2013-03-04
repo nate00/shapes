@@ -45,5 +45,4 @@ public class Circle extends Shape {
   public void setColor(Color color) {
     this.color = color;
   }
-
 }

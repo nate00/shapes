@@ -12,6 +12,10 @@ public abstract class Shape {
     center.move(direction, pixels);
   }
 
+  public boolean isTouching(Shape that) {
+    return Geometry.touching(this, that);
+  }
+
   public void moveRight(double pixels) {
     move(Direction.RIGHT, pixels);
   }

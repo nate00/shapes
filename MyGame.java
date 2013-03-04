@@ -1,15 +1,22 @@
+import java.awt.Color;
+
 public class MyGame extends Game {
-  private Circle circle;
+  private Circle hero;
+  private Circle evil;
 
   @Override
   public void init() {
-    circle = new MyCircle();
-    getCanvas().addShape(circle);
+    evil = new Circle();
+    evil.setColor(Color.BLACK);
+    hero = new MyCircle(evil);
+
+    getCanvas().addShape(evil);
+    getCanvas().addShape(hero);
   }
 
   @Override
   public void update() {
-    circle.update();
+    hero.update();
   }
 
   public static void main(String[] args) {
