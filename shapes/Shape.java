@@ -4,15 +4,16 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 public abstract class Shape {
-  protected Color color;
-  protected Point center;
+  private Color color;
+  private boolean fill; 
 
   abstract public void update();
   abstract public void render(Graphics2D g);
 
-  public void move(Direction direction, double pixels) {
-    center.move(direction, pixels);
-  }
+  abstract public void setCenter(Point center);
+  abstract public Point getCenter();
+
+  abstract public void move(Direction direction, double pixels);
 
   public boolean isTouching(Shape that) {
     return Geometry.touching(this, that);
@@ -33,8 +34,20 @@ public abstract class Shape {
   public void moveDown(double pixels) {
     move(Direction.DOWN, pixels);
   }
-  
-  public Point getCenter() {
-    return center;
+
+  public void setFill(boolean fill) {
+    this.fill = fill;
+  }
+
+  public boolean getFill() {
+    return fill;
+  }
+
+  public void setColor(Color color) {
+    this.color = color;
+  }
+
+  public Color getColor() {
+    return color;
   }
 }

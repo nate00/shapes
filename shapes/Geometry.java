@@ -2,7 +2,7 @@ package shapes;
 
 import static java.lang.Math.*;
 
-public abstract class Geometry {
+abstract class Geometry {
 
   public static final double EPSILON = 0.5;
 
