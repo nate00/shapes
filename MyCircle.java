@@ -13,9 +13,9 @@ public class MyCircle extends Circle {
     Direction d = Keyboard.getDirection(KeySet.WASD);
     move(d, 10);
     if (this.isTouching(enemy)) {
-      setColor(Color.RED);
+      setInvisible(false);
     } else {
-      setColor(Color.GREEN);
+      setInvisible(true);
     }
   }
 

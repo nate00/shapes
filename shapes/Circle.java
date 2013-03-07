@@ -17,6 +17,9 @@ public class Circle extends Shape {
   }
 
   public void render(Graphics2D g) {
+    if (getInvisible()) {
+      return;
+    }
     g.setColor(getColor());
     if (getFill()) {
       g.fillOval((int)(center.getCanvasX() - radius),

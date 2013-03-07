@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 public abstract class Shape {
   private Color color;
   private boolean fill; 
+  private boolean invisible; 
 
   abstract public void update();
   abstract public void render(Graphics2D g);
@@ -43,6 +44,14 @@ public abstract class Shape {
     return fill;
   }
 
+  public void setInvisible(boolean invisible) {
+    this.invisible = invisible;
+  }
+
+  public boolean getInvisible() {
+    return invisible;
+  }
+  
   public void setColor(Color color) {
     this.color = color;
   }
