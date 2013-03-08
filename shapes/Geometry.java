@@ -5,7 +5,7 @@ import static java.lang.Math.*;
 abstract class Geometry {
 
   // used for general double arithmetic
-  static final double EPSILON = 0.01;
+  static final double EPSILON = 0.001;
   // used for judging closeness (0.5 pixels apart == touching)
   static final double TOLERANCE = 0.5;
 

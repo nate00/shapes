@@ -1,4 +1,11 @@
-Next: Add speech
+Next: 
+
+Important:
+-move() with different parameters, setSpeed()
+-Rectangle & Triangle
+-Count
+-Mouse
+-Music
 
 Bugs:
 -Speech when shape goes off the right or top of the screen

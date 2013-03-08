@@ -12,6 +12,8 @@ public abstract class Shape {
   private int speechDuration;
   private Color speechColor;
   private boolean destroyed;
+  private Direction direction;
+  private double speed;
 
   abstract public void update();
   abstract public void render(Graphics2D g);
@@ -26,6 +28,9 @@ public abstract class Shape {
   public void autoUpdate() {
     if (this.isSpeaking()) {
       speechDuration--;
+    }
+    if (Math.abs(speed) > Geometry.EPSILON) {
+      move(getDirection(), speed);
     }
   }
 
@@ -44,6 +49,10 @@ public abstract class Shape {
   }
 
   abstract public void move(Direction direction, double pixels);
+
+  public void move(double pixels) {
+    move(getDirection(), pixels);
+  }
 
   public boolean isTouching(Shape that) {
     return Geometry.touching(this, that);
@@ -97,12 +106,11 @@ public abstract class Shape {
   }
 
   public void destroy() {
-    Game.removeShape(this);
     destroyed = true;
   }
 
   public boolean isDestroyed() {
-    return true;
+    return destroyed;
   }
 
   public void setFill(boolean fill) {
@@ -145,5 +153,21 @@ public abstract class Shape {
 
   public boolean getSolid() {
     return solid;
+  }
+
+  public Direction getDirection() {
+    return direction;
+  }
+
+  public void setDirection(Direction direction) {
+    this.direction = direction;
+  }
+
+  public double getSpeed() {
+    return speed;
+  }
+
+  public void setSpeed(double speed) {
+    this.speed = speed;
   }
 }

@@ -8,7 +8,6 @@ public class Canvas extends JPanel implements Runnable {
 
   private Thread animator;
   private Game game;
-  private ArrayList<Shape> shapes;
 
   private final int DELAY = 50; // TODO: FPS should be a global constant
 
@@ -17,23 +16,17 @@ public class Canvas extends JPanel implements Runnable {
 
     this.game = game;
 
-    shapes = new ArrayList<Shape>();
-
     setBackground(Color.BLUE);
     setDoubleBuffered(true);
     setPreferredSize(new Dimension(Settings.CANVAS_WIDTH, Settings.CANVAS_HEIGHT));
     setSize(Settings.CANVAS_WIDTH, Settings.CANVAS_HEIGHT);
   }
 
-  public void addShape(Shape s) {
-    shapes.add(s);
-  }
-
   public void paint(Graphics g0) {
     super.paint(g0);
 
     Graphics2D g = (Graphics2D)g0;
-    for (Shape s : shapes) {
+    for (Shape s : game.getAllShapes()) {
       s.render(g);
     }
 

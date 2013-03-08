@@ -4,6 +4,7 @@ import java.awt.Color;
 public class MyGame extends Game {
   private Circle hero;
   private Circle[] evil;
+  private Circle dipshit;
 
   @Override
   public void setup() {
@@ -18,14 +19,18 @@ public class MyGame extends Game {
     for (Circle c : evil) {
       c.setColor(Color.BLACK);
       c.setSolid(true);
-      getCanvas().addShape(c);
     }
 
     hero = new MyCircle();
 
-    getCanvas().addShape(hero);
-
     evil[1].setSolid(false);
+
+    dipshit = new Circle();
+    dipshit.setColor(Color.RED);
+    dipshit.setDirection(Direction.LEFT);
+    dipshit.setSpeed(2);
+    dipshit.setRadius(5);
+    dipshit.setCenter(new Point(250, 250));
   }
 
   @Override

@@ -50,8 +50,14 @@ public class Game {
     for (Shape s : allShapes) {
       s.autoUpdate();
     }
-    for (Shape s : allShapes) {
+
+    Iterator<Shape> iter = allShapes.iterator();
+    while (iter.hasNext()) {
+      Shape s = iter.next();
       s.update();
+      if (s.isDestroyed()) {
+        iter.remove();
+      }
     }
   }
 
