@@ -30,6 +30,7 @@ public class MyGame extends Game {
 
   @Override
   public void update() {
+    hero.autoUpdate();
     hero.update();
   }
 

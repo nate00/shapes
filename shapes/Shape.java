@@ -8,12 +8,21 @@ public abstract class Shape {
   private boolean fill; 
   private boolean invisible; 
   private boolean solid;
+  private String speech;
+  private int speechDuration;
+  private Color speechColor;
 
   abstract public void update();
   abstract public void render(Graphics2D g);
 
   abstract public void setCenter(Point center);
   abstract public Point getCenter();
+
+  public void autoUpdate() {
+    if (speechDuration > 0) {
+      speechDuration--;
+    }
+  }
 
   public void setCenter(double x, double y) {
     setCenter(new Point(x, y));
@@ -39,6 +48,36 @@ public abstract class Shape {
   
   public void moveDown(double pixels) {
     move(Direction.DOWN, pixels);
+  }
+
+  public void say(String speech) {
+    this.speech = speech;
+    this.speechDuration = -1;
+  }
+  
+  public void say(String speech, int frames) {
+    this.speech = speech;
+    this.speechDuration = frames;
+  }
+
+  public String getSpeech() {
+    return speech;
+  }
+
+  public void setSpeechColor(Color speechColor) {
+    this.speechColor = speechColor;
+  }
+
+  public Color getSpeechColor() {
+    return speechColor;
+  }
+
+  public boolean isSpeaking() {
+    return speechDuration != 0;
+  }
+
+  public Direction towards(Shape s) {
+    return (new Vector(this.getCenter(), s.getCenter())).direction();
   }
 
   public void setFill(boolean fill) {

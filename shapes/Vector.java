@@ -19,6 +19,10 @@ class Vector {
     setComponents(x, y);
   }
 
+  public Vector(Point origin, Point terminus) {
+    this(terminus.getX() - origin.getX(), terminus.getY() - origin.getY());
+  }
+
   public Vector add(Vector that) {
     return new Vector(
       this.getXComponent() + that.getXComponent(),

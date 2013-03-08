@@ -5,7 +5,7 @@ public class MyCircle extends Circle {
 
   public MyCircle() {
     super();
-    setRadius(10);
+    setRadius(100);
     setFill(true);
   }
 
@@ -13,10 +13,10 @@ public class MyCircle extends Circle {
   public void update() {
     Direction d = Keyboard.getDirection(KeySet.WASD);
     move(d, 10);
-    if (this.isTouching(enemy)) {
-      setInvisible(false);
-    } else {
-      setInvisible(true);
+    for (Shape s : Game.getSolids()) {
+      if (isTouching(s)) {
+        this.say("Ouch!", 20);
+      }
     }
   }
 

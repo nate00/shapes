@@ -1,1 +1,7 @@
-Next: Make the game run again
+Next: Add speech
+
+Bugs:
+-Speech when shape goes off the right or top of the screen
+
+Wishlist:
+-more speech options: font

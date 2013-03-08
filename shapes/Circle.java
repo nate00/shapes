@@ -14,10 +14,30 @@ public class Circle extends Shape {
     radius = 100;
     setColor(Color.RED);
     setFill(false);
+    setSpeechColor(Color.BLACK);
     init();
   }
 
+  public void renderSpeech(Graphics2D g) {
+    if (!isSpeaking()) {
+      return;
+    }
+    g.setColor(getSpeechColor());
+    Point upperLeft =
+      getCenter().translation(new Vector(getRadius(), getRadius()));
+    Vector heightOffset =
+      new Vector(0.0, -1.0 * g.getFontMetrics(g.getFont()).getDescent());
+
+    Point lowerLeft = upperLeft.translation(heightOffset);
+    g.drawString(
+      getSpeech(),
+      (int)lowerLeft.getCanvasX(),
+      (int)lowerLeft.getCanvasY()
+    );
+  }
+
   public void render(Graphics2D g) {
+    renderSpeech(g);
     if (getInvisible()) {
       return;
     }
