@@ -24,6 +24,8 @@ public class MyGame extends Game {
     hero = new MyCircle();
 
     getCanvas().addShape(hero);
+
+    evil[1].setSolid(false);
   }
 
   @Override

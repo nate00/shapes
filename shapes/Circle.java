@@ -39,15 +39,17 @@ public class Circle extends Shape {
   public void init() {}
 
   public void move(Direction direction, double pixels) {
-    center.move(direction, pixels);
+    if (direction == null) return;
+    Point end = center.translation(new Vector(direction, pixels));
+    Point maxMovement = end;
     Set<Shape> solids = Game.getSolids();
     for (Shape solid : solids) {
-      if (this.isTouching(solid)) {
-        this.setColor(Color.PINK);
-        return;
+      Point blockedEnd = Geometry.maxMovement(this, end, (Circle)solid);
+      if (Geometry.distance(center, blockedEnd) < Geometry.distance(center, maxMovement)) {
+        maxMovement = blockedEnd;
       }
     }
-    this.setColor(Color.WHITE);
+    center = maxMovement;
   }
 
   public double getRadius() {

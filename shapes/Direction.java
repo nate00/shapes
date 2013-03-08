@@ -33,6 +33,14 @@ public class Direction {
     this.degrees = degrees;
   }
 
+  public Direction reverse() {
+    return new Direction(degrees + 180.0);
+  }
+
+  public Direction perpendicular() {
+    return new Direction(degrees + 90.0);
+  }
+
   public String toString() {
     return degrees + " degrees";
   }

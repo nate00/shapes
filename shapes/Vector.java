@@ -20,7 +20,14 @@ class Vector {
   }
 
   public Vector add(Vector that) {
-    return new Vector(this.getX() + that.getX(), this.getY() + that.getY());
+    return new Vector(
+      this.getXComponent() + that.getXComponent(),
+      this.getYComponent() + that.getYComponent()
+    );
+  }
+
+  public Vector perpendicular() {
+    return new Vector(direction.perpendicular(), magnitude);
   }
 
   public void setComponents(double x, double y) {
@@ -28,11 +35,11 @@ class Vector {
     magnitude = Math.sqrt(x * x + y * y);
   }
 
-  public double getX() {
+  public double getXComponent() {
     return magnitude * Math.cos(direction.getRadians());
   }
 
-  public double getY() {
+  public double getYComponent() {
     return magnitude * Math.sin(direction.getRadians());
   }
 
@@ -50,5 +57,9 @@ class Vector {
 
   public void setMagnitude(double magnitude) {
     this.magnitude = magnitude;
+  }
+
+  public String toString() {
+    return String.format("direction: (%s) magnitude: %f", direction.toString(), magnitude);
   }
 }
