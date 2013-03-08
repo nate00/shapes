@@ -11,6 +11,7 @@ public abstract class Shape {
   private String speech;
   private int speechDuration;
   private Color speechColor;
+  private boolean destroyed;
 
   abstract public void update();
   abstract public void render(Graphics2D g);
@@ -23,9 +24,19 @@ public abstract class Shape {
   abstract public Point getCenter();
 
   public void autoUpdate() {
-    if (speechDuration > 0) {
+    if (this.isSpeaking()) {
       speechDuration--;
     }
+  }
+
+  // Overriding constructors should call super() and call setup() at the end
+  public Shape() {
+    Game.addShape(this);
+    // set default values
+    setColor(Color.GREEN);
+    setFill(true);
+    setSpeechColor(Color.BLACK);
+    destroyed = false;
   }
 
   public void setCenter(double x, double y) {
@@ -83,6 +94,15 @@ public abstract class Shape {
   public Direction towards(Shape s) {
     Vector v = new Vector(this.getCenter(), s.getCenter());
     return v.getDirection();
+  }
+
+  public void destroy() {
+    Game.removeShape(this);
+    destroyed = true;
+  }
+
+  public boolean isDestroyed() {
+    return true;
   }
 
   public void setFill(boolean fill) {

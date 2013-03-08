@@ -6,7 +6,7 @@ public class MyGame extends Game {
   private Circle[] evil;
 
   @Override
-  public void init() {
+  public void setup() {
     evil = new Circle[3];
     evil[0] = new Circle();
     evil[1] = new Circle();
@@ -31,14 +31,11 @@ public class MyGame extends Game {
   @Override
   public void update() {
     for (Circle c : evil) {
-      c.autoUpdate();
       c.move(c.towards(hero), 2);
       if (c.contains(hero)) {
         c.say("Nom!", 20);
       }
     }
-    hero.autoUpdate();
-    hero.update();
   }
 
   public static void main(String[] args) {

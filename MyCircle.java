@@ -3,10 +3,11 @@ import java.awt.Color;
 
 public class MyCircle extends Circle {
 
-  public MyCircle() {
-    super();
+  @Override
+  public void setup() {
     setRadius(50);
     setFill(true);
+    setColor(Color.GREEN);
   }
 
   @Override
@@ -18,10 +19,5 @@ public class MyCircle extends Circle {
         this.say("Ouch!", 20);
       }
     }
-  }
-
-  @Override
-  public void init() {
-    setColor(Color.GREEN);
   }
 }

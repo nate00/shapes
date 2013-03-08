@@ -11,24 +11,27 @@ import javax.swing.*;
 import java.util.*;
 
 public class Game {
-  private JFrame frame;
-  private Canvas canvas;
+  private static JFrame frame;
+  private static Canvas canvas;
   // TODO: figure out what the fuck Game is.
   // static methods?
   // singleton?
   // passed as a parameter?
   private static Set<Shape> solidShapes;
+  private static Set<Shape> allShapes;
   
   public Game() {
     canvas = new Canvas(this);
     solidShapes = new HashSet<Shape>();
-
-    init();
+    allShapes = new HashSet<Shape>();
 
     frame = new JFrame();
     frame.addKeyListener(new Keyboard());
-    frame.add(canvas);
     frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
+
+    setup();
+
+    frame.add(canvas);
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setResizable(false);
@@ -36,14 +39,23 @@ public class Game {
   }
 
   // Override this!
-  public void init() {
+  public void setup() {
   }
 
   // Override this!
   public void update() {
   }
 
-  public Canvas getCanvas() {
+  public void autoUpdate() {
+    for (Shape s : allShapes) {
+      s.autoUpdate();
+    }
+    for (Shape s : allShapes) {
+      s.update();
+    }
+  }
+
+  public static Canvas getCanvas() {
     return canvas;
   }
 
@@ -57,6 +69,18 @@ public class Game {
 
   public static void removeSolid(Shape shape) {
     solidShapes.remove(shape);
+  }
+
+  public static void addShape(Shape shape) {
+    allShapes.add(shape);
+  }
+
+  public static void removeShape(Shape shape) {
+    allShapes.remove(shape);
+  }
+
+  public static Shape[] getAllShapes() {
+    return allShapes.toArray(new Shape[0]);
   }
 
   public static void main(String[] args) {

@@ -9,13 +9,14 @@ public class Circle extends Shape {
   private Point center;
 
   public Circle() {
+    super();
     // set default values
     center = new Point(100, Settings.CANVAS_HEIGHT - 100);
     radius = 100;
     setColor(Color.RED);
     setFill(false);
     setSpeechColor(Color.BLACK);
-    init();
+    setup();
   }
 
   public void renderSpeech(Graphics2D g) {
@@ -73,7 +74,7 @@ public class Circle extends Shape {
   public void update() {}
 
   // Override this!
-  public void init() {}
+  public void setup() {}
 
   public void move(Direction direction, double pixels) {
     if (direction == null) return;
@@ -94,6 +95,9 @@ public class Circle extends Shape {
   }
 
   public void setRadius(double radius) {
+    if (radius <= 0) {
+      throw new IllegalArgumentException("Radius must be positive.");
+    }
     this.radius = radius;
   }
 

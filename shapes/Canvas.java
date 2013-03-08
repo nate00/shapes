@@ -54,6 +54,7 @@ public class Canvas extends JPanel implements Runnable {
 
     while (true) {
 
+      game.autoUpdate();
       game.update();
       repaint();
 
