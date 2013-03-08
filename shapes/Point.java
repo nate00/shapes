@@ -14,8 +14,22 @@ public class Point {
       return;
     }
     Vector v = new Vector(direction, pixels);
-    x = x + v.getX();
-    y = y + v.getY();
+    move(v);
+  }
+
+  public void move(Vector v) {
+    x = x + v.getXComponent();
+    y = y + v.getYComponent();
+  }
+
+  public Point translation(Vector v) {
+    Point p = new Point(x, y);
+    p.move(v);
+    return p;
+  }
+
+  public Point translation(Direction direction, double pixels) {
+    return translation(new Vector(direction, pixels));
   }
 
   public double getX() {
@@ -40,5 +54,9 @@ public class Point {
 
   public void setY(double y) {
     this.y = y;
+  }
+
+  public String toString() {
+    return String.format("(%f, %f)", x, y);
   }
 }

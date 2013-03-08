@@ -7,12 +7,17 @@ public abstract class Shape {
   private Color color;
   private boolean fill; 
   private boolean invisible; 
+  private boolean solid;
 
   abstract public void update();
   abstract public void render(Graphics2D g);
 
   abstract public void setCenter(Point center);
   abstract public Point getCenter();
+
+  public void setCenter(double x, double y) {
+    setCenter(new Point(x, y));
+  }
 
   abstract public void move(Direction direction, double pixels);
 
@@ -58,5 +63,23 @@ public abstract class Shape {
 
   public Color getColor() {
     return color;
+  }
+
+  public void setSolid(boolean solid) {
+    if (this.solid == solid) {
+      return;
+    }
+
+    if (solid) {
+      Game.addSolid(this);
+    } else {
+      Game.removeSolid(this);
+    }
+
+    this.solid = solid;
+  }
+
+  public boolean getSolid() {
+    return solid;
   }
 }

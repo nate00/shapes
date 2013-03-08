@@ -4,3 +4,6 @@ all :
 
 run: all
 	java MyGame
+
+test: all
+	java shapes.Test

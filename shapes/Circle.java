@@ -1,5 +1,6 @@
 package shapes;
 
+import java.util.*;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
@@ -12,7 +13,7 @@ public class Circle extends Shape {
     center = new Point(100, Settings.CANVAS_HEIGHT - 100);
     radius = 100;
     setColor(Color.RED);
-    setFill(true);
+    setFill(false);
     init();
   }
 
@@ -41,7 +42,17 @@ public class Circle extends Shape {
   public void init() {}
 
   public void move(Direction direction, double pixels) {
-    center.move(direction, pixels);
+    if (direction == null) return;
+    Point end = center.translation(new Vector(direction, pixels));
+    Point maxMovement = end;
+    Set<Shape> solids = Game.getSolids();
+    for (Shape solid : solids) {
+      Point blockedEnd = Geometry.maxMovement(this, end, (Circle)solid);
+      if (Geometry.distance(center, blockedEnd) < Geometry.distance(center, maxMovement)) {
+        maxMovement = blockedEnd;
+      }
+    }
+    center = maxMovement;
   }
 
   public double getRadius() {
