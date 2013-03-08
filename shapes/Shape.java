@@ -15,6 +15,10 @@ public abstract class Shape {
   abstract public void update();
   abstract public void render(Graphics2D g);
 
+  // true if this shape contains s entirely
+  abstract public boolean contains(Shape s);
+  abstract public boolean contains(Point p);
+
   abstract public void setCenter(Point center);
   abstract public Point getCenter();
 
@@ -77,7 +81,8 @@ public abstract class Shape {
   }
 
   public Direction towards(Shape s) {
-    return (new Vector(this.getCenter(), s.getCenter())).direction();
+    Vector v = new Vector(this.getCenter(), s.getCenter());
+    return v.getDirection();
   }
 
   public void setFill(boolean fill) {

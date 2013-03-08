@@ -5,7 +5,7 @@ public class MyCircle extends Circle {
 
   public MyCircle() {
     super();
-    setRadius(100);
+    setRadius(50);
     setFill(true);
   }
 

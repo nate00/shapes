@@ -36,6 +36,20 @@ public class Circle extends Shape {
     );
   }
 
+  public boolean contains(Point p) {
+    return Geometry.distance(getCenter(), p) < getRadius();
+  }
+
+  public boolean contains(Shape s) {
+    if (s instanceof Circle) {
+      Circle c = (Circle)s;
+      double distance = Geometry.distance(c.getCenter(), this.getCenter());
+      return distance + c.getRadius() < this.getRadius();
+    } else {
+      return false;
+    }
+  }
+
   public void render(Graphics2D g) {
     renderSpeech(g);
     if (getInvisible()) {
