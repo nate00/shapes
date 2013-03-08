@@ -25,7 +25,12 @@ public class Keyboard extends KeyAdapter {
     return KeyEvent.getKeyText(mostRecentKeyPressed.getKeyCode());
   }
 
-  // returns null if no arrows are pressed, or if 3+ arrows are pressed
+  public static Direction getDirection() {
+    return getDirection(KeySet.ARROWS);
+  }
+
+  // returns null if no arrows are pressed, or if 3+ arrows are pressed, or if
+  // opposing keys are pressed
   public static Direction getDirection(KeySet set) {
     ArrayList<Vector> vectorsPressed = new ArrayList<Vector>();
     for (KeyEvent keyPressed : keysPressed) {
@@ -35,12 +40,15 @@ public class Keyboard extends KeyAdapter {
       }
     }
 
-    if (vectorsPressed.size() <= 0 || vectorsPressed.size() > 2) {
+    if (vectorsPressed.size() == 0) {
       return null;
     }
     Vector ret = vectorsPressed.get(0);
-    if (vectorsPressed.size() == 2) {
-      ret = ret.add(vectorsPressed.get(1));
+    for (int i = 1; i < vectorsPressed.size(); i++) {
+      ret = ret.add(vectorsPressed.get(i));
+    }
+    if (Math.abs(ret.getMagnitude()) < Geometry.EPSILON) {
+      return null;
     }
     return ret.getDirection();
   }
