@@ -10,7 +10,7 @@ import java.*;
 import javax.swing.*;
 import java.util.*;
 
-public class Game {
+public abstract class Game {
   private static JFrame frame;
   private static Canvas canvas;
   // TODO: figure out what the fuck Game is.
@@ -99,9 +99,5 @@ public class Game {
 
   public static void setBackgroundColor(Color backgroundColor) {
     getCanvas().setBackground(backgroundColor);
-  }
-
-  public static void main(String[] args) {
-    new Game();
   }
 }

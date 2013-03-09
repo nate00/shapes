@@ -5,19 +5,15 @@ public class MyCircle extends Circle {
 
   @Override
   public void setup() {
-    setRadius(50);
-    setFill(true);
-    setColor(Color.GREEN);
+    // Put code here!
+
+    // This code will be executed when your circle gets created.
   }
 
   @Override
   public void update() {
-    Direction d = Keyboard.direction(KeySet.WASD);
-    move(d, 10);
-    for (Shape s : Game.getSolids()) {
-      if (isTouching(s)) {
-        this.say("Ouch!", 20);
-      }
-    }
+    // Put code here!
+
+    // This code will be executed once per frame.
   }
 }

@@ -14,7 +14,7 @@ public class Circle extends Shape {
     center = new Point(Game.getCanvas().WIDTH / 2, Game.getCanvas().HEIGHT / 2);
     radius = 100;
     setColor(Color.RED);
-    setFill(false);
+    setFill(true);
     setSpeechColor(Color.BLACK);
     setup();
   }
