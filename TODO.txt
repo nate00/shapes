@@ -1,9 +1,10 @@
 Important:
--offscreen detection
 -Rectangle & Triangle
 -Count
 -Mouse
 -commenting, external documentation
+-equals(), toString(), other basic methods
+-background color
 
 Bugs:
 -Speech isn't visible when shape goes off the right or top of the screen
@@ -12,3 +13,6 @@ Wishlist:
 -more speech options: font
 -Music
 -border behavior (wrapping is difficult)
+-expanded solidity options
+-gravity, bounce
+-render layers

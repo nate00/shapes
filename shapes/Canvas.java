@@ -18,7 +18,6 @@ public class Canvas extends JPanel implements Runnable {
 
     this.game = game;
 
-    setBackground(Color.BLUE);
     setDoubleBuffered(true);
     setPreferredSize(new Dimension(WIDTH, HEIGHT));
     setSize(WIDTH, HEIGHT);

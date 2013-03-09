@@ -29,6 +29,7 @@ public class Game {
     frame.addKeyListener(new Keyboard());
     frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
 
+    setBackgroundColor(Color.BLUE);
     setup();
 
     frame.add(canvas);
@@ -87,6 +88,14 @@ public class Game {
 
   public static Shape[] getAllShapes() {
     return allShapes.toArray(new Shape[0]);
+  }
+
+  public static Color getBackgroundColor() {
+    return getCanvas().getBackground();
+  }
+
+  public static void setBackgroundColor(Color backgroundColor) {
+    getCanvas().setBackground(backgroundColor);
   }
 
   public static void main(String[] args) {
