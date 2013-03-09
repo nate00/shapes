@@ -41,6 +41,10 @@ public class Direction {
     return new Direction(degrees + 90.0);
   }
 
+  public static Direction random() {
+    return new Direction(Math.random() * 360.0);
+  }
+
   public String toString() {
     return degrees + " degrees";
   }

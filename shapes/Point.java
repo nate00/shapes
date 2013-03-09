@@ -56,6 +56,12 @@ public class Point {
     this.y = y;
   }
 
+  public static Point random() {
+    double x = Math.random() * Game.getCanvas().WIDTH;
+    double y = Math.random() * Game.getCanvas().HEIGHT;
+    return new Point(x, y);
+  }
+
   public String toString() {
     return String.format("(%f, %f)", x, y);
   }
