@@ -9,17 +9,31 @@ abstract class Geometry {
   // used for judging closeness (0.5 pixels apart == touching)
   static final double TOLERANCE = 0.5;
 
+  // Returns false if the code for the given shape pair hasn't been written yet (in distance(Shape, Shape))
   static boolean touching(Shape s, Shape t) {
     double distance = distance(s, t);
     if (distance == Double.NaN) return false;
     return distance < TOLERANCE;
   }
 
+  // Returns false if the code for the given shape pair hasn't been written yet.
+  // TODO: test
+  // TODO: move into each Shape?
+  static boolean touching(Shape shape, Segment seg) {
+    if (shape instanceof Circle) {
+      Circle circle = (Circle) shape;
+      Segment perp = perpendicularThrough(seg, circle.getCenter());
+      return perp.length() < circle.getRadius();
+    } else {
+      return false;
+    }
+  }
+
   // Returns NaN if the code for the given shape pair hasn't been written yet.
   static double distance(Shape s, Shape t) {
     if (s instanceof Circle && t instanceof Circle) {
-      Circle c1 = (Circle)s;
-      Circle c2 = (Circle)t;
+      Circle c1 = (Circle) s;
+      Circle c2 = (Circle) t;
       double distance = distance(c1.getCenter(), c2.getCenter()) -
                         c1.getRadius() - c2.getRadius();
       return distance;

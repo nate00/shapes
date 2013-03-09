@@ -11,7 +11,7 @@ public class Circle extends Shape {
   public Circle() {
     super();
     // set default values
-    center = new Point(100, Settings.CANVAS_HEIGHT - 100);
+    center = new Point(Game.getCanvas().WIDTH / 2, Game.getCanvas().HEIGHT / 2);
     radius = 100;
     setColor(Color.RED);
     setFill(false);
@@ -77,7 +77,9 @@ public class Circle extends Shape {
   public void setup() {}
 
   public void move(Direction direction, double pixels) {
-    if (direction == null) return;
+    if (direction == null || Math.abs(pixels) < Geometry.EPSILON) {
+      return;
+    }
     Point end = center.translation(new Vector(direction, pixels));
     Point maxMovement = end;
     Set<Shape> solids = Game.getSolids();
@@ -88,6 +90,31 @@ public class Circle extends Shape {
       }
     }
     center = maxMovement;
+  }
+
+  public boolean isOffscreen() {
+    if (
+      center.getX() - radius > Game.getCanvas().WIDTH ||
+      center.getX() + radius < 0.0 ||
+      center.getY() - radius > Game.getCanvas().HEIGHT ||
+      center.getY() + radius < 0.0
+    ) {
+      return true;
+    }
+
+    if (
+      center.getX() < Game.getCanvas().WIDTH && center.getX() > 0.0 ||
+      center.getY() < Game.getCanvas().HEIGHT && center.getY() > 0.0
+    ) {
+      return false;
+    }
+
+    for (Point corner : Game.getCanvas().getCorners()) {
+      if (Geometry.distance(center, corner) < radius) {
+        return false;
+      }
+    }
+    return true;
   }
 
   public double getRadius() {

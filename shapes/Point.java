@@ -45,7 +45,7 @@ public class Point {
   }
 
   public double getCanvasY() {
-    return Settings.CANVAS_HEIGHT - y;
+    return Game.getCanvas().HEIGHT - y;
   }
 
   public void setX(double x) {

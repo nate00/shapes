@@ -41,6 +41,9 @@ public class MyGame extends Game {
         c.say("Nom!", 20);
       }
     }
+    if (hero.isOffscreen()) {
+      evil[0].say("off!", 20);
+    }
   }
 
   public static void main(String[] args) {

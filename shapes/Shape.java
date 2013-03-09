@@ -54,8 +54,26 @@ public abstract class Shape {
     move(getDirection(), pixels);
   }
 
+  boolean isTouching(Segment that) {
+    return Geometry.touching(this, that);
+  }
+
   public boolean isTouching(Shape that) {
     return Geometry.touching(this, that);
+  }
+
+  abstract public boolean isOffscreen();
+
+  public boolean isTouchingBorder() {
+    if (isOffscreen()) {
+      return true;
+    }
+    for (Segment border : Game.getCanvas().getBorders()) { 
+      if (isTouching(border)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   public void moveRight(double pixels) {

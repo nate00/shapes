@@ -10,6 +10,8 @@ public class Canvas extends JPanel implements Runnable {
   private Game game;
 
   private final int DELAY = 50; // TODO: FPS should be a global constant
+  public final int HEIGHT = 500;
+  public final int WIDTH = 500;
 
   public Canvas(Game game) {
     super();
@@ -18,8 +20,8 @@ public class Canvas extends JPanel implements Runnable {
 
     setBackground(Color.BLUE);
     setDoubleBuffered(true);
-    setPreferredSize(new Dimension(Settings.CANVAS_WIDTH, Settings.CANVAS_HEIGHT));
-    setSize(Settings.CANVAS_WIDTH, Settings.CANVAS_HEIGHT);
+    setPreferredSize(new Dimension(WIDTH, HEIGHT));
+    setSize(WIDTH, HEIGHT);
   }
 
   public void paint(Graphics g0) {
@@ -64,5 +66,23 @@ public class Canvas extends JPanel implements Runnable {
 
       beforeTime = System.currentTimeMillis();
     }
+  }
+
+  public Point[] getCorners() {
+    return new Point[] {
+      new Point(0, HEIGHT),
+      new Point(WIDTH, HEIGHT),
+      new Point(WIDTH, 0),
+      new Point(0, 0)
+    };
+  }
+
+  Segment[] getBorders() {
+    return new Segment[] {
+      new Segment(new Point(0, HEIGHT), new Point(WIDTH, HEIGHT)),
+      new Segment(new Point(WIDTH, HEIGHT), new Point(WIDTH, 0)),
+      new Segment(new Point(WIDTH, 0), new Point(0, 0)),
+      new Segment(new Point(0, 0), new Point(0, HEIGHT))
+    };
   }
 }

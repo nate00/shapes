@@ -1,14 +1,14 @@
-Next: 
-
 Important:
--move() with different parameters, setSpeed()
+-offscreen detection
 -Rectangle & Triangle
 -Count
 -Mouse
--Music
+-commenting, external documentation
 
 Bugs:
--Speech when shape goes off the right or top of the screen
+-Speech isn't visible when shape goes off the right or top of the screen
 
 Wishlist:
 -more speech options: font
+-Music
+-border behavior (wrapping is difficult)
