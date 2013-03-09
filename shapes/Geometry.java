@@ -107,6 +107,14 @@ abstract class Geometry {
     return (s.getY() - t.getY()) / (s.getX() - t.getX());
   }
 
+  static double fromCanvasX(double canvasX) {
+    return canvasX;
+  }
+
+  static double fromCanvasY(double canvasY) {
+    return Game.getCanvas().HEIGHT - canvasY;
+  }
+
   static double distance(Point s, Point t) {
     return sqrt(sq(s.getX() - t.getX()) + sq(s.getY() - t.getY()));
   }

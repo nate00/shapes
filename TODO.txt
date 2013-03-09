@@ -1,4 +1,7 @@
+Next: test mouse
+
 Important:
+-change Keyboard interface for multiple key presses
 -Rectangle & Triangle
 -Count
 -Mouse

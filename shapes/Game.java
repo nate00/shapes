@@ -26,6 +26,9 @@ public class Game {
     allShapes = new HashSet<Shape>();
 
     frame = new JFrame();
+    Mouse mouse = new Mouse();
+    frame.addMouseMotionListener(mouse);
+    frame.addMouseListener(mouse);
     frame.addKeyListener(new Keyboard());
     frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
 

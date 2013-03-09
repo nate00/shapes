@@ -27,8 +27,6 @@ public class MyGame extends Game {
 
     dipshit = new Circle();
     dipshit.setColor(Color.RED);
-    dipshit.setDirection(Direction.LEFT);
-    dipshit.setSpeed(2);
     dipshit.setRadius(5);
     dipshit.setCenter(new Point(250, 250));
   }
@@ -44,6 +42,7 @@ public class MyGame extends Game {
     if (hero.isOffscreen()) {
       evil[0].say("off!", 20);
     }
+    dipshit.move(dipshit.towards(Mouse.clickLocation()), 10);
   }
 
   public static void main(String[] args) {

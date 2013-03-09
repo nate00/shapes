@@ -76,6 +76,10 @@ public abstract class Shape {
     return false;
   }
 
+  public boolean isClicked() {
+    return this.contains(Mouse.clickLocation());
+  }
+
   public void moveRight(double pixels) {
     move(Direction.RIGHT, pixels);
   }
@@ -118,9 +122,15 @@ public abstract class Shape {
     return speechDuration != 0;
   }
 
-  public Direction towards(Shape s) {
-    Vector v = new Vector(this.getCenter(), s.getCenter());
+  // returns null if target is null
+  public Direction towards(Point target) {
+    if (target == null) return null;
+    Vector v = new Vector(this.getCenter(), target);
     return v.getDirection();
+  }
+
+  public Direction towards(Shape target) {
+    return towards(target.getCenter());
   }
 
   public void destroy() {
