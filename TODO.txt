@@ -1,13 +1,9 @@
-Next: test mouse
-
 Important:
 -change Keyboard interface for multiple key presses
--Rectangle & Triangle
 -Count
--Mouse
+-Rectangle & Triangle
 -commenting, external documentation
 -equals(), toString(), other basic methods
--background color
 
 Bugs:
 -Speech isn't visible when shape goes off the right or top of the screen

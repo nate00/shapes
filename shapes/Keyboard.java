@@ -1,11 +1,8 @@
 package shapes;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyAdapter;
-import java.util.Iterator;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.ArrayList;
+import java.awt.event.*;
+import java.util.*;
+import java.util.concurrent.*;
 
 public class Keyboard extends KeyAdapter {
   public static Set<KeyEvent> keysPressed;
@@ -13,11 +10,31 @@ public class Keyboard extends KeyAdapter {
 
   public Keyboard() {
     if (keysPressed == null) {
-      keysPressed = new HashSet<KeyEvent>();
+      keysPressed =
+        Collections.newSetFromMap(new ConcurrentHashMap<KeyEvent, Boolean>());
     }
   }
 
-  public static String getKey() {
+  public static boolean keyIsPressed(String key) {
+    for (KeyEvent event : keysPressed) {
+      if (key.equals(KeyEvent.getKeyText(event.getKeyCode()))) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public static String[] keys() {
+    Iterator<KeyEvent> keyEventIterator = keysPressed.iterator();
+    String[] keys = new String[keysPressed.size()];
+    for (int i = 0; i < keys.length && keyEventIterator.hasNext(); i++) {
+      keys[i] = KeyEvent.getKeyText(keyEventIterator.next().getKeyCode());
+    }
+
+    return keys;
+  }
+
+  public static String key() {
     if (mostRecentKeyPressed == null) {
       return null;
     }
@@ -25,13 +42,13 @@ public class Keyboard extends KeyAdapter {
     return KeyEvent.getKeyText(mostRecentKeyPressed.getKeyCode());
   }
 
-  public static Direction getDirection() {
-    return getDirection(KeySet.ARROWS);
+  public static Direction direction() {
+    return direction(KeySet.ARROWS);
   }
 
   // returns null if no arrows are pressed, or if 3+ arrows are pressed, or if
   // opposing keys are pressed
-  public static Direction getDirection(KeySet set) {
+  public static Direction direction(KeySet set) {
     ArrayList<Vector> vectorsPressed = new ArrayList<Vector>();
     for (KeyEvent keyPressed : keysPressed) {
       Vector vectorPressed = set.getVector(keyPressed);
@@ -52,12 +69,6 @@ public class Keyboard extends KeyAdapter {
     }
     return ret.getDirection();
   }
-
-  // TODO: ConcurrentModificationException bug
-  // This bug occurs when I mash a bunch of keys at once. 
-  // Perhaps keyPressed is adding to keysPressed while keyReleased
-  // is iterating over keysPressed?
-  // This bug is hard to reproduce
 
   @Override
   public void keyPressed(KeyEvent keyPressed) {

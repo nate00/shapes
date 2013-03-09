@@ -12,7 +12,7 @@ public class MyCircle extends Circle {
 
   @Override
   public void update() {
-    Direction d = Keyboard.getDirection(KeySet.WASD);
+    Direction d = Keyboard.direction(KeySet.WASD);
     move(d, 10);
     for (Shape s : Game.getSolids()) {
       if (isTouching(s)) {
