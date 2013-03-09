@@ -1,5 +1,4 @@
 Important:
--change Keyboard interface for multiple key presses
 -Count
 -Rectangle & Triangle
 -commenting, external documentation
