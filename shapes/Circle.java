@@ -6,12 +6,14 @@ import java.awt.Graphics2D;
 
 public class Circle extends Shape {
   private double radius;
-  private Point center;
 
   public Circle() {
     super();
     // set default values
-    center = new Point(Game.getCanvas().WIDTH / 2, Game.getCanvas().HEIGHT / 2);
+    setCenter(new Point(
+      Game.getCanvas().WIDTH / 2,
+      Game.getCanvas().HEIGHT / 2)
+    );
     radius = 100;
     setColor(Color.RED);
     setFill(true);
@@ -58,13 +60,13 @@ public class Circle extends Shape {
     }
     g.setColor(getColor());
     if (getFill()) {
-      g.fillOval((int)(center.getCanvasX() - radius),
-                 (int)(center.getCanvasY() - radius),
+      g.fillOval((int)(getCenter().getCanvasX() - radius),
+                 (int)(getCenter().getCanvasY() - radius),
                  (int)(radius * 2),
                  (int)(radius * 2));
     } else {
-      g.drawOval((int)(center.getCanvasX() - radius),
-                 (int)(center.getCanvasY() - radius),
+      g.drawOval((int)(getCenter().getCanvasX() - radius),
+                 (int)(getCenter().getCanvasY() - radius),
                  (int)(radius * 2),
                  (int)(radius * 2));
     }
@@ -80,37 +82,37 @@ public class Circle extends Shape {
     if (direction == null || Math.abs(pixels) < Geometry.EPSILON) {
       return;
     }
-    Point end = center.translation(new Vector(direction, pixels));
+    Point end = getCenter().translation(new Vector(direction, pixels));
     Point maxMovement = end;
     Set<Shape> solids = Game.getSolids();
     for (Shape solid : solids) {
       Point blockedEnd = Geometry.maxMovement(this, end, (Circle)solid);
-      if (Geometry.distance(center, blockedEnd) < Geometry.distance(center, maxMovement)) {
+      if (Geometry.distance(getCenter(), blockedEnd) < Geometry.distance(getCenter(), maxMovement)) {
         maxMovement = blockedEnd;
       }
     }
-    center = maxMovement;
+    setCenter(maxMovement);
   }
 
   public boolean isOffscreen() {
     if (
-      center.getX() - radius > Game.getCanvas().WIDTH ||
-      center.getX() + radius < 0.0 ||
-      center.getY() - radius > Game.getCanvas().HEIGHT ||
-      center.getY() + radius < 0.0
+      getCenter().getX() - radius > Game.getCanvas().WIDTH ||
+      getCenter().getX() + radius < 0.0 ||
+      getCenter().getY() - radius > Game.getCanvas().HEIGHT ||
+      getCenter().getY() + radius < 0.0
     ) {
       return true;
     }
 
     if (
-      center.getX() < Game.getCanvas().WIDTH && center.getX() > 0.0 ||
-      center.getY() < Game.getCanvas().HEIGHT && center.getY() > 0.0
+      getCenter().getX() < Game.getCanvas().WIDTH && getCenter().getX() > 0.0 ||
+      getCenter().getY() < Game.getCanvas().HEIGHT && getCenter().getY() > 0.0
     ) {
       return false;
     }
 
     for (Point corner : Game.getCanvas().getCorners()) {
-      if (Geometry.distance(center, corner) < radius) {
+      if (Geometry.distance(getCenter(), corner) < radius) {
         return false;
       }
     }
@@ -126,13 +128,5 @@ public class Circle extends Shape {
       throw new IllegalArgumentException("Radius must be positive.");
     }
     this.radius = radius;
-  }
-
-  public Point getCenter() {
-    return center;
-  }
-  
-  public void setCenter(Point center) {
-    this.center = center;
   }
 }
