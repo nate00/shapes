@@ -78,22 +78,6 @@ public class Circle extends Shape {
   // Override this!
   public void setup() {}
 
-  public void move(Direction direction, double pixels) {
-    if (direction == null || Math.abs(pixels) < Geometry.EPSILON) {
-      return;
-    }
-    Point end = getCenter().translation(new Vector(direction, pixels));
-    Point maxMovement = end;
-    Set<Shape> solids = Game.getSolids();
-    for (Shape solid : solids) {
-      Point blockedEnd = Geometry.maxMovement(this, end, (Circle)solid);
-      if (Geometry.distance(getCenter(), blockedEnd) < Geometry.distance(getCenter(), maxMovement)) {
-        maxMovement = blockedEnd;
-      }
-    }
-    setCenter(maxMovement);
-  }
-
   public boolean isOffscreen() {
     if (
       getCenter().getX() - radius > Game.getCanvas().WIDTH ||

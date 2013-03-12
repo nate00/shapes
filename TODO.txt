@@ -1,3 +1,5 @@
+ConvexPolygon collision detection
+
 Important:
 -Rectangle
 -rename booleans to is...()
