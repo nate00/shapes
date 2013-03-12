@@ -2,6 +2,7 @@ package shapes;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.util.*;
 
 public abstract class Shape {
   private Color color;
@@ -47,8 +48,6 @@ public abstract class Shape {
     setCenter(new Point(x, y));
   }
 
-  abstract public void move(Direction direction, double pixels);
-
   public void move(double pixels) {
     move(getDirection(), pixels);
   }
@@ -83,7 +82,7 @@ public abstract class Shape {
     Point maxMovement = end;
     Set<Shape> solids = Game.getSolids();
     for (Shape solid : solids) {
-      Point blockedEnd = Geometry.maxMovement(this, end, (Circle)solid);
+      Point blockedEnd = Geometry.maxMovement((Circle)this, end, (Circle)solid);
       if (Geometry.distance(getCenter(), blockedEnd) < Geometry.distance(getCenter(), maxMovement)) {
         maxMovement = blockedEnd;
       }
