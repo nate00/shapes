@@ -4,3 +4,5 @@ Test*.java
 shapes/Test*.java
 Nate*
 Makefile
+*.html
+*.css

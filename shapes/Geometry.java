@@ -102,6 +102,17 @@ abstract class Geometry {
     return stopPoint;
   }
 
+  static boolean offscreen(Point point) {
+    if (
+      point.getX() < 0 || point.getX() > Game.getCanvas().WIDTH ||
+      point.getY() < 0 || point.getY() > Game.getCanvas().HEIGHT
+    ) {
+      return true;
+    }
+
+    return false;
+  }
+
   // NOTE: this returns NaN if the points are horizontally aligned
   static double slope(Point s, Point t) {
     return (s.getY() - t.getY()) / (s.getX() - t.getX());

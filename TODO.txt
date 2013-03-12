@@ -1,11 +1,18 @@
 Important:
+-Rectangle
+-rename booleans to is...()
+-make direction, center, etc. consistently private or protected
 -Count
--Rectangle & Triangle
+-Triangle
 -commenting, external documentation
 -equals(), toString(), other basic methods
 
+-ensure partitioning of methods between Geometry and Shape subclasses is consistent
+-ensure width consistenly comes before height (and x before y)
+
 Bugs:
 -Speech isn't visible when shape goes off the right or top of the screen
+-All Direction.LEFT are the same object
 
 Wishlist:
 -more speech options: font

@@ -12,9 +12,9 @@ public abstract class Shape {
   private int speechDuration;
   private Color speechColor;
   private boolean destroyed;
-  private Direction direction;
+  protected Direction direction;
   private double speed;
-  private Point center;
+  protected Point center;
 
   abstract public void setup();
   abstract public void update();
