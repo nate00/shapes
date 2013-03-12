@@ -2,6 +2,7 @@ package shapes;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.util.*;
 
 public abstract class Shape {
   private Color color;
@@ -47,8 +48,6 @@ public abstract class Shape {
     setCenter(new Point(x, y));
   }
 
-  abstract public void move(Direction direction, double pixels);
-
   public void move(double pixels) {
     move(getDirection(), pixels);
   }
@@ -75,6 +74,29 @@ public abstract class Shape {
     return false;
   }
 
+  public void move(Direction direction, double pixels) {
+    if (direction == null || Math.abs(pixels) < Geometry.EPSILON) {
+      return;
+    }
+    Point end = getCenter().translation(new Vector(direction, pixels));
+    Point maxMovement = end;
+    Set<Shape> solids = Game.getSolids();
+    for (Shape solid : solids) {
+      Point blockedEnd = Geometry.maxMovement((Circle)this, end, (Circle)solid);
+      if (Geometry.distance(getCenter(), blockedEnd) < Geometry.distance(getCenter(), maxMovement)) {
+        maxMovement = blockedEnd;
+      }
+    }
+    setCenter(maxMovement);
+  }
+
+  public void test(Shape s) {
+  }
+
+  public void test(Circle c) {
+  }
+
+  // TODO: test
   public boolean isClicked() {
     return this.contains(Mouse.clickLocation());
   }
