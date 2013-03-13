@@ -41,6 +41,16 @@ public class Direction {
     return new Direction(degrees + 90.0);
   }
 
+  public Direction rotationByRadians(double radians) {
+    Direction ret = new Direction(degrees);
+    ret.setRadians(getRadians() + radians);
+    return ret;
+  }
+
+  public Direction rotationByDegrees(double degrees) {
+    return new Direction(this.degrees + degrees);
+  }
+
   public static Direction random() {
     return new Direction(Math.random() * 360.0);
   }

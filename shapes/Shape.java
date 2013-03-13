@@ -48,10 +48,6 @@ public abstract class Shape {
     setCenter(new Point(x, y));
   }
 
-  public void move(double pixels) {
-    move(getDirection(), pixels);
-  }
-
   boolean isTouching(Segment that) {
     return Geometry.touching(this, that);
   }
@@ -74,6 +70,12 @@ public abstract class Shape {
     return false;
   }
 
+  abstract Point maxMovement(Point target, Shape obstacle);
+
+  public void move(double pixels) {
+    move(getDirection(), pixels);
+  }
+
   public void move(Direction direction, double pixels) {
     if (direction == null || Math.abs(pixels) < Geometry.EPSILON) {
       return;
@@ -82,7 +84,7 @@ public abstract class Shape {
     Point maxMovement = end;
     Set<Shape> solids = Game.getSolids();
     for (Shape solid : solids) {
-      Point blockedEnd = Geometry.maxMovement((Circle)this, end, (Circle)solid);
+      Point blockedEnd = this.maxMovement(end, solid);
       if (Geometry.distance(getCenter(), blockedEnd) < Geometry.distance(getCenter(), maxMovement)) {
         maxMovement = blockedEnd;
       }

@@ -2,6 +2,9 @@ package shapes;
 
 import static java.lang.Math.*;
 
+// TODO: debugging, remove
+import java.awt.*;
+
 abstract class Geometry {
 
   // used for general double arithmetic
@@ -27,6 +30,36 @@ abstract class Geometry {
     } else {
       return false;
     }
+  }
+
+  // TODO: test
+  static Segment intersection(Circle circle, Segment seg) {
+    Segment perp = perpendicularThrough(seg, circle.getCenter());
+    if (perp.length() > circle.getRadius()) {
+      return null;
+    }
+
+    // angle (at the center of the circle) between the perpendicular and
+    // the radii to points of intersection
+    double radiansFromPerp = acos(perp.length() / circle.getRadius());
+
+    // direction of radii to points of intersection
+    Direction[] radiusDirection = new Direction[] {
+      perp.direction().rotationByRadians(radiansFromPerp),
+      perp.direction().rotationByRadians(-1.0 * radiansFromPerp)
+    };
+
+    Point[] pointOfIntersection = new Point[radiusDirection.length];
+    for (int i = 0; i < radiusDirection.length; i++) {
+      Vector radius = new Vector(radiusDirection[i], circle.getRadius());
+      pointOfIntersection[i] =
+        circle.getCenter().translation(radius);
+    }
+
+    return new Segment(
+      pointOfIntersection[0],
+      pointOfIntersection[1]
+    );
   }
 
   // Returns NaN if the code for the given shape pair hasn't been written yet.
@@ -81,25 +114,89 @@ abstract class Geometry {
     return new Segment(through, intersection);
   }
 
-  // if mover wants to go to end, but solid is in the way, how far can it go?
-  static Point maxMovement(Circle mover, Point end, Circle solid) {
-    Segment path = new Segment(mover.getCenter(), end);
-    Segment solidToPath = perpendicularThrough(path, solid.getCenter());
-    double distanceToPath = solidToPath.length();
-    double distanceBetweenCenters = mover.getRadius() + solid.getRadius();
+  // if mover wants to go to target, but obstacle is in the way,
+  // how far can it go?
+  static Point maxMovement(Circle mover, Point target, Shape obstacle) {
+    Segment path = new Segment(mover.getCenter(), target);
 
-    if (distanceToPath > distanceBetweenCenters) {
-      return end;   // no collision
+    if (obstacle instanceof Circle) {
+      Circle obs = (Circle) obstacle;
+      Segment obstacleToPath = perpendicularThrough(path, obs.getCenter());
+      double distanceToPath = obstacleToPath.length();
+      double distanceBetweenCenters = mover.getRadius() + obs.getRadius();
+
+      if (distanceToPath > distanceBetweenCenters) {
+        return target;   // no collision
+      }
+
+      // closest is the point on path closest to obstacle
+      // stopPoint is where the center of mover will be after moving
+      Point closest = obstacleToPath.getEnd();
+      double distanceToStopPoint =
+        sqrt(sq(distanceBetweenCenters) - sq(distanceToPath));
+      Point stopPoint =
+        closest.translation(path.direction().reverse(), distanceToStopPoint);
+      return stopPoint;
+    } else if (obstacle instanceof ConvexPolygon) {
+      ConvexPolygon obs = (ConvexPolygon) obstacle;
+      // TODO
     }
 
-    // closest is the point on path closest to solid
-    // stopPoint is where the center of mover will be after moving
-    Point closest = solidToPath.getEnd();
-    double distanceToStopPoint =
-      sqrt(sq(distanceBetweenCenters) - sq(distanceToPath));
-    Point stopPoint =
-      closest.translation(path.direction().reverse(), distanceToStopPoint);
-    return stopPoint;
+    return target;
+  }
+
+  static Point maxMovement(ConvexPolygon mover, Point target, Shape obstacle) {
+    Segment path = new Segment(mover.getCenter(), target);
+
+    if (obstacle instanceof Circle) {
+      Circle obs = (Circle) obstacle;
+      Point maxMove = target;
+      for (Point corner : mover.getCorners()) {
+        Vector cornerOffset = new Vector(mover.getCenter(), corner);
+        Point cornerTarget = target.translation(cornerOffset);
+        Segment cornerPath = new Segment(corner, cornerTarget);
+
+        Segment intersection = intersection(obs, cornerPath);
+        if (intersection == null) {
+          continue;
+        }
+
+        // of the two intersection points, this one is closer to mover's starting point
+        Point closer; 
+        if (
+          distance(intersection.getStart(), corner) <
+          distance(intersection.getEnd(), corner)
+        ) {
+          closer = intersection.getStart();
+        } else {
+          closer = intersection.getEnd();
+        }
+
+        Point centerDestination = closer.translation(cornerOffset.reverse());
+        if (!path.contains(centerDestination)) {
+          continue;
+        }
+
+        if (
+          distance(centerDestination, mover.getCenter()) <
+          distance(maxMove, mover.getCenter())
+        ) {
+          maxMove = centerDestination;
+        }
+      }
+
+      if (!maxMove.equals(target)) {
+        // give a little buffer, so mover doesn't get "stuck" on obstacle
+        Vector backwards = path.vector().reverse();
+        backwards.setMagnitude(TOLERANCE);
+        maxMove = maxMove.translation(backwards);
+      }
+      return maxMove;
+    } else if (obstacle instanceof ConvexPolygon) {
+      ConvexPolygon obs = (ConvexPolygon) obstacle;
+      // TODO
+    }
+    return target;
   }
 
   static boolean offscreen(Point point) {
