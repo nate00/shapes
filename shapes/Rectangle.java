@@ -9,6 +9,10 @@ public class Rectangle extends ConvexPolygon {
     this.height = height;
   }
 
+  public Rectangle() {
+    this(new Point(100, 100), 50, 100);
+  }
+
   // Override this!
   public void setup() {}
 

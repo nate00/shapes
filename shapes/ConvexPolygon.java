@@ -4,13 +4,19 @@ import java.awt.*;
 
 public abstract class ConvexPolygon extends Shape {
 
+  protected boolean displaysRotation;
   abstract Point[] getUnrotatedCorners();
 
   public Point[] getCorners() {
     Point[] corners = getUnrotatedCorners();
-    if (direction == null || Math.abs(direction.getRadians()) < Geometry.EPSILON) {
+    if (
+      !displaysRotation ||
+      direction == null ||
+      Math.abs(direction.getRadians()) < Geometry.EPSILON
+    ) {
       return corners;
     }
+
     double angle = direction.getRadians();
     for (int i = 0; i < corners.length; i++) {
       double xOffset = corners[i].getX() - center.getX();
@@ -23,6 +29,16 @@ public abstract class ConvexPolygon extends Shape {
 
     return corners;
   }
+
+  Segment[] getSides() {
+    Point[] corners = getCorners();
+    Segment[] sides = new Segment[corners.length];
+    for (int i = 0; i < corners.length; i++) {
+      sides[i] = new Segment(corners[i], corners[(i + 1) % corners.length]);
+    }
+    return sides;
+  }
+
 
   public Point maxMovement(Point target, Shape obstacle) {
     return Geometry.maxMovement(this, target, obstacle);
@@ -95,5 +111,13 @@ public abstract class ConvexPolygon extends Shape {
     } else {
       g.drawPolygon(x, y, corners.length);
     }
+  }
+
+  public void setDisplaysRotation(boolean displaysRotation) {
+    this.displaysRotation = displaysRotation;
+  }
+
+  public boolean displaysRotation() {
+    return displaysRotation;
   }
 }

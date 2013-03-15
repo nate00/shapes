@@ -81,6 +81,7 @@ public abstract class Shape {
       return;
     }
     Point end = getCenter().translation(new Vector(direction, pixels));
+    System.out.println(end.toString());
     Point maxMovement = end;
     Set<Shape> solids = Game.getSolids();
     for (Shape solid : solids) {

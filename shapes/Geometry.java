@@ -62,19 +62,6 @@ abstract class Geometry {
     );
   }
 
-  // Returns NaN if the code for the given shape pair hasn't been written yet.
-  static double distance(Shape s, Shape t) {
-    if (s instanceof Circle && t instanceof Circle) {
-      Circle c1 = (Circle) s;
-      Circle c2 = (Circle) t;
-      double distance = distance(c1.getCenter(), c2.getCenter()) -
-                        c1.getRadius() - c2.getRadius();
-      return distance;
-    } else {
-      return Double.NaN;
-    }
-  }
-
   // returns null for parallel lines
   static Point lineIntersection(Segment s, Segment t) {
     double denominator = s.getA() * t.getB() - s.getB() * t.getA();
@@ -96,6 +83,31 @@ abstract class Geometry {
       return intersection;
     } else {
       return null;
+    }
+  }
+
+  static Point segmentLineIntersection(Segment segment, Segment line) {
+    Point intersection = lineIntersection(segment, line);
+    if (intersection == null) {
+      return null;
+    }
+    if (segment.contains(intersection)) {
+      return intersection;
+    } else {
+      return null;
+    }
+  }
+
+  // Returns NaN if the code for the given shape pair hasn't been written yet.
+  static double distance(Shape s, Shape t) {
+    if (s instanceof Circle && t instanceof Circle) {
+      Circle c1 = (Circle) s;
+      Circle c2 = (Circle) t;
+      double distance = distance(c1.getCenter(), c2.getCenter()) -
+                        c1.getRadius() - c2.getRadius();
+      return distance;
+    } else {
+      return Double.NaN;
     }
   }
 
@@ -151,6 +163,8 @@ abstract class Geometry {
     if (obstacle instanceof Circle) {
       Circle obs = (Circle) obstacle;
       Point maxMove = target;
+
+      // check corner collisions
       for (Point corner : mover.getCorners()) {
         Vector cornerOffset = new Vector(mover.getCenter(), corner);
         Point cornerTarget = target.translation(cornerOffset);
@@ -185,11 +199,53 @@ abstract class Geometry {
         }
       }
 
+      // check side collisions
+      for (Segment side : mover.getSides()) {
+        Segment perp = perpendicularThrough(side, obs.getCenter());
+        Vector radiusToIntersection =
+          new Vector(perp.direction(), obs.getRadius());   // TODO: also check 180 degrees?
+        Point intersection = obs.getCenter().translation(radiusToIntersection);
+
+        // intersectionPath has the correction direction, but not
+        // the correct endpoints
+        Segment intersectionPath =
+          new Segment(intersection, intersection.translation(path.vector()));
+        Point intersectionOrigin =
+          segmentLineIntersection(side, intersectionPath);
+        
+        if (intersectionOrigin == null) {
+          System.out.println("No intersection");
+          continue;
+        }
+        System.out.println("intersection");
+
+        Vector intersectionOffset =
+          new Vector(mover.getCenter(), intersectionOrigin);
+        Point centerDestination =
+          intersection.translation(intersectionOffset.reverse());
+
+        if (!path.contains(centerDestination)) {
+          continue;
+        }
+
+        if (
+          distance(centerDestination, mover.getCenter()) <
+          distance(maxMove, mover.getCenter())
+        ) {
+          maxMove = centerDestination;
+        }
+      }
+
+      // TODO: put buffer between mover and obstacle, not along mover's path?
       if (!maxMove.equals(target)) {
         // give a little buffer, so mover doesn't get "stuck" on obstacle
         Vector backwards = path.vector().reverse();
         backwards.setMagnitude(TOLERANCE);
         maxMove = maxMove.translation(backwards);
+        if (!path.contains(maxMove)) {
+          // but don't overcompensate
+          maxMove = mover.getCenter();
+        }
       }
       return maxMove;
     } else if (obstacle instanceof ConvexPolygon) {
