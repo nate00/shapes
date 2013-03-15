@@ -24,6 +24,9 @@ public abstract class ConvexPolygon extends Shape {
     return corners;
   }
 
+  public Point maxMovement(Point target, Shape obstacle) {
+    return Geometry.maxMovement(this, target, obstacle);
+  }
 
   public boolean isOffscreen() {
     for (Point corner : getCorners()) {
@@ -34,9 +37,9 @@ public abstract class ConvexPolygon extends Shape {
     return true;
   }
 
-  public void move(Direction direction, double pixels) {
-    // TODO
-  }
+//  public void move(Direction direction, double pixels) {
+//    // TODO
+//  }
 
   public boolean contains(Point point) {
     boolean result = false;

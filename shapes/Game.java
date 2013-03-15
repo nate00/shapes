@@ -9,6 +9,7 @@ import java.awt.geom.*;
 import java.*;
 import javax.swing.*;
 import java.util.*;
+import java.util.concurrent.*;
 
 public abstract class Game {
   private static JFrame frame;
@@ -22,8 +23,10 @@ public abstract class Game {
   
   public Game() {
     canvas = new Canvas(this);
-    solidShapes = new HashSet<Shape>();
-    allShapes = new HashSet<Shape>();
+    solidShapes =
+      Collections.newSetFromMap(new ConcurrentHashMap<Shape, Boolean>());
+    allShapes = 
+      Collections.newSetFromMap(new ConcurrentHashMap<Shape, Boolean>());
 
     frame = new JFrame();
     Mouse mouse = new Mouse();

@@ -34,6 +34,10 @@ class Vector {
     return new Vector(direction.perpendicular(), magnitude);
   }
 
+  public Vector reverse() {
+    return new Vector(direction.reverse(), magnitude);
+  }
+
   public void setComponents(double x, double y) {
     direction.setRadians(Math.atan2(y, x));
     magnitude = Math.sqrt(x * x + y * y);

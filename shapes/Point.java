@@ -1,6 +1,10 @@
 package shapes;
 
-public class Point {
+// TODO: for debugging
+import java.awt.*;
+
+// TODO: extends for debugging
+public class Point extends Shape {
   private double x, y;
 
   public Point(double x, double y) {
@@ -62,7 +66,33 @@ public class Point {
     return new Point(x, y);
   }
 
+  public boolean equals(Object obj) {
+    if (!(obj instanceof Point)) {
+      return false;
+    }
+
+    Point that = (Point) obj;
+    return
+      Math.abs(this.getX() - that.getX()) < Geometry.TOLERANCE &&
+      Math.abs(this.getY() - that.getY()) < Geometry.TOLERANCE;
+  }
+
   public String toString() {
     return String.format("(%f, %f)", x, y);
   }
+
+  // TODO: for debugging
+  public Point maxMovement(Point p, Shape s) { return Point.random(); }
+  public boolean isOffscreen() { return false; }
+  public boolean contains(Point p) { return false; }
+  public boolean contains(Shape s) { return false; }
+  public void render(Graphics2D g) {
+    if (!visible) return;
+    g.setColor(Color.YELLOW);
+    g.fillOval((int)getCanvasX() - 2, (int)getCanvasY() - 2, 4, 4);
+  }
+  private boolean visible = false;
+  public void update() { }
+  public void setup() { }
+  public void setVisible() {visible = true;}
 }
