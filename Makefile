@@ -1,12 +1,12 @@
 all :
-	javac shapes/*.java;
-	javac *.java;
+	javac shapes/*.java -d bin;
+	javac *.java -d bin;
 
 run: all
-	java NateGame
+	java -cp bin NateGame;
 
 test: all
-	java shapes.Test
+	java -cp bin shapes.Test;
 
 docs: all
 	javadoc shapes \
