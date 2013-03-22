@@ -4,6 +4,20 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.*;
 
+/**
+ * Represents a shape that is drawn to the screen and can interact with other
+ * shapes.
+ * <p>
+ * Shapes are the basic building blocks of games built with the Shapes
+ * framework. They can be of different colors and sizes, can move around the
+ * screen, can collide with one another, and can say things, to name a few.
+ * <p>
+ * You won't use this class directly; you'll use one of its subclasses:
+ * {@link Circle}, {@link Rectangle} or {@link Triangle}.
+ *
+ * @author Nate Sullivan
+ * @version v0
+ */
 public abstract class Shape {
   private Color color;
   private boolean fill; 
@@ -54,7 +68,7 @@ public abstract class Shape {
   /**
    * Updates the shape automatically.
    *
-   * This update includes moving the shape when it has a speed, etc.
+   * This method moves the shape when it has a speed, etc.
    */
   void autoUpdate() {
     if (this.isSpeaking()) {
@@ -68,7 +82,7 @@ public abstract class Shape {
   // Overriding constructors should call super() and call setup() at the end
   /**
    * Constructs a new shape with default values.
-   *
+   * <p>
    * Overriding constructors should call super() to ensure that Game.addShape()
    * is called, and should call setup().
    */
@@ -139,7 +153,7 @@ public abstract class Shape {
   /**
    * Finds the farthest this shape can go towards a target with an obstacle in
    * the way.
-   *
+   * <p>
    * If this shape tries to move to <code>target</code>, then
    * <code>obstacle</code> may get in its way. Finds the farthest this shape
    * can move towards <code>target</code>, and returns the location where the
@@ -154,7 +168,7 @@ public abstract class Shape {
 
   /**
    * Moves in the shape's direction.
-   *
+   * <p>
    * Moves <code>pixels</code> pixels in the direction set using
    * <code>setDirection()</code>. Won't move through solid shapes.
    *
@@ -168,7 +182,7 @@ public abstract class Shape {
 
   /**
    * Moves in the given direction.
-   *
+   * <p>
    * Moves <code>pixels</code> pixels in the given direction.
    * Won't move through solid shapes.
    *
@@ -192,12 +206,6 @@ public abstract class Shape {
     }
     setCenter(maxMovement);
   }
-
-//  public void test(Shape s) {
-//  }
-//
-//  public void test(Circle c) {
-//  }
 
   // TODO: test
   /**
@@ -271,8 +279,8 @@ public abstract class Shape {
   }
 
   /**
-   * Displays text near this shape.
-   *
+   * Display text near this shape.
+   * <p>
    * Continues speaking until this method is called again with new text.
    *
    * @param   speech  what the shape says.
@@ -288,7 +296,7 @@ public abstract class Shape {
   
   /**
    * Displays text near this shape for a limited time.
-   *
+   * 
    * @param   speech  what the shape says.
    * @param   frames  how long the shape speaks.
    * @see     #say(String)
@@ -351,7 +359,7 @@ public abstract class Shape {
 
   /**
    * Returns the direction of a given point relative to this shape.
-   *
+   * <p>
    * Can be used to {@link #move} this shape towards a point:
    * <code>this.move(this.towards(targetPoint), 10.0);</code>
    *
@@ -370,7 +378,7 @@ public abstract class Shape {
 
   /**
    * Returns the direction of a shape relative to this shape.
-   *
+   * <p>
    * Can be used to {@link #move} this shape towards another shape:
    * <code>this.move(this.towards(targetShape), 10.0);</code>
    *
@@ -386,9 +394,11 @@ public abstract class Shape {
   }
 
   /**
-   * Destroys this shape so it will no longer be rendered.
+   * Destroys this shape so it will no longer be rendered. Call this method
+   * when you have finished using the shape.
    *
-   * Call this method when you have finished using the shape.
+   * A destroyed shape will not appear on the screen and will not interact with
+   * other shapes. A destroyed shape cannot be undestroyed.
    */
   public void destroy() {
     // TODO: who remove the same from Game?
@@ -405,30 +415,86 @@ public abstract class Shape {
     return destroyed;
   }
 
+  /**
+   * Set whether this shape is filled or outlined.
+   * <p>
+   * A filled shape has a colored interior, and a non-filled shape has a
+   * colored outline but a transparent interior. Fill affects how the shape
+   * appears but not its functionality.
+   *
+   * @param fill  true for fill, false for outline.
+   */
   public void setFill(boolean fill) {
     this.fill = fill;
   }
 
+  /**
+   * Returns whether this shape is filled or outlined.
+   * <p>
+   * A filled shape has a colored interior, and a non-filled shape has a
+   * colored outline but a transparent interior. Fill affects how the shape
+   * appears but not its functionality.
+   *
+   * @return  true if filled, false if outline.
+   */
   public boolean getFill() {
     return fill;
   }
 
+  /**
+   * Set this shape's visibility.
+   * <p>
+   * Invisible shapes won't appear on the canvas, but still exist and will
+   * interact with other shapes.
+   *
+   * @param invisible true for invisible, false for visible.
+   */
   public void setInvisible(boolean invisible) {
     this.invisible = invisible;
   }
 
+  /**
+   * Returns whether this shape is invisible.
+   * <p>
+   * Invisible shapes won't appear on the canvas, but still exist and will
+   * interact with other shapes.
+   *
+   * @return  true if invisible, false if visible.
+   */
   public boolean getInvisible() {
     return invisible;
   }
   
+  /**
+   * Set this shape's color.
+   *
+   * @param color the color the shape will be drawn in.
+   */
   public void setColor(Color color) {
     this.color = color;
   }
 
+  /**
+   * Get this shape's color.
+   *
+   * @return  the color the shape is drawn in.
+   */
   public Color getColor() {
     return color;
   }
 
+  /**
+   * Set whether other shapes can overlap with this shape.
+   * <p>
+   * An example of a solid shape is a wall that other shapes can't pass
+   * through.
+   * <p>
+   * No shape can overlap with a solid shape. A non-solid shape can overlap
+   * with other non-solid shapes.
+   *
+   * @param solid true for a shape that can't be overlapped, false for a shape
+   *              that can be.
+   */
   public void setSolid(boolean solid) {
     if (this.solid == solid) {
       return;
@@ -443,30 +509,111 @@ public abstract class Shape {
     this.solid = solid;
   }
 
+  /**
+   * Get whether other shapes can overlap with this shape.
+   * <p>
+   * An example of a solid shape is a wall that other shapes can't pass
+   * through.
+   * <p>
+   * No shape can overlap with a solid shape. A non-solid shape can overlap
+   * with other non-solid shapes.
+   *
+   * @return true for a shape that can't be overlapped, false for a shape
+   *         that can be.
+   */
   public boolean getSolid() {
     return solid;
   }
 
-  public Direction getDirection() {
-    return direction;
-  }
-
+  /**
+   * Set the direction this shape is facing.
+   *
+   * A shape's direction determines:
+   * <ul>
+   *  <li>The orientation in which the shape is drawn.</li>
+   *  <li>
+   *    The direction the shape will move in calls to {@link #move(double)}.
+   *    (To move in other directions, see
+   *    {@link #move(Direction, double)}).
+   *   </li>
+   *  <li>
+   *    The direction the shape will move if it has a speed (see
+   *    {@link #setSpeed()}).
+   *   </li>
+   * </ul>
+   *
+   * @param  direction the direction the shape will face.
+   */
   public void setDirection(Direction direction) {
     this.direction = direction;
   }
 
-  public double getSpeed() {
-    return speed;
+  /**
+   * Get the direction this shape is facing.
+   *
+   * A shape's direction determines:
+   * <ul>
+   *  <li>The orientation in which the shape is drawn.</li>
+   *  <li>
+   *    The direction the shape will move in calls to {@link #move(double)}.
+   *    (To move in other directions, see
+   *    {@link #move(Direction, double)}).
+   *   </li>
+   *  <li>
+   *    The direction the shape will move if it has a speed (see
+   *    {@link #setSpeed()}).
+   *   </li>
+   * </ul>
+   *
+   * @return  the direction the shape is facing.
+   */
+  public Direction getDirection() {
+    return direction;
   }
 
+  /**
+   * Set the shape's speed in pixels per frame.
+   * <p>
+   * This shape will automatically advance every frame in the direction set
+   * using {@link #setDirection(Direction)}.
+   *
+   * @param speed the number of pixels to move each frame.
+   */
   public void setSpeed(double speed) {
     this.speed = speed;
   }
 
+  /**
+   * Get the shape's speed in pixels per frame.
+   * <p>
+   * This shape automatically advances every frame in the direction set
+   * using {@link #setDirection(Direction)}.
+   *
+   * @param speed the number of pixels to move each frame.
+   */
+  public double getSpeed() {
+    return speed;
+  }
+
+  /**
+   * Get the location of the shape's center.
+   *
+   * @return  a point representing the shape's center.
+   */
   public Point getCenter() {
     return center;
   }
   
+  /**
+   * Set the location of the shape's center.
+   * <p>
+   * Note that this is the only way to move a shape that will allow it to enter
+   * a solid shape. Moving this shape into a solid shape has undefined behavior.
+   * (If you haven't called {@link #setSolid()}, you don't have
+   * to worry about this.)
+   *
+   * @param center  a point representing the location of the shape's center.
+   */
   public void setCenter(Point center) {
     this.center = center;
   }
