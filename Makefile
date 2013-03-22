@@ -8,7 +8,7 @@ run: all
 test: all
 	java shapes.Test
 
-docs:
+docs: all
 	javadoc shapes \
 		-d docs \
 		-windowtitle "Shapes documentation" \
