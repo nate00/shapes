@@ -39,7 +39,7 @@ class Vector {
   }
 
   public void setComponents(double x, double y) {
-    direction.setRadians(Math.atan2(y, x));
+    direction = Direction.inRadians(Math.atan2(y, x));
     magnitude = Math.sqrt(x * x + y * y);
   }
 

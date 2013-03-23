@@ -12,20 +12,23 @@ public class Direction {
     setDegrees(degrees);
   }
 
-  public double getRadians() {
-    return degrees / 180.0 * Math.PI;
+  public static Direction inRadians(double radians) {
+    return new Direction(radians / Math.PI * 180.0);
   }
 
-  public void setRadians(double radians) {
-    double degrees = radians / Math.PI * 180.0;
-    setDegrees(degrees);
+  public static Direction inDegrees(double degrees) {
+    return new Direction(degrees);
+  }
+
+  public double getRadians() {
+    return degrees / 180.0 * Math.PI;
   }
 
   public double getDegrees() {
     return degrees;
   }
 
-  public void setDegrees(double degrees) {
+  private void setDegrees(double degrees) {
     degrees %= 360.0;
     if (degrees < 0.0) {
       degrees += 360.0;
@@ -42,9 +45,7 @@ public class Direction {
   }
 
   public Direction rotationByRadians(double radians) {
-    Direction ret = new Direction(degrees);
-    ret.setRadians(getRadians() + radians);
-    return ret;
+    return Direction.inRadians(getRadians() + radians);
   }
 
   public Direction rotationByDegrees(double degrees) {
