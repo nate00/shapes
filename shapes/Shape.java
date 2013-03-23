@@ -90,7 +90,7 @@ public abstract class Shape {
     Game.addShape(this);
     // set default values
     setColor(Color.GREEN);
-    setFill(true);
+    setFilled(true);
     setSpeechColor(Color.BLACK);
     destroyed = false;
   }
@@ -170,7 +170,7 @@ public abstract class Shape {
    * Moves in the shape's direction.
    * <p>
    * Moves <code>pixels</code> pixels in the direction set using
-   * <code>setDirection()</code>. Won't move through solid shapes.
+   * {@link #setDirection(Direction)}. Won't move through solid shapes.
    *
    * @param   pixels  the distance to move.
    * @see     #move(Direction, double)
@@ -424,7 +424,7 @@ public abstract class Shape {
    *
    * @param fill  true for fill, false for outline.
    */
-  public void setFill(boolean fill) {
+  public void setFilled(boolean fill) {
     this.fill = fill;
   }
 
@@ -437,7 +437,7 @@ public abstract class Shape {
    *
    * @return  true if filled, false if outline.
    */
-  public boolean getFill() {
+  public boolean isFilled() {
     return fill;
   }
 
@@ -461,7 +461,7 @@ public abstract class Shape {
    *
    * @return  true if invisible, false if visible.
    */
-  public boolean getInvisible() {
+  public boolean isInvisible() {
     return invisible;
   }
   
@@ -521,7 +521,7 @@ public abstract class Shape {
    * @return true for a shape that can't be overlapped, false for a shape
    *         that can be.
    */
-  public boolean getSolid() {
+  public boolean isSolid() {
     return solid;
   }
 
@@ -538,7 +538,7 @@ public abstract class Shape {
    *   </li>
    *  <li>
    *    The direction the shape will move if it has a speed (see
-   *    {@link #setSpeed()}).
+   *    {@link #setSpeed(double)}).
    *   </li>
    * </ul>
    *
@@ -561,7 +561,7 @@ public abstract class Shape {
    *   </li>
    *  <li>
    *    The direction the shape will move if it has a speed (see
-   *    {@link #setSpeed()}).
+   *    {@link #setSpeed(double)}).
    *   </li>
    * </ul>
    *
@@ -589,7 +589,7 @@ public abstract class Shape {
    * This shape automatically advances every frame in the direction set
    * using {@link #setDirection(Direction)}.
    *
-   * @param speed the number of pixels to move each frame.
+   * @return the number of pixels this shape moves each frame.
    */
   public double getSpeed() {
     return speed;
@@ -609,7 +609,7 @@ public abstract class Shape {
    * <p>
    * Note that this is the only way to move a shape that will allow it to enter
    * a solid shape. Moving this shape into a solid shape has undefined behavior.
-   * (If you haven't called {@link #setSolid()}, you don't have
+   * (If you haven't called {@link #setSolid(boolean)}, you don't have
    * to worry about this.)
    *
    * @param center  a point representing the location of the shape's center.

@@ -24,7 +24,7 @@
 <span class="sourceLineNo">016</span>    );<a name="line.16"></a>
 <span class="sourceLineNo">017</span>    radius = 100;<a name="line.17"></a>
 <span class="sourceLineNo">018</span>    setColor(Color.RED);<a name="line.18"></a>
-<span class="sourceLineNo">019</span>    setFill(true);<a name="line.19"></a>
+<span class="sourceLineNo">019</span>    setFilled(true);<a name="line.19"></a>
 <span class="sourceLineNo">020</span>    setSpeechColor(Color.BLACK);<a name="line.20"></a>
 <span class="sourceLineNo">021</span>    setup();<a name="line.21"></a>
 <span class="sourceLineNo">022</span>  }<a name="line.22"></a>
@@ -63,11 +63,11 @@
 <span class="sourceLineNo">055</span><a name="line.55"></a>
 <span class="sourceLineNo">056</span>  public void render(Graphics2D g) {<a name="line.56"></a>
 <span class="sourceLineNo">057</span>    renderSpeech(g);<a name="line.57"></a>
-<span class="sourceLineNo">058</span>    if (getInvisible()) {<a name="line.58"></a>
+<span class="sourceLineNo">058</span>    if (isInvisible()) {<a name="line.58"></a>
 <span class="sourceLineNo">059</span>      return;<a name="line.59"></a>
 <span class="sourceLineNo">060</span>    }<a name="line.60"></a>
 <span class="sourceLineNo">061</span>    g.setColor(getColor());<a name="line.61"></a>
-<span class="sourceLineNo">062</span>    if (getFill()) {<a name="line.62"></a>
+<span class="sourceLineNo">062</span>    if (isFilled()) {<a name="line.62"></a>
 <span class="sourceLineNo">063</span>      g.fillOval((int)(getCenter().getCanvasX() - radius),<a name="line.63"></a>
 <span class="sourceLineNo">064</span>                 (int)(getCenter().getCanvasY() - radius),<a name="line.64"></a>
 <span class="sourceLineNo">065</span>                 (int)(radius * 2),<a name="line.65"></a>

@@ -94,7 +94,7 @@ public abstract class ConvexPolygon extends Shape {
 
   public void render(Graphics2D g) {
     renderSpeech(g);
-    if (this.getInvisible()) {
+    if (this.isInvisible()) {
       return;
     }
 
@@ -106,7 +106,7 @@ public abstract class ConvexPolygon extends Shape {
       x[i] = (int)corners[i].getCanvasX();
       y[i] = (int)corners[i].getCanvasY();
     }
-    if (this.getFill()) {
+    if (this.isFilled()) {
       g.fillPolygon(x, y, corners.length);
     } else {
       g.drawPolygon(x, y, corners.length);

@@ -16,7 +16,7 @@ public class Circle extends Shape {
     );
     radius = 100;
     setColor(Color.RED);
-    setFill(true);
+    setFilled(true);
     setSpeechColor(Color.BLACK);
     setup();
   }
@@ -55,11 +55,11 @@ public class Circle extends Shape {
 
   public void render(Graphics2D g) {
     renderSpeech(g);
-    if (getInvisible()) {
+    if (isInvisible()) {
       return;
     }
     g.setColor(getColor());
-    if (getFill()) {
+    if (isFilled()) {
       g.fillOval((int)(getCenter().getCanvasX() - radius),
                  (int)(getCenter().getCanvasY() - radius),
                  (int)(radius * 2),

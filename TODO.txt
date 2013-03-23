@@ -2,7 +2,6 @@ ConvexPolygon collision detection
 
 Important:
 -Rectangle
--rename booleans to is...()
 -make direction, center, etc. consistently private or protected
 -Count
 -Triangle

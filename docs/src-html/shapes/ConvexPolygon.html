@@ -102,7 +102,7 @@
 <span class="sourceLineNo">094</span><a name="line.94"></a>
 <span class="sourceLineNo">095</span>  public void render(Graphics2D g) {<a name="line.95"></a>
 <span class="sourceLineNo">096</span>    renderSpeech(g);<a name="line.96"></a>
-<span class="sourceLineNo">097</span>    if (this.getInvisible()) {<a name="line.97"></a>
+<span class="sourceLineNo">097</span>    if (this.isInvisible()) {<a name="line.97"></a>
 <span class="sourceLineNo">098</span>      return;<a name="line.98"></a>
 <span class="sourceLineNo">099</span>    }<a name="line.99"></a>
 <span class="sourceLineNo">100</span><a name="line.100"></a>
@@ -114,7 +114,7 @@
 <span class="sourceLineNo">106</span>      x[i] = (int)corners[i].getCanvasX();<a name="line.106"></a>
 <span class="sourceLineNo">107</span>      y[i] = (int)corners[i].getCanvasY();<a name="line.107"></a>
 <span class="sourceLineNo">108</span>    }<a name="line.108"></a>
-<span class="sourceLineNo">109</span>    if (this.getFill()) {<a name="line.109"></a>
+<span class="sourceLineNo">109</span>    if (this.isFilled()) {<a name="line.109"></a>
 <span class="sourceLineNo">110</span>      g.fillPolygon(x, y, corners.length);<a name="line.110"></a>
 <span class="sourceLineNo">111</span>    } else {<a name="line.111"></a>
 <span class="sourceLineNo">112</span>      g.drawPolygon(x, y, corners.length);<a name="line.112"></a>
