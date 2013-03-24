@@ -2,13 +2,16 @@ ConvexPolygon collision detection
 
 Important:
 -Rectangle
--make direction, center, etc. consistently private or protected
 -Count
 -Triangle
+-Title
+-Fail fast
+
+Finishing touches:
+-make direction, center, etc. consistently private or protected
 -commenting, external documentation
 -equals(), toString(), other basic methods
 -ensure width consistently comes before height (and x before y)
--Title
 
 Trivialities:
 -make imports consistent (* or not)
@@ -17,7 +20,7 @@ Trivialities:
 Bugs:
 -Sticky collisions
 -Speech isn't visible when shape goes off the right or top of the screen
--All Direction.LEFT are the same object
+-Make Vector immutable or eliminate LEFT, etc.
 -Collisions with self
 
 Wishlist:

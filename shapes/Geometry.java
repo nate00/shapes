@@ -130,6 +130,7 @@ abstract class Geometry {
   // how far can it go?
   static Point maxMovement(Circle mover, Point target, Shape obstacle) {
     Segment path = new Segment(mover.getCenter(), target);
+    Point maxMove = target;
 
     if (obstacle instanceof Circle) {
       Circle obs = (Circle) obstacle;
@@ -141,28 +142,81 @@ abstract class Geometry {
         return target;   // no collision
       }
 
+      // TODO: rename variables
       // closest is the point on path closest to obstacle
       // stopPoint is where the center of mover will be after moving
       Point closest = obstacleToPath.getEnd();
       double distanceToStopPoint =
         sqrt(sq(distanceBetweenCenters) - sq(distanceToPath));
-      Point stopPoint =
+      maxMove =
         closest.translation(path.direction().reverse(), distanceToStopPoint);
-      return stopPoint;
     } else if (obstacle instanceof ConvexPolygon) {
       ConvexPolygon obs = (ConvexPolygon) obstacle;
-      // TODO
+      for (Point corner : obs.getCorners()) {
+        Segment perp = perpendicularThrough(path, corner);
+        double perpDistance = perp.length();
+        if (perpDistance > mover.getRadius()) {
+          continue;
+        }
+
+        Point closest = perp.getEnd();
+        double centerDestinationToClosest =
+          sqrt(sq(mover.getRadius()) - sq(perpDistance));
+        Point centerDestination = closest.translation(
+          path.direction().reverse(),
+          centerDestinationToClosest
+        );
+        
+        if (isShorterMovement(centerDestination, maxMove, path)) {
+          maxMove = centerDestination;
+        }
+      }
+
+      for (Segment side : obs.getSides()) {
+        Point sidePathIntersection =
+          lineIntersection(side, path);
+        double sidePathAngle =
+          interiorRadians(path.direction(), side.direction());
+        double hypoteneuse = mover.getRadius() / sin(sidePathAngle);
+        Point centerDestination = sidePathIntersection.translation(
+          path.direction().reverse(),
+          hypoteneuse
+        );
+
+        if (
+          distance(mover.getCenter(), centerDestination) >
+          distance(mover.getCenter(), sidePathIntersection)
+        ) {
+          continue;   // side is facing the wrong way for a collision to occur
+        }
+        
+        if (isShorterMovement(centerDestination, maxMove, path)) {
+          maxMove = centerDestination;
+        }
+        // CODING
+      }
     }
 
-    return target;
+    return maxMove;
+  }
+
+  static double interiorRadians(Direction dirA, Direction dirB) {
+    double difference = abs(dirA.getRadians() - dirB.getRadians());
+    if (difference > PI) {
+      difference = 2 * PI - difference;
+    }
+    if (difference > PI / 2) {
+      difference = PI - difference;
+    }
+    return difference;
   }
 
   static Point maxMovement(ConvexPolygon mover, Point target, Shape obstacle) {
     Segment path = new Segment(mover.getCenter(), target);
+    Point maxMove = target;
 
     if (obstacle instanceof Circle) {
       Circle obs = (Circle) obstacle;
-      Point maxMove = target;
 
       // check corner collisions
       for (Point corner : mover.getCorners()) {
@@ -187,14 +241,7 @@ abstract class Geometry {
         }
 
         Point centerDestination = closer.translation(cornerOffset.reverse());
-        if (!path.contains(centerDestination)) {
-          continue;
-        }
-
-        if (
-          distance(centerDestination, mover.getCenter()) <
-          distance(maxMove, mover.getCenter())
-        ) {
+        if (isShorterMovement(centerDestination, maxMove, path)) {
           maxMove = centerDestination;
         }
       }
@@ -214,45 +261,92 @@ abstract class Geometry {
           segmentLineIntersection(side, intersectionPath);
         
         if (intersectionOrigin == null) {
-          System.out.println("No intersection");
           continue;
         }
-        System.out.println("intersection");
 
         Vector intersectionOffset =
           new Vector(mover.getCenter(), intersectionOrigin);
         Point centerDestination =
           intersection.translation(intersectionOffset.reverse());
 
-        if (!path.contains(centerDestination)) {
-          continue;
-        }
-
-        if (
-          distance(centerDestination, mover.getCenter()) <
-          distance(maxMove, mover.getCenter())
-        ) {
+        if (isShorterMovement(centerDestination, maxMove, path)) {
           maxMove = centerDestination;
         }
       }
 
-      // TODO: put buffer between mover and obstacle, not along mover's path?
-      if (!maxMove.equals(target)) {
-        // give a little buffer, so mover doesn't get "stuck" on obstacle
-        Vector backwards = path.vector().reverse();
-        backwards.setMagnitude(TOLERANCE);
-        maxMove = maxMove.translation(backwards);
-        if (!path.contains(maxMove)) {
-          // but don't overcompensate
-          maxMove = mover.getCenter();
-        }
-      }
-      return maxMove;
     } else if (obstacle instanceof ConvexPolygon) {
       ConvexPolygon obs = (ConvexPolygon) obstacle;
-      // TODO
+      // Two cases: corner hits side, side hits corner
+      for (Segment obstacleSide : obs.getSides()) {
+        for (Point corner : mover.getCorners()) {
+          Vector cornerOffset = new Vector(mover.getCenter(), corner);
+          Segment cornerPath =
+            new Segment(corner, target.translation(cornerOffset));
+          Point intersection =
+            segmentLineIntersection(obstacleSide, cornerPath);
+          if (intersection == null) {
+            continue;
+          }
+          Point centerDestination =
+            intersection.translation(cornerOffset.reverse());
+
+          if (isShorterMovement(centerDestination, maxMove, path)) {
+            maxMove = centerDestination;
+          }
+        }
+      }
+
+      for (Point obstacleCorner : obs.getCorners()) {
+        for (Segment side : mover.getSides()) {
+          // intersectionPath is a line parallel to path through obstacleCorner
+          Segment intersectionPath = new Segment(
+            obstacleCorner, 
+            obstacleCorner.translation(path.vector())
+          );
+          Point intersectionOrigin = segmentLineIntersection(side, intersectionPath);
+          if (intersectionOrigin == null) {
+            continue;
+          }
+          Vector intersectionOffset =
+            new Vector(mover.getCenter(), intersectionOrigin);
+          Point centerDestination =
+            obstacleCorner.translation(intersectionOffset.reverse());
+
+          if (isShorterMovement(centerDestination, maxMove, path)) {
+            maxMove = centerDestination;
+          }
+        }
+      }
     }
-    return target;
+
+    // TODO: put buffer between mover and obstacle, not along mover's path?
+//    if (!maxMove.equals(target)) {
+      // give a little buffer, so mover doesn't get "stuck" on obstacle
+      Vector backwards = path.vector().reverse();
+      backwards.setMagnitude(TOLERANCE / 2.0);
+      maxMove = maxMove.translation(backwards);
+      if (!path.contains(maxMove)) {
+        // but don't overcompensate
+        maxMove = mover.getCenter();
+      }
+//    }
+    return maxMove;
+  }
+
+  // helper method for maxMovement()
+  private static boolean isShorterMovement(
+    Point candidate,
+    Point leader,
+    Segment path
+  ) {
+
+    if (!path.contains(candidate)) {
+      return false;
+    }
+
+    return
+      distance(candidate, path.getStart()) <
+      distance(leader, path.getStart());
   }
 
   static boolean offscreen(Point point) {

@@ -92,6 +92,7 @@ public abstract class Shape {
     setColor(Color.GREEN);
     setFilled(true);
     setSpeechColor(Color.BLACK);
+    setDirection(Direction.RIGHT);
     destroyed = false;
   }
 
@@ -391,6 +392,16 @@ public abstract class Shape {
    */
   public Direction towards(Shape target) {
     return towards(target.getCenter());
+  }
+
+  /**
+   * Returns the distance between this shape and another shape.
+   *
+   * @param target  the shape whose distance away to find.
+   * @return  distance in pixels from this shape to <code>target</code>.
+   */
+  public double distanceTo(Shape target) {
+    return Geometry.distance(this, target);
   }
 
   /**

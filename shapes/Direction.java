@@ -52,6 +52,10 @@ public class Direction {
     return new Direction(this.degrees + degrees);
   }
 
+  public Direction rotation(double degrees) {
+    return rotationByDegrees(degrees);
+  }
+
   public static Direction random() {
     return new Direction(Math.random() * 360.0);
   }
