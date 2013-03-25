@@ -2,9 +2,6 @@ package shapes;
 
 import static java.lang.Math.*;
 
-// TODO: debugging, remove
-import java.awt.*;
-
 abstract class Geometry {
 
   // used for general double arithmetic
@@ -355,7 +352,7 @@ abstract class Geometry {
       for (Segment side : mover.getSides()) {
         Segment perp = perpendicularThrough(side, obs.getCenter());
         Vector radiusToIntersection =
-          new Vector(perp.direction(), obs.getRadius());   // TODO: also check 180 degrees?
+          new Vector(perp.direction(), obs.getRadius());
         Point intersection = obs.getCenter().translation(radiusToIntersection);
 
         // intersectionPath has the correction direction, but not
@@ -425,16 +422,13 @@ abstract class Geometry {
     }
 
     // TODO: put buffer between mover and obstacle, not along mover's path?
-//    if (!maxMove.equals(target)) {
-      // give a little buffer, so mover doesn't get "stuck" on obstacle
-      Vector backwards =
-        new Vector(path.vector().getDirection().reverse(), TOLERANCE / 2.0);
-      maxMove = maxMove.translation(backwards);
-      if (!path.contains(maxMove)) {
-        // but don't overcompensate
-        maxMove = mover.getCenter();
-      }
-//    }
+    Vector backwards =
+      new Vector(path.vector().getDirection().reverse(), TOLERANCE / 2.0);
+    maxMove = maxMove.translation(backwards);
+    if (!path.contains(maxMove)) {
+      // but don't overcompensate
+      maxMove = mover.getCenter();
+    }
     return maxMove;
   }
 

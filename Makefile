@@ -5,6 +5,9 @@ all :
 run: all
 	java -cp bin NateGame;
 
+maze: all
+	java -cp bin MazeGame;
+
 test: all
 	java -cp bin shapes.Test;
 

@@ -96,16 +96,6 @@ public abstract class Shape {
   }
 
   /**
-   * Changes the location of this shape.
-   *
-   * @param x the x-coordinate of this shape's new center
-   * @param y the y-coordinate of this shape's new center
-   */
-  public void setCenter(double x, double y) {
-    setCenter(new Point(x, y));
-  }
-
-  /**
    * Checks if this shape is touching a given segment.
    *
    * @param   seg the segment to check.
@@ -630,14 +620,31 @@ public abstract class Shape {
   }
   
   /**
-   * Set the location of the shape's center.
+   * Changes the location of this shape.
    * <p>
-   * Note that this is the only way to move a shape that will allow it to enter
-   * a solid shape. Moving this shape into a solid shape has undefined behavior.
+   * Note that this method will allow you to relocate this shape into
+   * a solid shape. Moving a shape into a solid shape has undefined behavior.
    * (If you haven't called {@link #setSolid(boolean)}, you don't have
-   * to worry about this.)
+   * to worry about this.) To move this shape without going through solid
+   * shapes, use {@link #move}.
    *
-   * @param center  a point representing the location of the shape's center.
+   * @param x the x-coordinate of this shape's new center
+   * @param y the y-coordinate of this shape's new center
+   */
+  public void setCenter(double x, double y) {
+    setCenter(new Point(x, y));
+  }
+
+  /**
+   * Changes the location of this shape.
+   * <p>
+   * Note that this method will allow you to relocate this shape into
+   * a solid shape. Moving a shape into a solid shape has undefined behavior.
+   * (If you haven't called {@link #setSolid(boolean)}, you don't have
+   * to worry about this.) To move this shape without going through solid
+   * shapes, use {@link #move}.
+   *
+   * @param center  a point representing the location of the shape's new center.
    */
   public void setCenter(Point center) {
     this.center = center;

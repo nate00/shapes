@@ -7,6 +7,7 @@ Important:
 -Title
 -Fail fast
 -Make constructors set up default values better.
+-BorderBehavior.SOLID
 
 Finishing touches:
 -make direction, center, etc. consistently private or protected
@@ -27,7 +28,7 @@ Bugs:
 Wishlist:
 -more speech options: font
 -Music
--border behavior (wrapping is difficult)
+-BorderBehavior.WRAP
 -expanded solidity options
 -gravity, bounce
 -render layers

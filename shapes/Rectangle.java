@@ -34,6 +34,10 @@ public class Rectangle extends ConvexPolygon {
     };
   }
 
+  public void setUpperLeft(Point upperLeft) {
+    setCenter(upperLeft.getX() + width / 2, upperLeft.getY() - height / 2);
+  }
+
   public double getHeight() {
     return height;
   }

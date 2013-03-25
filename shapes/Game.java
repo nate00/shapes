@@ -113,6 +113,11 @@ public abstract class Game {
     canvas.setBackground(backgroundColor);
   }
 
+  /**
+   * Returns four points representing the corners of the window.
+   *
+   * @return  the corners of the window.
+   */
   public static Point[] getCorners() {
     return canvas.getCorners();
   }

@@ -128,6 +128,15 @@ public abstract class ConvexPolygon extends Shape {
     }
   }
 
+  /**
+   * Set whether this shape displays the direction it is facing. When set to
+   * false, calls to {@link #setDirection} will not change the appearance of
+   * this shape, but they will still affect which direction this shape moves
+   * when {@link #move(double)} is called.
+   *
+   * @param displaysRotation  true to display this shape's rotation, false to
+   *                          hide it.
+   */
   public void setDisplaysRotation(boolean displaysRotation) {
     this.displaysRotation = displaysRotation;
   }

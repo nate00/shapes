@@ -11,21 +11,6 @@ public class Point {
     this.y = y;
   }
 
-  // TODO: delete this
-  // doesn't move if direction is null
-//  public void move(Direction direction, double pixels) {
-//    if (direction == null) {
-//      return;
-//    }
-//    Vector v = new Vector(direction, pixels);
-//    move(v);
-//  }
-
-//  public void move(Vector v) {
-//    x = x + v.getXComponent();
-//    y = y + v.getYComponent();
-//  }
-
   public Point translation(Vector v) {
     Point p = new Point(x, y);
     p.setX(p.getX() + v.getXComponent());
