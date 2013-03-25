@@ -7,18 +7,26 @@ import java.awt.Graphics2D;
 public class Circle extends Shape {
   private double radius;
 
+  public Circle(Point center, double radius) {
+    super();
+    setDefaults();
+    setCenter(center);
+    setRadius(radius);
+    setup();
+  }
+
   public Circle() {
     super();
-    // set default values
-    setCenter(new Point(
-      Game.getCanvas().WIDTH / 2,
-      Game.getCanvas().HEIGHT / 2)
-    );
-    radius = 10;
+    setDefaults();
+    setup();
+  }
+
+  private void setDefaults() {
+    setCenter(new Point(200, 400));
+    setRadius(10);
     setColor(Color.PINK);
     setFilled(true);
     setSpeechColor(Color.BLACK);
-    setup();
   }
 
   public void renderSpeech(Graphics2D g) {

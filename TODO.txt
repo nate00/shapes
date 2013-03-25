@@ -7,6 +7,7 @@ Important:
 -Title
 -Fail fast
 -Shape.rotate
+-Make constructors set up default values better.
 
 Finishing touches:
 -make direction, center, etc. consistently private or protected

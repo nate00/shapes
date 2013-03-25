@@ -7,12 +7,6 @@ public abstract class ConvexPolygon extends Shape {
   protected boolean displaysRotation;
   abstract Point[] getUnrotatedCorners();
 
-  public ConvexPolygon() {
-    super();
-    displaysRotation = true;
-    setup();
-  }
-
   public Point[] getCorners() {
     Point[] corners = getUnrotatedCorners();
     if (
