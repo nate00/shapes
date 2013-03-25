@@ -143,7 +143,7 @@ public abstract class Shape {
     if (isOffscreen()) {
       return true;
     }
-    for (Segment border : Game.getCanvas().getBorders()) { 
+    for (Segment border : Game.getBorders()) { 
       if (isTouching(border)) {
         return true;
       }

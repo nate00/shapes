@@ -49,7 +49,7 @@ public class Point {
   }
 
   public double getCanvasY() {
-    return Game.getCanvas().HEIGHT - y;
+    return Game.HEIGHT - y;
   }
 
   public void setX(double x) {
@@ -61,22 +61,27 @@ public class Point {
   }
 
   public static Point random() {
-    double x = Math.random() * Game.getCanvas().WIDTH;
-    double y = Math.random() * Game.getCanvas().HEIGHT;
+    double x = Math.random() * Game.WIDTH;
+    double y = Math.random() * Game.HEIGHT;
     return new Point(x, y);
   }
 
+  @Override
   public boolean equals(Object obj) {
-    if (!(obj instanceof Point)) {
-      return false;
+    if (obj instanceof Point) {
+      return this.equals((Point) obj);
     }
 
-    Point that = (Point) obj;
-    return
+    return false;
+  }
+
+  private boolean equals(Point that) {
+    return 
       Math.abs(this.getX() - that.getX()) < Geometry.TOLERANCE &&
       Math.abs(this.getY() - that.getY()) < Geometry.TOLERANCE;
   }
 
+  @Override
   public String toString() {
     return String.format("(%f, %f)", x, y);
   }

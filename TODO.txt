@@ -13,13 +13,14 @@ Finishing touches:
 -commenting, external documentation
 -equals(), toString(), other basic methods
 -ensure width consistently comes before height (and x before y)
+-write @Override annotations
 
 Trivialities:
 -make imports consistent (* or not)
 -ensure partitioning of methods between Geometry and Shape subclasses is consistent
 
 Bugs:
--Sticky collisions
+-Sticky collisions (circle sliding past rectangle)
 -Speech isn't visible when shape goes off the right or top of the screen
 
 Wishlist:

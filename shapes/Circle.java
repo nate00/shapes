@@ -100,22 +100,22 @@ public class Circle extends Shape {
 
   public boolean isOffscreen() {
     if (
-      getCenter().getX() - radius > Game.getCanvas().WIDTH ||
+      getCenter().getX() - radius > Game.WIDTH ||
       getCenter().getX() + radius < 0.0 ||
-      getCenter().getY() - radius > Game.getCanvas().HEIGHT ||
+      getCenter().getY() - radius > Game.HEIGHT ||
       getCenter().getY() + radius < 0.0
     ) {
       return true;
     }
 
     if (
-      getCenter().getX() < Game.getCanvas().WIDTH && getCenter().getX() > 0.0 ||
-      getCenter().getY() < Game.getCanvas().HEIGHT && getCenter().getY() > 0.0
+      getCenter().getX() < Game.WIDTH && getCenter().getX() > 0.0 ||
+      getCenter().getY() < Game.HEIGHT && getCenter().getY() > 0.0
     ) {
       return false;
     }
 
-    for (Point corner : Game.getCanvas().getCorners()) {
+    for (Point corner : Game.getCorners()) {
       if (Geometry.distance(getCenter(), corner) < radius) {
         return false;
       }

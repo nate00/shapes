@@ -4,14 +4,12 @@ import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.*;
 
-public class Canvas extends JPanel implements Runnable {
+class Canvas extends JPanel implements Runnable {
 
   private Thread animator;
   private Game game;
 
   private final int DELAY = 50; // TODO: FPS should be a global constant
-  public final int HEIGHT = 500;
-  public final int WIDTH = 500;
 
   Canvas(Game game) {
     super();
@@ -19,8 +17,8 @@ public class Canvas extends JPanel implements Runnable {
     this.game = game;
 
     setDoubleBuffered(true);
-    setPreferredSize(new Dimension(WIDTH, HEIGHT));
-    setSize(WIDTH, HEIGHT);
+    setPreferredSize(new Dimension(game.WIDTH, game.HEIGHT));
+    setSize(game.WIDTH, game.HEIGHT);
   }
 
   public void paint(Graphics g0) {
@@ -69,8 +67,8 @@ public class Canvas extends JPanel implements Runnable {
 
   public Point[] getCorners() {
     return new Point[] {
-      new Point(0, HEIGHT),
-      new Point(WIDTH, HEIGHT),
+      new Point(0, game.HEIGHT),
+      new Point(game.WIDTH, game.HEIGHT),
       new Point(WIDTH, 0),
       new Point(0, 0)
     };
@@ -78,10 +76,10 @@ public class Canvas extends JPanel implements Runnable {
 
   Segment[] getBorders() {
     return new Segment[] {
-      new Segment(new Point(0, HEIGHT), new Point(WIDTH, HEIGHT)),
-      new Segment(new Point(WIDTH, HEIGHT), new Point(WIDTH, 0)),
+      new Segment(new Point(0, game.HEIGHT), new Point(game.WIDTH, game.HEIGHT)),
+      new Segment(new Point(game.WIDTH, game.HEIGHT), new Point(game.WIDTH, 0)),
       new Segment(new Point(WIDTH, 0), new Point(0, 0)),
-      new Segment(new Point(0, 0), new Point(0, HEIGHT))
+      new Segment(new Point(0, 0), new Point(0, game.HEIGHT))
     };
   }
 }

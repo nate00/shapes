@@ -59,6 +59,19 @@ class Vector {
     return magnitude;
   }
 
+  public boolean equals(Object obj) {
+    if (obj instanceof Vector) {
+      return equals((Vector) obj);
+    }
+
+    return false;
+  }
+
+  boolean equals(Vector that) {
+    return this.getDirection().equals(that.getDirection()) &&
+      Geometry.equals(this.getMagnitude(), that.getMagnitude());
+  }
+
   public String toString() {
     return String.format("direction: (%s) magnitude: %f", direction.toString(), magnitude);
   }

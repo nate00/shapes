@@ -456,8 +456,8 @@ abstract class Geometry {
 
   static boolean offscreen(Point point) {
     if (
-      point.getX() < 0 || point.getX() > Game.getCanvas().WIDTH ||
-      point.getY() < 0 || point.getY() > Game.getCanvas().HEIGHT
+      point.getX() < 0 || point.getX() > Game.WIDTH ||
+      point.getY() < 0 || point.getY() > Game.HEIGHT
     ) {
       return true;
     }
@@ -480,7 +480,7 @@ abstract class Geometry {
   }
 
   static double fromCanvasY(double canvasY) {
-    return Game.getCanvas().HEIGHT - canvasY;
+    return Game.HEIGHT - canvasY;
   }
 
   static double distance(Point s, Point t) {
@@ -489,5 +489,9 @@ abstract class Geometry {
 
   static double sq(double x) {
     return x*x;
+  }
+
+  static boolean equals(double s, double t) {
+    return Math.abs(s - t) < EPSILON;
   }
 }

@@ -20,6 +20,9 @@ public abstract class Game {
   // passed as a parameter?
   private static Set<Shape> solidShapes;
   private static Set<Shape> allShapes;
+
+  public static final int HEIGHT = 500;
+  public static final int WIDTH = 500;
   
   public Game() {
     canvas = new Canvas(this);
@@ -53,7 +56,7 @@ public abstract class Game {
   public void update() {
   }
 
-  public void autoUpdate() {
+  void autoUpdate() {
     for (Shape s : allShapes) {
       s.autoUpdate();
     }
@@ -68,27 +71,23 @@ public abstract class Game {
     }
   }
 
-  public static Canvas getCanvas() {
-    return canvas;
-  }
-
-  public static Set<Shape> getSolids() {
+  static Set<Shape> getSolids() {
     return solidShapes;
   }
 
-  public static void addSolid(Shape shape) {
+  static void addSolid(Shape shape) {
     solidShapes.add(shape);
   }
 
-  public static void removeSolid(Shape shape) {
+  static void removeSolid(Shape shape) {
     solidShapes.remove(shape);
   }
 
-  public static void addShape(Shape shape) {
+  static void addShape(Shape shape) {
     allShapes.add(shape);
   }
 
-  public static void removeShape(Shape shape) {
+  static void removeShape(Shape shape) {
     allShapes.remove(shape);
   }
 
@@ -97,10 +96,18 @@ public abstract class Game {
   }
 
   public static Color getBackgroundColor() {
-    return getCanvas().getBackground();
+    return canvas.getBackground();
   }
 
   public static void setBackgroundColor(Color backgroundColor) {
-    getCanvas().setBackground(backgroundColor);
+    canvas.setBackground(backgroundColor);
+  }
+
+  public static Point[] getCorners() {
+    return canvas.getCorners();
+  }
+
+  static Segment[] getBorders() {
+    return canvas.getBorders();
   }
 }

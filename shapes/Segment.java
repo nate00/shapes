@@ -72,6 +72,22 @@ class Segment {
     return start.getX() * end.getY() - end.getX() * start.getY();
   }
 
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof Segment) {
+      return this.equals((Segment) obj);
+    }
+
+    return false;
+  }
+
+  private boolean equals(Segment that) {
+    return
+      this.getStart().equals(that.getStart()) &&
+      this.getEnd().equals(that.getEnd());
+  }
+
+  @Override
   public String toString() {
     return String.format("start: %s end: %s", start.toString(), end.toString());
   }
