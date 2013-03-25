@@ -14,8 +14,8 @@ public class Circle extends Shape {
       Game.getCanvas().WIDTH / 2,
       Game.getCanvas().HEIGHT / 2)
     );
-    radius = 100;
-    setColor(Color.RED);
+    radius = 10;
+    setColor(Color.PINK);
     setFilled(true);
     setSpeechColor(Color.BLACK);
     setup();
@@ -48,6 +48,14 @@ public class Circle extends Shape {
       Circle c = (Circle)s;
       double distance = Geometry.distance(c.getCenter(), this.getCenter());
       return distance + c.getRadius() < this.getRadius();
+    } else if (s instanceof ConvexPolygon) {
+      ConvexPolygon poly = (ConvexPolygon) s;
+      for (Point corner : poly.getCorners()) {
+        if (!this.contains(corner)) {
+          return false;
+        }
+      }
+      return true;
     } else {
       return false;
     }

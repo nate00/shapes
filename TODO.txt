@@ -6,6 +6,7 @@ Important:
 -Triangle
 -Title
 -Fail fast
+-Shape.rotate
 
 Finishing touches:
 -make direction, center, etc. consistently private or protected

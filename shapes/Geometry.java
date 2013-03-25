@@ -13,10 +13,107 @@ abstract class Geometry {
   static final double TOLERANCE = 0.5;
 
   // Returns false if the code for the given shape pair hasn't been written yet (in distance(Shape, Shape))
+  // When writing new touching() methods, remember to use TOLERANCE. This means some other Geometry methods
+  // (such as intersection(Circle, Segment)) won't be reliable.
   static boolean touching(Shape s, Shape t) {
-    double distance = distance(s, t);
-    if (distance == Double.NaN) return false;
-    return distance < TOLERANCE;
+    // Eww, gross code. Not sure of the best way to do this. Could instead have
+    // identical isTouching() methods in each shape subclass, but that's also
+    // not nice, since the actual computations should be in Geometry to avoid
+    // duplication.
+    if (s instanceof Circle) {
+      if (t instanceof Circle) {
+        return touching((Circle) s, (Circle) t);
+      } else if (t instanceof ConvexPolygon) {
+        return touching((Circle) s, (ConvexPolygon) t);
+      } else {
+        return false;
+      }
+    } else if (s instanceof ConvexPolygon) {
+      if (t instanceof Circle) {
+        return touching((ConvexPolygon) s, (Circle) t);
+      } else if (t instanceof ConvexPolygon) {
+        return touching((ConvexPolygon) s, (ConvexPolygon) t);
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
+  static boolean touching(ConvexPolygon poly, Circle circle) {
+    return touching(circle, poly);
+  }
+
+  static boolean touching(Circle circle, ConvexPolygon poly) {
+    System.out.println("Derp");
+    for (Point corner : poly.getCorners()) {
+      if (distance(corner, circle.getCenter()) <
+          circle.getRadius() + TOLERANCE) {
+        return true;
+      }
+    }
+
+    for (Segment side : poly.getSides()) {
+      Segment perp = perpendicularThrough(side, circle.getCenter());
+      if (perp.length() < circle.getRadius() + TOLERANCE &&
+          side.contains(perp.getEnd())) {
+        return true;
+      }
+    }
+
+    if (circle.contains(poly) || poly.contains(circle)) {
+      return true;
+    }
+
+    return false;
+  }
+
+  static boolean touching(ConvexPolygon s, ConvexPolygon t) {
+    for (Point corner : s.getCorners()) {
+      for (Segment side : t.getSides()) {
+        Segment perp = perpendicularThrough(side, corner);
+        if (perp.length() < TOLERANCE && side.contains(perp.getEnd())) {
+          return true;
+        }
+      }
+    }
+
+    for (Segment side : s.getSides()) {
+      for (Point corner : t.getCorners()) {
+        Segment perp = perpendicularThrough(side, corner);
+        if (perp.length() < TOLERANCE && side.contains(perp.getEnd())) {
+          return true;
+        }
+      }
+    }
+
+    for (Point cornerA : s.getCorners()) {
+      for (Point cornerB : t.getCorners()) {
+        if (distance(cornerA, cornerB) < TOLERANCE) {
+          return true;
+        }
+      }
+    }
+
+    for (Segment sideA : s.getSides()) {
+      for (Segment sideB : t.getSides()) {
+        if (segmentIntersection(sideA, sideB) != null) {
+          return true;
+        }
+      }
+    }
+
+    if (s.contains(t) || t.contains(s)) {
+      return true;
+    }
+
+    return false;
+  }
+
+  static boolean touching(Circle s, Circle t) {
+    double centerDistance = distance(s.getCenter(), t.getCenter());
+    return centerDistance < s.getRadius() + t.getRadius() + TOLERANCE;
   }
 
   // Returns false if the code for the given shape pair hasn't been written yet.
@@ -175,6 +272,9 @@ abstract class Geometry {
       for (Segment side : obs.getSides()) {
         Point sidePathIntersection =
           lineIntersection(side, path);
+        if (sidePathIntersection == null) {
+          continue;
+        }
         double sidePathAngle =
           interiorRadians(path.direction(), side.direction());
         double hypoteneuse = mover.getRadius() / sin(sidePathAngle);
@@ -189,11 +289,17 @@ abstract class Geometry {
         ) {
           continue;   // side is facing the wrong way for a collision to occur
         }
+
+        Segment destinationRadius =
+          perpendicularThrough(side, centerDestination);
+
+        if (!side.contains(destinationRadius.getEnd())) {
+          continue;
+        }
         
         if (isShorterMovement(centerDestination, maxMove, path)) {
           maxMove = centerDestination;
         }
-        // CODING
       }
     }
 
@@ -358,6 +464,11 @@ abstract class Geometry {
     }
 
     return false;
+  }
+
+  static double cross(Vector s, Vector t) {
+    return s.getXComponent() * t.getYComponent() -
+           s.getYComponent() * t.getXComponent();
   }
 
   // NOTE: this returns NaN if the points are horizontally aligned

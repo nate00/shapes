@@ -59,25 +59,6 @@ public abstract class ConvexPolygon extends Shape {
     return true;
   }
 
-//  public void move(Direction direction, double pixels) {
-//    // TODO
-//  }
-
-  public boolean contains(Point point) {
-    boolean result = false;
-    Point[] corners = getCorners();
-    for (int i = 0, j = corners.length - 1; i < corners.length; j = i++) {
-      // icky math, copied from Stack Overflow 8721406
-      if (
-        (corners[i].getY() > point.getY()) != (corners[j].getY() > point.getY()) &&
-        (point.getX() < (corners[j].getX() - corners[i].getX()) * (point.getY() - corners[i].getY()) / (corners[j].getY()-corners[i].getY()) + corners[i].getX())
-      ) {
-        result = !result;
-      }
-    }
-    return result;
-  }
-
   public boolean contains(Shape shape) {
     if (shape instanceof ConvexPolygon) {
       Point[] corners = ((ConvexPolygon) shape).getCorners();
@@ -88,10 +69,39 @@ public abstract class ConvexPolygon extends Shape {
       }
       return true;
     } else if (shape instanceof Circle) {
-      // TODO
-      return false;
+      Circle circle = (Circle) shape;
+      if (!this.contains(circle.getCenter())) {
+        return false;
+      }
+      for (Segment side : getSides()) {
+        double distance =
+          Geometry.perpendicularThrough(side, circle.getCenter()).length();
+        if (distance < circle.getRadius()) {
+          return false;
+        }
+      }
+      return true;
     }
     return false;
+  }
+
+  public boolean contains(Point p) {
+    // the point is inside if all cross products have the same sign
+    boolean positive = false;
+    boolean first = true;
+    for (Segment side : getSides()) {
+      boolean pos =
+        Geometry.cross(side.vector(), new Vector(side.getStart(), p)) > 0;
+      if (first) {
+        positive = pos;
+        first = false;
+        continue;
+      }
+      if (pos != positive) {
+        return false;
+      }
+    }
+    return true;
   }
 
   public void renderSpeech(Graphics2D g) {
