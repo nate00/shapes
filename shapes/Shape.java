@@ -5,8 +5,7 @@ import java.awt.Graphics2D;
 import java.util.*;
 
 /**
- * Represents a shape that is drawn to the screen and can interact with other
- * shapes.
+ * A shape that appears on screen and interacts with other shapes.
  * <p>
  * Shapes are the basic building blocks of games built with the Shapes
  * framework. They can be of different colors and sizes, can move around the

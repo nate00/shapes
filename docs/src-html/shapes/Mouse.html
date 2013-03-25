@@ -11,37 +11,47 @@
 <span class="sourceLineNo">003</span>import java.awt.*;<a name="line.3"></a>
 <span class="sourceLineNo">004</span>import java.awt.event.*;<a name="line.4"></a>
 <span class="sourceLineNo">005</span><a name="line.5"></a>
-<span class="sourceLineNo">006</span>public class Mouse implements MouseMotionListener, MouseListener {<a name="line.6"></a>
-<span class="sourceLineNo">007</span>  private static Point click;<a name="line.7"></a>
-<span class="sourceLineNo">008</span>  <a name="line.8"></a>
-<span class="sourceLineNo">009</span>  public static Point clickLocation() {<a name="line.9"></a>
-<span class="sourceLineNo">010</span>    return click;<a name="line.10"></a>
-<span class="sourceLineNo">011</span>  }<a name="line.11"></a>
-<span class="sourceLineNo">012</span><a name="line.12"></a>
-<span class="sourceLineNo">013</span>  public void mousePressed(MouseEvent event) {<a name="line.13"></a>
-<span class="sourceLineNo">014</span>    updateClick(event);<a name="line.14"></a>
-<span class="sourceLineNo">015</span>  }<a name="line.15"></a>
-<span class="sourceLineNo">016</span><a name="line.16"></a>
-<span class="sourceLineNo">017</span>  private void updateClick(MouseEvent event) {<a name="line.17"></a>
-<span class="sourceLineNo">018</span>    click = new Point(<a name="line.18"></a>
-<span class="sourceLineNo">019</span>      Geometry.fromCanvasX(event.getX()),<a name="line.19"></a>
-<span class="sourceLineNo">020</span>      Geometry.fromCanvasY(event.getY())<a name="line.20"></a>
-<span class="sourceLineNo">021</span>    );<a name="line.21"></a>
-<span class="sourceLineNo">022</span>  }<a name="line.22"></a>
-<span class="sourceLineNo">023</span><a name="line.23"></a>
-<span class="sourceLineNo">024</span>  public void mouseDragged(MouseEvent event) {<a name="line.24"></a>
-<span class="sourceLineNo">025</span>    updateClick(event);<a name="line.25"></a>
-<span class="sourceLineNo">026</span>  }<a name="line.26"></a>
-<span class="sourceLineNo">027</span><a name="line.27"></a>
-<span class="sourceLineNo">028</span>  public void mouseReleased(MouseEvent event) {<a name="line.28"></a>
-<span class="sourceLineNo">029</span>    click = null;<a name="line.29"></a>
-<span class="sourceLineNo">030</span>  }<a name="line.30"></a>
-<span class="sourceLineNo">031</span><a name="line.31"></a>
-<span class="sourceLineNo">032</span>  public void mouseMoved(MouseEvent event) {}<a name="line.32"></a>
-<span class="sourceLineNo">033</span>  public void mouseExited(MouseEvent event) {}<a name="line.33"></a>
-<span class="sourceLineNo">034</span>  public void mouseEntered(MouseEvent event) {}<a name="line.34"></a>
-<span class="sourceLineNo">035</span>  public void mouseClicked(MouseEvent event) {}<a name="line.35"></a>
-<span class="sourceLineNo">036</span>}<a name="line.36"></a>
+<span class="sourceLineNo">006</span>/**<a name="line.6"></a>
+<span class="sourceLineNo">007</span> * Captures input from the mouse. &lt;code&gt;Mouse&lt;/code&gt;, along with<a name="line.7"></a>
+<span class="sourceLineNo">008</span> * {@link Keyboard}, is how you make your game interactive.<a name="line.8"></a>
+<span class="sourceLineNo">009</span> * &lt;p&gt;<a name="line.9"></a>
+<span class="sourceLineNo">010</span> * For example, to make a shape move towards the point where the mouse is<a name="line.10"></a>
+<span class="sourceLineNo">011</span> * clicked, you would write:<a name="line.11"></a>
+<span class="sourceLineNo">012</span> * &lt;p&gt;<a name="line.12"></a>
+<span class="sourceLineNo">013</span> * &lt;code&gt;shape.move(shape.towards(Mouse.clickLocation(), 10);&lt;/code&gt;<a name="line.13"></a>
+<span class="sourceLineNo">014</span> */<a name="line.14"></a>
+<span class="sourceLineNo">015</span>public class Mouse implements MouseMotionListener, MouseListener {<a name="line.15"></a>
+<span class="sourceLineNo">016</span>  private static Point click;<a name="line.16"></a>
+<span class="sourceLineNo">017</span>  <a name="line.17"></a>
+<span class="sourceLineNo">018</span>  // will be null when mouse is not down<a name="line.18"></a>
+<span class="sourceLineNo">019</span>  public static Point clickLocation() {<a name="line.19"></a>
+<span class="sourceLineNo">020</span>    return click;<a name="line.20"></a>
+<span class="sourceLineNo">021</span>  }<a name="line.21"></a>
+<span class="sourceLineNo">022</span><a name="line.22"></a>
+<span class="sourceLineNo">023</span>  public void mousePressed(MouseEvent event) {<a name="line.23"></a>
+<span class="sourceLineNo">024</span>    updateClick(event);<a name="line.24"></a>
+<span class="sourceLineNo">025</span>  }<a name="line.25"></a>
+<span class="sourceLineNo">026</span><a name="line.26"></a>
+<span class="sourceLineNo">027</span>  private void updateClick(MouseEvent event) {<a name="line.27"></a>
+<span class="sourceLineNo">028</span>    click = new Point(<a name="line.28"></a>
+<span class="sourceLineNo">029</span>      Geometry.fromCanvasX(event.getX()),<a name="line.29"></a>
+<span class="sourceLineNo">030</span>      Geometry.fromCanvasY(event.getY())<a name="line.30"></a>
+<span class="sourceLineNo">031</span>    );<a name="line.31"></a>
+<span class="sourceLineNo">032</span>  }<a name="line.32"></a>
+<span class="sourceLineNo">033</span><a name="line.33"></a>
+<span class="sourceLineNo">034</span>  public void mouseDragged(MouseEvent event) {<a name="line.34"></a>
+<span class="sourceLineNo">035</span>    updateClick(event);<a name="line.35"></a>
+<span class="sourceLineNo">036</span>  }<a name="line.36"></a>
+<span class="sourceLineNo">037</span><a name="line.37"></a>
+<span class="sourceLineNo">038</span>  public void mouseReleased(MouseEvent event) {<a name="line.38"></a>
+<span class="sourceLineNo">039</span>    click = null;<a name="line.39"></a>
+<span class="sourceLineNo">040</span>  }<a name="line.40"></a>
+<span class="sourceLineNo">041</span><a name="line.41"></a>
+<span class="sourceLineNo">042</span>  public void mouseMoved(MouseEvent event) {}<a name="line.42"></a>
+<span class="sourceLineNo">043</span>  public void mouseExited(MouseEvent event) {}<a name="line.43"></a>
+<span class="sourceLineNo">044</span>  public void mouseEntered(MouseEvent event) {}<a name="line.44"></a>
+<span class="sourceLineNo">045</span>  public void mouseClicked(MouseEvent event) {}<a name="line.45"></a>
+<span class="sourceLineNo">046</span>}<a name="line.46"></a>
 
 
 

@@ -2,6 +2,11 @@ package shapes;
 
 import java.awt.*;
 
+/**
+ * A convex polygon that appears on screen and interacts with other shapes.
+ * You won't use <code>ConvexPolygon</code> directly. Instead, you'll use one
+ * of its subclasses, {@link Rectangle} or {@link Triangle}.
+ */
 public abstract class ConvexPolygon extends Shape {
 
   protected boolean displaysRotation;

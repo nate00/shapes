@@ -2,6 +2,10 @@ package shapes;
 
 import java.awt.event.KeyEvent;
 
+/**
+ * Used in calls to {@link Keyboard#direction(KeySet)} to specify which
+ * direction keys to listen to. Either the arrow keys or WASD.
+ */
 public enum KeySet {
   ARROWS(KeyEvent.VK_UP, KeyEvent.VK_DOWN, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT),
   WASD(KeyEvent.VK_W, KeyEvent.VK_S, KeyEvent.VK_A, KeyEvent.VK_D);

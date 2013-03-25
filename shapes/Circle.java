@@ -4,6 +4,11 @@ import java.util.*;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+/**
+ * A circle that appears on screen and interacts with other shapes.
+ * Many of <code>Circle</code>'s useful methods are in its superclass
+ * {@link Shape}.
+ */
 public class Circle extends Shape {
   private double radius;
 

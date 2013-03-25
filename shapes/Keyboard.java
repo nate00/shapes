@@ -4,6 +4,15 @@ import java.awt.event.*;
 import java.util.*;
 import java.util.concurrent.*;
 
+/**
+ * Captures input from the keyboard. <code>Keyboard</code>, along with
+ * {@link Mouse}, is how you make your game interactive.
+ * <p>
+ * For example, to make a shape move according to the arrow keys, you would
+ * write:
+ * <p>
+ * <code>shape.move(Keyboard.direction(), 10);</code>
+ */
 public class Keyboard extends KeyAdapter {
   private static Set<KeyEvent> keysPressed;
   private static KeyEvent mostRecentKeyPressed;

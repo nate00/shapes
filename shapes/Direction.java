@@ -1,5 +1,13 @@
 package shapes;
 
+/**
+ * Represents a direction in the 2D plane. Directions can be used to control
+ * which way shapes face and which way they move.
+ * <p>
+ * Directions are represented in degrees (or radians) starting with 0 degrees
+ * pointing to the right, and increasing counterclockwise (like in a unit
+ * circle). For example, up is 90 degrees and left is 180 degrees.
+ */
 public class Direction {
   double degrees;
 

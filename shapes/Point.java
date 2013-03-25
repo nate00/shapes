@@ -1,9 +1,8 @@
 package shapes;
 
-// TODO: for debugging
-import java.awt.*;
-
-// TODO: extends for debugging
+/**
+ * Represents a point in the 2D plane. Points are not displayed in the game.
+ */
 public class Point {
   private double x, y;
 

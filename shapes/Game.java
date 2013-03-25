@@ -12,7 +12,18 @@ import java.util.*;
 import java.util.concurrent.*;
 
 /**
- * 
+ * A game built using the Shapes framework.
+ * <p>
+ * <code>Game</code> is one of the two most important classes (along with
+ * {@link Shape}) for building a game using the Shapes framework. To make
+ * a game, you will subclass <code>Game</code> and override the
+ * {@link #setup()} and {@link #update()} functions. In <code>setup()</code>,
+ * you will write code that will execute when your game begins, and in
+ * <code>update()</code> you will write code that executes once per frame.
+ * <p>
+ * <code>Game</code> also has a few useful static methods and constants. For
+ * example, you can call <code>Game.getAllShapes()</code> to get all the shapes
+ * that currently exist in your game.
  */
 public abstract class Game {
   private static JFrame frame;
