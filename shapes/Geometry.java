@@ -428,8 +428,8 @@ abstract class Geometry {
     // TODO: put buffer between mover and obstacle, not along mover's path?
 //    if (!maxMove.equals(target)) {
       // give a little buffer, so mover doesn't get "stuck" on obstacle
-      Vector backwards = path.vector().reverse();
-      backwards.setMagnitude(TOLERANCE / 2.0);
+      Vector backwards =
+        new Vector(path.vector().getDirection().reverse(), TOLERANCE / 2.0);
       maxMove = maxMove.translation(backwards);
       if (!path.contains(maxMove)) {
         // but don't overcompensate

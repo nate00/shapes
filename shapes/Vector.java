@@ -38,7 +38,7 @@ class Vector {
     return new Vector(direction.reverse(), magnitude);
   }
 
-  public void setComponents(double x, double y) {
+  private void setComponents(double x, double y) {
     direction = Direction.inRadians(Math.atan2(y, x));
     magnitude = Math.sqrt(x * x + y * y);
   }
@@ -55,16 +55,8 @@ class Vector {
     return direction;
   }
 
-  public void setDirection(Direction direction) {
-    this.direction = direction;
-  }
-
   public double getMagnitude() {
     return magnitude;
-  }
-
-  public void setMagnitude(double magnitude) {
-    this.magnitude = magnitude;
   }
 
   public String toString() {
