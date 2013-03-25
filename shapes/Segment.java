@@ -32,7 +32,7 @@ class Segment {
   boolean contains(Point p) {
     double circuit = Geometry.distance(start, p) + Geometry.distance(p, end);
     double difference = Math.abs(circuit - length());
-    return difference < Geometry.TOLERANCE;
+    return difference < Geometry.EPSILON;
   }
 
   // NOTE: returns NaN if this is a horizontal segment

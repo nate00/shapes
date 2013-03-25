@@ -13,7 +13,7 @@ public class Canvas extends JPanel implements Runnable {
   public final int HEIGHT = 500;
   public final int WIDTH = 500;
 
-  public Canvas(Game game) {
+  Canvas(Game game) {
     super();
 
     this.game = game;

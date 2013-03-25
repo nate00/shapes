@@ -46,7 +46,6 @@ abstract class Geometry {
   }
 
   static boolean touching(Circle circle, ConvexPolygon poly) {
-    System.out.println("Derp");
     for (Point corner : poly.getCorners()) {
       if (distance(corner, circle.getCenter()) <
           circle.getRadius() + TOLERANCE) {

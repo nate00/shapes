@@ -21,7 +21,6 @@ Trivialities:
 Bugs:
 -Sticky collisions
 -Speech isn't visible when shape goes off the right or top of the screen
--Make Vector immutable or eliminate LEFT, etc.
 
 Wishlist:
 -more speech options: font
