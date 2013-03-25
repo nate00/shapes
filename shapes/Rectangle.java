@@ -4,6 +4,7 @@ public class Rectangle extends ConvexPolygon {
   private double width, height;
 
   public Rectangle(Point center, double width, double height) {
+    setDisplaysRotation(true);
     this.center = center;
     this.width = width;
     this.height = height;

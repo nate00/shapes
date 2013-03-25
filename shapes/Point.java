@@ -4,7 +4,7 @@ package shapes;
 import java.awt.*;
 
 // TODO: extends for debugging
-public class Point extends Shape {
+public class Point {
   private double x, y;
 
   public Point(double x, double y) {

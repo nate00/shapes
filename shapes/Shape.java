@@ -426,6 +426,18 @@ public abstract class Shape {
   }
 
   /**
+   * Rotate this shape's direction. Passing a negative value to 
+   * <code>degrees</code> causes a clockwise rotation.
+   *
+   * @param degrees the number of degrees by which to rotate.
+   */
+  public void rotate(double degrees) {
+    setDirection(getDirection().rotation(degrees));
+  }
+
+  // Getters & setters
+
+  /**
    * Set whether this shape is filled or outlined.
    * <p>
    * A filled shape has a colored interior, and a non-filled shape has a
