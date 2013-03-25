@@ -6,7 +6,6 @@ Important:
 -Triangle
 -Title
 -Fail fast
--Shape.rotate
 -Make constructors set up default values better.
 
 Finishing touches:
@@ -23,7 +22,6 @@ Bugs:
 -Sticky collisions
 -Speech isn't visible when shape goes off the right or top of the screen
 -Make Vector immutable or eliminate LEFT, etc.
--Collisions with self
 
 Wishlist:
 -more speech options: font

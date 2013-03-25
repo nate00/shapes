@@ -199,6 +199,7 @@ public abstract class Shape {
     Point maxMovement = end;
     Set<Shape> solids = Game.getSolids();
     for (Shape solid : solids) {
+      if (solid == this) continue;
       Point blockedEnd = this.maxMovement(end, solid);
       if (Geometry.distance(getCenter(), blockedEnd) < Geometry.distance(getCenter(), maxMovement)) {
         maxMovement = blockedEnd;
