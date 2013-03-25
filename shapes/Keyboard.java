@@ -5,8 +5,8 @@ import java.util.*;
 import java.util.concurrent.*;
 
 public class Keyboard extends KeyAdapter {
-  public static Set<KeyEvent> keysPressed;
-  public static KeyEvent mostRecentKeyPressed;
+  private static Set<KeyEvent> keysPressed;
+  private static KeyEvent mostRecentKeyPressed;
 
   public Keyboard() {
     if (keysPressed == null) {

@@ -60,6 +60,20 @@ public class Direction {
     return new Direction(Math.random() * 360.0);
   }
 
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof Direction) {
+      return equals((Direction) obj);
+    }
+
+    return false;
+  }
+
+  private boolean equals(Direction that) {
+    return Geometry.equals(this.getDegrees(), that.getDegrees());
+  }
+
+  @Override
   public String toString() {
     return degrees + " degrees";
   }

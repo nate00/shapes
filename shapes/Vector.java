@@ -59,6 +59,7 @@ class Vector {
     return magnitude;
   }
 
+  @Override
   public boolean equals(Object obj) {
     if (obj instanceof Vector) {
       return equals((Vector) obj);
@@ -72,6 +73,7 @@ class Vector {
       Geometry.equals(this.getMagnitude(), that.getMagnitude());
   }
 
+  @Override
   public String toString() {
     return String.format("direction: (%s) magnitude: %f", direction.toString(), magnitude);
   }

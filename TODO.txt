@@ -22,6 +22,7 @@ Trivialities:
 Bugs:
 -Sticky collisions (circle sliding past rectangle)
 -Speech isn't visible when shape goes off the right or top of the screen
+-Very fast mouse clicks (between frames) might not work
 
 Wishlist:
 -more speech options: font

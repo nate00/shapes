@@ -6,6 +6,7 @@ import java.awt.event.*;
 public class Mouse implements MouseMotionListener, MouseListener {
   private static Point click;
   
+  // will be null when mouse is not down
   public static Point clickLocation() {
     return click;
   }

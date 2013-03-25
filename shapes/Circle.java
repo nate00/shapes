@@ -29,7 +29,7 @@ public class Circle extends Shape {
     setSpeechColor(Color.BLACK);
   }
 
-  public void renderSpeech(Graphics2D g) {
+  private void renderSpeech(Graphics2D g) {
     if (!isSpeaking()) {
       return;
     }
@@ -69,7 +69,7 @@ public class Circle extends Shape {
     }
   }
 
-  public void render(Graphics2D g) {
+  void render(Graphics2D g) {
     renderSpeech(g);
     if (isInvisible()) {
       return;
@@ -88,7 +88,7 @@ public class Circle extends Shape {
     }
   }
 
-  public Point maxMovement(Point target, Shape obstacle) {
+  Point maxMovement(Point target, Shape obstacle) {
     return Geometry.maxMovement(this, target, obstacle);
   }
 

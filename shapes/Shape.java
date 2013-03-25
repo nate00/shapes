@@ -208,7 +208,6 @@ public abstract class Shape {
     setCenter(maxMovement);
   }
 
-  // TODO: test
   /**
    * Checks if this shape was clicked since the previous frame.
    *
@@ -224,6 +223,10 @@ public abstract class Shape {
    * @see     Mouse#clickLocation()
    */
   public boolean isClicked() {
+    if (Mouse.clickLocation() == null) {
+      return false;
+    }
+
     return this.contains(Mouse.clickLocation());
   }
 

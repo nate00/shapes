@@ -40,7 +40,7 @@ public abstract class ConvexPolygon extends Shape {
   }
 
 
-  public Point maxMovement(Point target, Shape obstacle) {
+  Point maxMovement(Point target, Shape obstacle) {
     return Geometry.maxMovement(this, target, obstacle);
   }
 
@@ -98,11 +98,11 @@ public abstract class ConvexPolygon extends Shape {
     return true;
   }
 
-  public void renderSpeech(Graphics2D g) {
+  private void renderSpeech(Graphics2D g) {
     // TODO
   }
 
-  public void render(Graphics2D g) {
+  void render(Graphics2D g) {
     renderSpeech(g);
     if (this.isInvisible()) {
       return;

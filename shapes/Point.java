@@ -12,23 +12,25 @@ public class Point {
     this.y = y;
   }
 
+  // TODO: delete this
   // doesn't move if direction is null
-  public void move(Direction direction, double pixels) {
-    if (direction == null) {
-      return;
-    }
-    Vector v = new Vector(direction, pixels);
-    move(v);
-  }
+//  public void move(Direction direction, double pixels) {
+//    if (direction == null) {
+//      return;
+//    }
+//    Vector v = new Vector(direction, pixels);
+//    move(v);
+//  }
 
-  public void move(Vector v) {
-    x = x + v.getXComponent();
-    y = y + v.getYComponent();
-  }
+//  public void move(Vector v) {
+//    x = x + v.getXComponent();
+//    y = y + v.getYComponent();
+//  }
 
   public Point translation(Vector v) {
     Point p = new Point(x, y);
-    p.move(v);
+    p.setX(p.getX() + v.getXComponent());
+    p.setY(p.getY() + v.getYComponent());
     return p;
   }
 
@@ -44,11 +46,11 @@ public class Point {
     return y;
   }
   
-  public double getCanvasX() {
+  double getCanvasX() {
     return x;
   }
 
-  public double getCanvasY() {
+  double getCanvasY() {
     return Game.HEIGHT - y;
   }
 
@@ -87,17 +89,17 @@ public class Point {
   }
 
   // TODO: for debugging
-  public Point maxMovement(Point p, Shape s) { return Point.random(); }
-  public boolean isOffscreen() { return false; }
-  public boolean contains(Point p) { return false; }
-  public boolean contains(Shape s) { return false; }
-  public void render(Graphics2D g) {
-    if (!visible) return;
-    g.setColor(Color.YELLOW);
-    g.fillOval((int)getCanvasX() - 2, (int)getCanvasY() - 2, 4, 4);
-  }
-  private boolean visible = false;
-  public void update() { }
-  public void setup() { }
-  public void setVisible() {visible = true;}
+//  public Point maxMovement(Point p, Shape s) { return Point.random(); }
+//  public boolean isOffscreen() { return false; }
+//  public boolean contains(Point p) { return false; }
+//  public boolean contains(Shape s) { return false; }
+//  public void render(Graphics2D g) {
+//    if (!visible) return;
+//    g.setColor(Color.YELLOW);
+//    g.fillOval((int)getCanvasX() - 2, (int)getCanvasY() - 2, 4, 4);
+//  }
+//  private boolean visible = false;
+//  public void update() { }
+//  public void setup() { }
+//  public void setVisible() {visible = true;}
 }

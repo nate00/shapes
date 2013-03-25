@@ -11,13 +11,12 @@ import javax.swing.*;
 import java.util.*;
 import java.util.concurrent.*;
 
+/**
+ * 
+ */
 public abstract class Game {
   private static JFrame frame;
   private static Canvas canvas;
-  // TODO: figure out what the fuck Game is.
-  // static methods?
-  // singleton?
-  // passed as a parameter?
   private static Set<Shape> solidShapes;
   private static Set<Shape> allShapes;
 
