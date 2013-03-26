@@ -1,5 +1,4 @@
 ConvexPolygon rotation collision detection
-Border collision detection - bottom border, convex polygons
 
 Important:
 -Rectangle
@@ -8,7 +7,6 @@ Important:
 -Title
 -Fail fast
 -Make constructors set up default values better.
--BorderBehavior.SOLID
 
 Finishing touches:
 -make direction, center, etc. consistently private or protected
@@ -31,6 +29,5 @@ Wishlist:
 -more speech options: font
 -Music
 -BorderBehavior.WRAP
--expanded solidity options
+-pushiness
 -gravity, bounce
--render layers

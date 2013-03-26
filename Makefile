@@ -3,7 +3,7 @@ all :
 	javac *.java -d bin;
 
 run: all
-	java -cp bin NateGame;
+	java -cp bin MyGame;
 
 maze: all
 	java -cp bin MazeGame;

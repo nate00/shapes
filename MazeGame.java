@@ -4,26 +4,43 @@ import java.awt.Color;
 
 public class MazeGame extends Game {
   Rectangle[] walls;
-  Circle hero;
+  Rectangle finish;
+  MazeHero hero;
 
   @Override
   public void setup() {
+    // make walls
     walls = new Rectangle[2];
-    walls[0] = new Rectangle(new Point(200, 150), 400, 100);
-    walls[1] = new Rectangle(new Point(300, 350), 400, 100);
-    for (Rectangle wall : walls) {
-      wall.setColor(Color.BLACK);
-      wall.setSolid(true);
+    for (int i = 0; i < walls.length; i++) {
+      walls[i] = new Rectangle();
+      walls[i].setWidth(700);
+      walls[i].setHeight(100);
+      walls[i].setColor(Color.BLACK);
+      walls[i].setSolid(true);
     }
+    walls[0].setUpperLeft(new Point(0, 200));
+    walls[1].setUpperLeft(new Point(100, 400));
 
-    hero = new Circle(new Point(20, 20), 20);
-    hero.setColor(Color.GREEN);
-    Keyboard.printKeyPresses(true);
+    // make finish line
+    finish = new Rectangle();
+    finish.setUpperLeft(new Point(700, 500));
+    finish.setWidth(10);
+    finish.setHeight(100);
+    finish.setColor(Color.GREEN);
+
+    // make hero
+    hero = new MazeHero();
+
+    // prevent hero from leaving window
+    setBorderSolid(true);
   }
 
   @Override
   public void update() {
-    hero.move(Keyboard.direction(), 10);
+    // celebrate if finished
+    if (hero.isTouching(finish)) {
+      hero.say("I win!!");
+    }
   }
 
   public static void main(String[] args) {

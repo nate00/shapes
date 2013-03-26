@@ -38,7 +38,7 @@ public abstract class Game {
   private static boolean borderSolid;
 
   public static final int HEIGHT = 500;
-  public static final int WIDTH = 500;
+  public static final int WIDTH = 800;
   
   public Game() {
     canvas = new Canvas(this);

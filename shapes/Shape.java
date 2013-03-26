@@ -462,7 +462,7 @@ public abstract class Shape {
    * default. A shape's layer only affects its appearance--shapes in
    * different layers still interact with one another.
    *
-   * @param layer layer along the z-axis this shape is contained in.
+   * @return layer along the z-axis this shape is contained in.
    */
   public int getLayer() {
     return Game.getLayerOf(this);
