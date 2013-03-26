@@ -31,6 +31,10 @@ public abstract class Game {
   private static Set<Shape> solidShapes;
   private static Set<Shape> allShapes;
 
+  private static Map<Integer, java.util.List<Shape>> layerContents;
+  private static java.util.List<Integer> layers;
+  private static Map<Shape, Integer> layerOf;
+
   private static boolean borderSolid;
 
   public static final int HEIGHT = 500;
@@ -42,6 +46,11 @@ public abstract class Game {
       Collections.newSetFromMap(new ConcurrentHashMap<Shape, Boolean>());
     allShapes = 
       Collections.newSetFromMap(new ConcurrentHashMap<Shape, Boolean>());
+
+    // TODO: sort out which data structures actually have to support concurrency
+    layerContents = new ConcurrentHashMap<Integer, java.util.List<Shape>>();
+    layers = new CopyOnWriteArrayList<Integer>();
+    layerOf = new ConcurrentHashMap<Shape, Integer>();
 
     frame = new JFrame();
     Mouse mouse = new Mouse();
@@ -102,10 +111,48 @@ public abstract class Game {
 
   static void removeShape(Shape shape) {
     allShapes.remove(shape);
+    removeFromLayers(shape);
   }
 
   public static Shape[] getAllShapes() {
     return allShapes.toArray(new Shape[0]);
+  }
+
+  static void removeFromLayers(Shape shape) {
+    if (!layerOf.containsKey(shape)) return;
+
+    int oldLayer = layerOf.get(shape);
+    layerContents.get(oldLayer).remove(shape);
+    if (layerContents.get(oldLayer).isEmpty()) {
+      layerContents.remove(oldLayer);
+      layers.remove((Integer) oldLayer);
+    }
+    layerOf.remove(shape);
+  }
+
+  static void setLayer(Shape shape, int layer) {
+    removeFromLayers(shape);
+
+    // add new stuff
+    if (!layerContents.containsKey(layer)) {
+      layerContents.put(layer, new CopyOnWriteArrayList<Shape>());
+      int insertionPoint = ~Collections.binarySearch(layers, layer);
+      layers.add(insertionPoint, layer);
+    }
+    layerContents.get(layer).add(shape);
+    layerOf.put(shape, layer);
+  }
+
+  static java.util.List<Shape> getLayerContents(int layer) {
+    return layerContents.get(layer);
+  }
+
+  static int getLayerOf(Shape shape) {
+    return layerOf.get(shape);
+  }
+
+  static java.util.List<Integer> getLayers() {
+    return layers;
   }
 
   public static Color getBackgroundColor() {

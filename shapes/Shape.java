@@ -87,6 +87,7 @@ public abstract class Shape {
    */
   public Shape() {
     Game.addShape(this);
+    Game.setLayer(this, 0);
     // set default values
     setColor(Color.GREEN);
     setFilled(true);
@@ -437,6 +438,34 @@ public abstract class Shape {
    */
   public void rotate(double degrees) {
     setDirection(getDirection().rotation(degrees));
+  }
+
+  /**
+   * Set this shape's z-axis layer.
+   * <p>
+   * When two shapes overlap, the one in the higher layer will be displayed
+   * on top of the one in the lower layer. All shapes start at layer 0 by
+   * default. A shape's layer only affects its appearance--shapes in
+   * different layers still interact with one another.
+   *
+   * @param layer layer along the z-axis this shape will be contained in.
+   */
+  public void setLayer(int layer) {
+    Game.setLayer(this, layer);
+  }
+
+  /**
+   * Get this shape's z-axis layer.
+   * <p>
+   * When two shapes overlap, the one in the higher layer will be displayed
+   * on top of the one in the lower layer. All shapes start at layer 0 by
+   * default. A shape's layer only affects its appearance--shapes in
+   * different layers still interact with one another.
+   *
+   * @param layer layer along the z-axis this shape is contained in.
+   */
+  public int getLayer() {
+    return Game.getLayerOf(this);
   }
 
   // Getters & setters
