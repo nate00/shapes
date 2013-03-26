@@ -34,6 +34,11 @@ public class Rectangle extends ConvexPolygon {
     };
   }
 
+  @Override
+  double maxRadius() {
+    return Geometry.hypoteneuse(width / 2, height / 2);
+  }
+
   public void setUpperLeft(Point upperLeft) {
     setCenter(upperLeft.getX() + width / 2, upperLeft.getY() - height / 2);
   }

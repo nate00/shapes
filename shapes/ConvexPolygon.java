@@ -35,6 +35,14 @@ public abstract class ConvexPolygon extends Shape {
     return corners;
   }
 
+  double maxRadius() {
+    double max = 0;
+    for (Point corner : getCorners()) {
+      max = Math.max(max, center.distanceTo(corner));
+    }
+    return max;
+  }
+
   Segment[] getSides() {
     Point[] corners = getCorners();
     Segment[] sides = new Segment[corners.length];
@@ -112,8 +120,30 @@ public abstract class ConvexPolygon extends Shape {
     return true;
   }
 
-  private void renderSpeech(Graphics2D g) {
-    // TODO
+  void renderSpeech(Graphics2D g) {
+    if (!isSpeaking()) {
+      return;
+    }
+    g.setColor(getSpeechColor());
+    // upper left of the talk bubble - upper right of the polygon
+    Point upperLeft = null;
+    for (Point corner : getCorners()) {
+      if (upperLeft == null) {
+        upperLeft = corner;
+        continue;
+      }
+      upperLeft.setX(Math.max(upperLeft.getX(), corner.getX()));
+      upperLeft.setY(Math.max(upperLeft.getY(), corner.getY()));
+    }
+    Vector heightOffset =
+      new Vector(0.0, -1.0 * g.getFontMetrics(g.getFont()).getDescent());
+
+    Point lowerLeft = upperLeft.translation(heightOffset);
+    g.drawString(
+      getSpeech(),
+      (int)lowerLeft.getCanvasX(),
+      (int)lowerLeft.getCanvasY()
+    );
   }
 
   void render(Graphics2D g) {

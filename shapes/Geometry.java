@@ -543,4 +543,8 @@ abstract class Geometry {
   static boolean equals(double s, double t) {
     return Math.abs(s - t) < EPSILON;
   }
+
+  static double hypoteneuse(double legA, double legB) {
+    return sqrt(sq(legA) + sq(legB));
+  }
 }

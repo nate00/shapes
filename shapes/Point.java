@@ -52,6 +52,10 @@ public class Point {
     return new Point(x, y);
   }
 
+  public double distanceTo(Point point) {
+    return Geometry.distance(this, point);
+  }
+
   @Override
   public boolean equals(Object obj) {
     if (obj instanceof Point) {
