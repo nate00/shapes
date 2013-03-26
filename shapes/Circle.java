@@ -97,6 +97,10 @@ public class Circle extends Shape {
     return Geometry.maxMovement(this, target, obstacle);
   }
 
+  Point maxMovement(Point target, Segment obstacle) {
+    return Geometry.maxMovement(this, target, obstacle);
+  }
+
   // Override this!
   public void update() {}
 

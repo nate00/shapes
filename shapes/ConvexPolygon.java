@@ -44,9 +44,18 @@ public abstract class ConvexPolygon extends Shape {
     return sides;
   }
 
+  Point maxMovement(Point target, Segment obstacle) {
+    Segment path = new Segment(getCenter(), target);
+    Point maxMove = Geometry.maxMovement(this, target, obstacle);
+    maxMove = Geometry.insertGap(this, path, maxMove);
+    return maxMove;
+  }
 
   Point maxMovement(Point target, Shape obstacle) {
-    return Geometry.maxMovement(this, target, obstacle);
+    Segment path = new Segment(getCenter(), target);
+    Point maxMove = Geometry.maxMovement(this, target, obstacle);
+    maxMove = Geometry.insertGap(this, path, maxMove);
+    return maxMove;
   }
 
   public boolean isOffscreen() {

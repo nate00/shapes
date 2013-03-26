@@ -1,4 +1,5 @@
-ConvexPolygon collision detection
+ConvexPolygon rotation collision detection
+Border collision detection - bottom border, convex polygons
 
 Important:
 -Rectangle
@@ -26,6 +27,7 @@ Bugs:
 -Very fast mouse clicks (between frames) might not work
 
 Wishlist:
+-maxMovement is a mess - reorganize
 -more speech options: font
 -Music
 -BorderBehavior.WRAP

@@ -156,6 +156,9 @@ public abstract class Shape {
    */
   abstract Point maxMovement(Point target, Shape obstacle);
 
+  // TODO
+  abstract Point maxMovement(Point target, Segment obstacle);
+
   /**
    * Moves in the shape's direction.
    * <p>
@@ -192,6 +195,14 @@ public abstract class Shape {
       Point blockedEnd = this.maxMovement(end, solid);
       if (Geometry.distance(getCenter(), blockedEnd) < Geometry.distance(getCenter(), maxMovement)) {
         maxMovement = blockedEnd;
+      }
+    }
+    if (Game.isBorderSolid()) {
+      for (Segment border: Game.getBorders()) {
+        Point blockedEnd = this.maxMovement(end, border);
+        if (Geometry.distance(getCenter(), blockedEnd) < Geometry.distance(getCenter(), maxMovement)) {
+          maxMovement = blockedEnd;
+        }
       }
     }
     setCenter(maxMovement);

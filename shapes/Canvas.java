@@ -69,7 +69,7 @@ class Canvas extends JPanel implements Runnable {
     return new Point[] {
       new Point(0, game.HEIGHT),
       new Point(game.WIDTH, game.HEIGHT),
-      new Point(WIDTH, 0),
+      new Point(game.WIDTH, 0),
       new Point(0, 0)
     };
   }
@@ -78,7 +78,7 @@ class Canvas extends JPanel implements Runnable {
     return new Segment[] {
       new Segment(new Point(0, game.HEIGHT), new Point(game.WIDTH, game.HEIGHT)),
       new Segment(new Point(game.WIDTH, game.HEIGHT), new Point(game.WIDTH, 0)),
-      new Segment(new Point(WIDTH, 0), new Point(0, 0)),
+      new Segment(new Point(game.WIDTH, 0), new Point(0, 0)),
       new Segment(new Point(0, 0), new Point(0, game.HEIGHT))
     };
   }

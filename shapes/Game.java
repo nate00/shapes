@@ -31,6 +31,8 @@ public abstract class Game {
   private static Set<Shape> solidShapes;
   private static Set<Shape> allShapes;
 
+  private static boolean borderSolid;
+
   public static final int HEIGHT = 500;
   public static final int WIDTH = 500;
   
@@ -49,6 +51,7 @@ public abstract class Game {
     frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
 
     setBackgroundColor(Color.BLUE);
+    borderSolid = false;
     setup();
 
     frame.add(canvas);
@@ -124,5 +127,26 @@ public abstract class Game {
 
   static Segment[] getBorders() {
     return canvas.getBorders();
+  }
+
+  /**
+   * Set the solidity of the window borders. The window borders are not solid
+   * by default.
+   *
+   * @param solid true to prevent shapes from leaving the window, false to
+   *              allow them to leave.
+   */
+  public static void setBorderSolid(boolean solid) {
+    Game.borderSolid = solid;
+  }
+
+  /**
+   * Returns true if the window borders are solid.
+   *
+   * @return  true if shapes are prevented from leaving the window, false if
+   *          they are allowed to leave.
+   */
+  public static boolean isBorderSolid() {
+    return borderSolid;
   }
 }
