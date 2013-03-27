@@ -93,12 +93,18 @@ public class Circle extends Shape {
     }
   }
 
-  Point maxMovement(Point target, Shape obstacle) {
-    return Geometry.maxMovement(this, target, obstacle);
+  Point maxMovement(Point target, Segment obstacle) {
+    Segment path = new Segment(getCenter(), target);
+    Point maxMove = Geometry.maxMovement(this, target, obstacle);
+    maxMove = Geometry.insertGap(this, path, maxMove);
+    return maxMove;
   }
 
-  Point maxMovement(Point target, Segment obstacle) {
-    return Geometry.maxMovement(this, target, obstacle);
+  Point maxMovement(Point target, Shape obstacle) {
+    Segment path = new Segment(getCenter(), target);
+    Point maxMove = Geometry.maxMovement(this, target, obstacle);
+    maxMove = Geometry.insertGap(this, path, maxMove);
+    return maxMove;
   }
 
   // Override this!

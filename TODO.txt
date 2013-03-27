@@ -20,7 +20,6 @@ Trivialities:
 -ensure partitioning of methods between Geometry and Shape subclasses is consistent
 
 Bugs:
--Sticky collisions (circle sliding past rectangle)
 -Speech isn't visible when shape goes off the right or top of the screen
 -Very fast mouse clicks (between frames) might not work
 
