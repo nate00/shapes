@@ -7,6 +7,7 @@ Important:
 -Title
 -Fail fast
 -Make constructors set up default values better.
+-Images
 
 Finishing touches:
 -make direction, center, etc. consistently private or protected

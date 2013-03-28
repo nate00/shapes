@@ -1,4 +1,3 @@
-
 import shapes.*;
 import java.awt.Color;
 
@@ -16,7 +15,6 @@ public class MazeGame extends Game {
       walls[i].setWidth(700);
       walls[i].setHeight(100);
       walls[i].setColor(Color.BLACK);
-      walls[i].setSolid(true);
     }
     walls[0].setUpperLeft(new Point(0, 200));
     walls[1].setUpperLeft(new Point(100, 400));
@@ -37,6 +35,12 @@ public class MazeGame extends Game {
 
   @Override
   public void update() {
+    for (Rectangle wall : walls) {
+      if (hero.isTouching(wall)) {
+        hero.takeDamage();
+      }
+    }
+    hero.move(Keyboard.direction(), 10);
     // celebrate if finished
     if (hero.isTouching(finish)) {
       hero.say("I win!!");

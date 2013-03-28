@@ -8,6 +8,12 @@ run: all
 maze: all
 	java -cp bin MazeGame;
 
+asteroids: all
+	java -cp bin AsteroidsGame;
+
+jake: all
+	java -cp bin JakeGame;
+
 test: all
 	java -cp bin shapes.Test;
 
