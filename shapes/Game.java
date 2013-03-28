@@ -88,6 +88,10 @@ public abstract class Game {
       Shape s = iter.next();
       s.update();
       if (s.isDestroyed()) {
+        if (s.isSolid()) {
+          removeSolid(s);
+        }
+        removeFromLayers(s);
         iter.remove();
       }
     }

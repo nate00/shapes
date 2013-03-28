@@ -15,7 +15,7 @@ public abstract class ConvexPolygon extends Shape {
   public ConvexPolygon() {
     super();
     setDisplaysRotation(true);
-    }
+  }
 
   public Point[] getCorners() {
     Point[] corners = getUnrotatedCorners();
@@ -81,6 +81,9 @@ public abstract class ConvexPolygon extends Shape {
   }
 
   public boolean contains(Shape shape) {
+    if (this.isDestroyed() || shape.isDestroyed()) {
+      return false;
+    }
     if (shape instanceof ConvexPolygon) {
       Point[] corners = ((ConvexPolygon) shape).getCorners();
       for (Point corner : corners) {

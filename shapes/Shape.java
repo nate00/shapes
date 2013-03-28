@@ -104,6 +104,7 @@ public abstract class Shape {
    *              otherwise.
    */
   boolean isTouching(Segment seg) {
+    if (isDestroyed())  return false;
     return Geometry.touching(this, seg);
   }
 
@@ -114,6 +115,9 @@ public abstract class Shape {
    * @return    true if this shape is touching <code>s</code>, false otherwise.
    */
   public boolean isTouching(Shape s) {
+    if (isDestroyed() || s.isDestroyed()) {
+      return false;
+    }
     return Geometry.touching(this, s);
   }
 
@@ -451,6 +455,7 @@ public abstract class Shape {
    * @param layer layer along the z-axis this shape will be contained in.
    */
   public void setLayer(int layer) {
+    if (isDestroyed()) return;
     Game.setLayer(this, layer);
   }
 
@@ -465,6 +470,7 @@ public abstract class Shape {
    * @return layer along the z-axis this shape is contained in.
    */
   public int getLayer() {
+    if (isDestroyed()) return -1;
     return Game.getLayerOf(this);
   }
 

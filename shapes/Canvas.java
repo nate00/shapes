@@ -27,7 +27,9 @@ class Canvas extends JPanel implements Runnable {
     Graphics2D g = (Graphics2D)g0;
     for (Integer layer : game.getLayers()) {
       for (Shape s : game.getLayerContents(layer)) {
-        s.render(g);
+        if (!s.isDestroyed()) {
+          s.render(g);
+        }
       }
     }
 

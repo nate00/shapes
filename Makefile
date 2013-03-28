@@ -11,6 +11,9 @@ maze: all
 asteroids: all
 	java -cp bin AsteroidsGame;
 
+nate: all
+	java -cp bin NateGame;
+
 jake: all
 	java -cp bin JakeGame;
 

@@ -57,6 +57,10 @@ public class Circle extends Shape {
   }
 
   public boolean contains(Shape s) {
+    // TODO: move disambiguation into Geometry, make Shape.contains(Shape) non-abstract, remove this code.
+    if (this.isDestroyed() || s.isDestroyed()) {
+      return false;
+    }
     if (s instanceof Circle) {
       Circle c = (Circle)s;
       double distance = Geometry.distance(c.getCenter(), this.getCenter());
