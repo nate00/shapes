@@ -229,21 +229,30 @@ public abstract class Shape {
         if (Geometry.distance(getCenter(), blockedEnd) < Geometry.distance(getCenter(), maxMovement)) {
           maxMovement = blockedEnd;
         }
-        if (Game.getBorderBehavior() == Game.BorderBehavior.BOUNCE) {
-          bounce();
-        }
       }
     }
     setCenter(maxMovement);
+    if (Game.getBorderBehavior() == Game.BorderBehavior.BOUNCE) {
+      bounce();
+    }
   }
 
-  // Contract: touchingBord
   private void bounce() {
     Game.Border[] borders = touchingBorders();
     if (borders.length == 0 || borders[0] == Game.Border.OFFSCREEN) {
       return;
     }
+    if (getDirection() == null) return;
 
+    // We assume that, with these old limits, this shape is not "stuck" to the
+    // border. Rotation may cause the shape to get "stuck," so we'll
+    // translate it back to these old limits after rotation.
+    double[] oldLimit = new double[borders.length];
+    for (int i = 0; i < borders.length; i++) {
+      oldLimit[i] = getLimit(borders[i].getDirection());
+    }
+
+    // set new direction
     for (Game.Border border : borders) {
       if (!getDirection().isWithinQuarterTurnOf(
           border.getDirection())
@@ -269,6 +278,17 @@ public abstract class Shape {
           break;
       }
       setDirection(newVector.getDirection());
+    }
+
+    // Translate shape back to old limits to make sure it doesn't get stuck.
+    for (int i = 0; i < borders.length; i++) {
+      double change = getLimit(borders[i].getDirection()) - oldLimit[i];
+      Direction correctionDirection = borders[i].getDirection();
+      if (borders[i] == Game.Border.RIGHT || borders[i] == Game.Border.TOP) {
+        // TODO: nicer way to do this?
+        correctionDirection = correctionDirection.reverse();
+      }
+      setCenter(getCenter().translation(correctionDirection, change));
     }
   }
 
@@ -753,5 +773,37 @@ public abstract class Shape {
    */
   public void setCenter(Point center) {
     this.center = center;
+  }
+
+  /**
+   * Returns the x-value of the rightmost point in this shape.
+   *
+   * @return  x-value of the rightmost point in this shape.
+   */
+  abstract public double getRight();
+  /**
+   * Returns the y-value of the highest point in this shape.
+   *
+   * @return  y-value of the highest point in this shape.
+   */
+  abstract public double getTop();
+  /**
+   * Returns the x-value of the leftmost point in this shape.
+   *
+   * @return  x-value of the leftmost point in this shape.
+   */
+  abstract public double getLeft();
+  /**
+   * Returns the y-value of the lowest point in this shape.
+   *
+   * @return  y-value of the lowest point in this shape.
+   */
+  abstract public double getBottom();
+  double getLimit(Direction d) {
+    if (d.equals(Direction.RIGHT)) return getRight();
+    if (d.equals(Direction.UP)) return getTop();
+    if (d.equals(Direction.LEFT)) return getLeft();
+    if (d.equals(Direction.DOWN)) return getBottom();
+    return 0;
   }
 }

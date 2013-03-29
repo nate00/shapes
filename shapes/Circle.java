@@ -142,6 +142,19 @@ public class Circle extends Shape {
     return true;
   }
 
+  public double getRight() {
+    return getCenter().getX() + getRadius();
+  }
+  public double getTop() {
+    return getCenter().getY() + getRadius();
+  }
+  public double getLeft() {
+    return getCenter().getX() - getRadius();
+  }
+  public double getBottom() {
+    return getCenter().getY() - getRadius();
+  }
+
   public double getRadius() {
     return radius;
   }

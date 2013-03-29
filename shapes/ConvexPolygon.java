@@ -175,6 +175,35 @@ public abstract class ConvexPolygon extends Shape {
     }
   }
 
+  public double getRight() {
+    double right = Double.NEGATIVE_INFINITY;
+    for (Point corner : getCorners()) {
+      right = Math.max(right, corner.getX());
+    }
+    return right;
+  }
+  public double getTop() {
+    double top = Double.NEGATIVE_INFINITY;
+    for (Point corner : getCorners()) {
+      top = Math.max(top, corner.getY());
+    }
+    return top;
+  }
+  public double getLeft() {
+    double left = Double.POSITIVE_INFINITY;
+    for (Point corner : getCorners()) {
+      left = Math.min(left, corner.getX());
+    }
+    return left;
+  }
+  public double getBottom() {
+    double bottom = Double.POSITIVE_INFINITY;
+    for (Point corner : getCorners()) {
+      bottom = Math.min(bottom, corner.getY());
+    }
+    return bottom;
+  }
+
   /**
    * Set whether this shape displays the direction it is facing. When set to
    * false, calls to {@link #setDirection} will not change the appearance of

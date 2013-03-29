@@ -9,7 +9,7 @@ class Canvas extends JPanel implements Runnable {
   private Thread animator;
   private Game game;
 
-  private final int DELAY = 100; // TODO: FPS should be a global constant
+  private final int DELAY = 20; // TODO: FPS should be a global constant
 
   Canvas(Game game) {
     super();
