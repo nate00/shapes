@@ -219,58 +219,96 @@ abstract class Geometry {
     return new Segment(through, intersection);
   }
 
+  static Point maxMovement(Shape mover, Point target, Shape obstacle) {
+    Segment path = new Segment(mover.getCenter(), target);
+    Point maxMove = null;
+
+    if (mover instanceof Circle) {
+      if (obstacle instanceof Circle) {
+        maxMove = maxMovement((Circle) mover, target, (Circle) obstacle);
+      } else if (obstacle instanceof ConvexPolygon) {
+        maxMove = maxMovement((Circle) mover, target, (ConvexPolygon) obstacle);
+      }
+    } else if (mover instanceof ConvexPolygon) {
+      if (obstacle instanceof Circle) {
+        maxMove = maxMovement((ConvexPolygon) mover, target, (Circle) obstacle);
+      } else if (obstacle instanceof ConvexPolygon) {
+        maxMove =
+          maxMovement((ConvexPolygon) mover, target, (ConvexPolygon) obstacle);
+      }
+    } 
+    if (maxMove == null) {
+      return target;
+    }
+
+    maxMove = insertGap(mover, path, maxMove);
+    return maxMove;
+  }
+
   // if mover wants to go to target, but obstacle is in the way,
   // how far can it go?
-  static Point maxMovement(Circle mover, Point target, Shape obstacle) {
+  static Point maxMovement(Circle mover, Point target, Circle obstacle) {
     Segment path = new Segment(mover.getCenter(), target);
     Point maxMove = target;
 
-    if (obstacle instanceof Circle) {
-      Circle obs = (Circle) obstacle;
-      Segment obstacleToPath = perpendicularThrough(path, obs.getCenter());
-      double distanceToPath = obstacleToPath.length();
-      double distanceBetweenCenters = mover.getRadius() + obs.getRadius();
+    Segment obstacleToPath = perpendicularThrough(path, obstacle.getCenter());
+    double distanceToPath = obstacleToPath.length();
+    double distanceBetweenCenters = mover.getRadius() + obstacle.getRadius();
 
-      if (distanceToPath > distanceBetweenCenters) {
-        return target;   // no collision
+    if (distanceToPath > distanceBetweenCenters) {
+      System.out.println("No collision!");
+      return target;   // no collision
+    }
+
+    // TODO: rename variables
+    // closest is the point on path closest to obstacle center
+    // stopPoint is where the center of mover will be after moving
+    Point closest = obstacleToPath.getEnd();
+    double distanceToStopPoint =
+      sqrt(sq(distanceBetweenCenters) - sq(distanceToPath));
+    maxMove =
+      closest.translation(path.direction().reverse(), distanceToStopPoint);
+
+    if (!path.contains(maxMove)) {
+      return target;
+    }
+
+    return maxMove;
+  }
+
+  static Point maxMovement(
+      Circle mover,
+      Point target,
+      ConvexPolygon obstacle
+  ) {
+    Segment path = new Segment(mover.getCenter(), target);
+    Point maxMove = target;
+
+    for (Point corner : obstacle.getCorners()) {
+      Segment perp = perpendicularThrough(path, corner);
+      double perpDistance = perp.length();
+      if (perpDistance > mover.getRadius()) {
+        continue;
       }
 
-      // TODO: rename variables
-      // closest is the point on path closest to obstacle
-      // stopPoint is where the center of mover will be after moving
-      Point closest = obstacleToPath.getEnd();
-      double distanceToStopPoint =
-        sqrt(sq(distanceBetweenCenters) - sq(distanceToPath));
-      maxMove =
-        closest.translation(path.direction().reverse(), distanceToStopPoint);
-    } else if (obstacle instanceof ConvexPolygon) {
-      ConvexPolygon obs = (ConvexPolygon) obstacle;
-      for (Point corner : obs.getCorners()) {
-        Segment perp = perpendicularThrough(path, corner);
-        double perpDistance = perp.length();
-        if (perpDistance > mover.getRadius()) {
-          continue;
-        }
-
-        Point closest = perp.getEnd();
-        double centerDestinationToClosest =
-          sqrt(sq(mover.getRadius()) - sq(perpDistance));
-        Point centerDestination = closest.translation(
-          path.direction().reverse(),
-          centerDestinationToClosest
-        );
-        
-        if (isShorterMovement(centerDestination, maxMove, path)) {
-          maxMove = centerDestination;
-        }
+      Point closest = perp.getEnd();
+      double centerDestinationToClosest =
+        sqrt(sq(mover.getRadius()) - sq(perpDistance));
+      Point centerDestination = closest.translation(
+        path.direction().reverse(),
+        centerDestinationToClosest
+      );
+      
+      if (isShorterMovement(centerDestination, maxMove, path)) {
+        maxMove = centerDestination;
       }
+    }
 
-      for (Segment side : obs.getSides()) {
-        Point centerDestination = maxMovement(mover, target, side);
-        
-        if (isShorterMovement(centerDestination, maxMove, path)) {
-          maxMove = centerDestination;
-        }
+    for (Segment side : obstacle.getSides()) {
+      Point centerDestination = maxMovement(mover, target, side);
+      
+      if (isShorterMovement(centerDestination, maxMove, path)) {
+        maxMove = centerDestination;
       }
     }
 
@@ -351,8 +389,6 @@ abstract class Geometry {
       }
     }
 
-    maxMove = insertGap(mover, path, maxMove);
-
     return maxMove;
   }
 
@@ -420,19 +456,7 @@ abstract class Geometry {
       }
     }
 
-    maxMove = insertGap(mover, path, maxMove);
-
     return maxMove;
-  }
-
-  static Point maxMovement(ConvexPolygon mover, Point target, Shape obstacle) {
-    if (obstacle instanceof Circle) {
-      return maxMovement(mover, target, (Circle) obstacle);
-    } else if (obstacle instanceof ConvexPolygon) {
-      return maxMovement(mover, target, (ConvexPolygon) obstacle);
-    } else {
-      return target;
-    }
   }
 
   static Point maxMovement(
