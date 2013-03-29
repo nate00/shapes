@@ -30,6 +30,11 @@ public abstract class Shape {
   private double speed;
   protected Point center;
 
+  public enum Border {
+    NONE, TOP, BOTTOM,
+      LEFT, RIGHT, OFFSCREEN 
+  };
+
   /**
    * Initializes the Shape. When you subclass shape, you'll
    * override this method to do things like set the shape's color, set its
@@ -97,6 +102,21 @@ public abstract class Shape {
   }
 
   /**
+   * Checks which border of the window the shape is touching.
+   *
+   * @return  a Border enum indicating which border if any the shape is touching.
+   */
+  public Border isTouchingWhichBorder() {
+    if (isOffscreen()) return Shape.Border.OFFSCREEN;
+    Segment border[] = Game.getBorders(); 
+    if (isTouching(border[0])) return Shape.Border.TOP;
+    if (isTouching(border[1])) return Shape.Border.RIGHT;
+    if (isTouching(border[2])) return Shape.Border.BOTTOM;
+    if (isTouching(border[3])) return Shape.Border.LEFT;
+    return Shape.Border.NONE;
+  }
+
+  /**
    * Checks if this shape is touching a given segment.
    *
    * @param   seg the segment to check.
@@ -104,7 +124,7 @@ public abstract class Shape {
    *              otherwise.
    */
   boolean isTouching(Segment seg) {
-    if (isDestroyed())  return false;
+    if (isDestroyed()) return false;
     return Geometry.touching(this, seg);
   }
 

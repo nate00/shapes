@@ -68,6 +68,29 @@ public class Direction {
     return new Direction(Math.random() * 360.0);
   }
 
+  public boolean isRightward() {
+    return isWithinQuarterTurnOf(RIGHT);
+  }
+
+  public boolean isUpward() {
+    return isWithinQuarterTurnOf(UP);
+  }
+
+  public boolean isLeftward() {
+    return isWithinQuarterTurnOf(LEFT);
+  }
+
+  public boolean isDownward() {
+    return isWithinQuarterTurnOf(DOWN);
+  }
+
+  private boolean isWithinQuarterTurnOf(Direction dir) {
+    return
+      Math.abs(dir.getDegrees() - degrees) < 90.0 ||
+      Math.abs(dir.getDegrees() - degrees - 360.0) < 90.0 ||
+      Math.abs(dir.getDegrees() - degrees + 360.0) < 90.0;
+  }
+
   @Override
   public boolean equals(Object obj) {
     if (obj instanceof Direction) {

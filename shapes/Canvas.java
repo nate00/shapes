@@ -29,6 +29,8 @@ class Canvas extends JPanel implements Runnable {
       for (Shape s : game.getLayerContents(layer)) {
         if (!s.isDestroyed()) {
           s.render(g);
+        } else {
+          game.getLayerContents(layer).remove(s);
         }
       }
     }
