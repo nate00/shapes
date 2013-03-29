@@ -15,6 +15,10 @@ class Segment {
     );
   }
 
+  Segment(double x1, double y1, double x2, double y2) {
+    this(new Point(x1, y1), new Point(x2, y2));
+  }
+
   void setEndpoints(Point start, Point end) {
     this.start = start;
     this.end = end;

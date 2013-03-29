@@ -30,11 +30,6 @@ public abstract class Shape {
   private double speed;
   protected Point center;
 
-  public enum Border {
-    NONE, TOP, BOTTOM,
-      LEFT, RIGHT, OFFSCREEN 
-  };
-
   /**
    * Initializes the Shape. When you subclass shape, you'll
    * override this method to do things like set the shape's color, set its
@@ -102,18 +97,22 @@ public abstract class Shape {
   }
 
   /**
+   * TODO
    * Checks which border of the window the shape is touching.
    *
    * @return  a Border enum indicating which border if any the shape is touching.
    */
-  public Border isTouchingWhichBorder() {
-    if (isOffscreen()) return Shape.Border.OFFSCREEN;
-    Segment border[] = Game.getBorders(); 
-    if (isTouching(border[0])) return Shape.Border.TOP;
-    if (isTouching(border[1])) return Shape.Border.RIGHT;
-    if (isTouching(border[2])) return Shape.Border.BOTTOM;
-    if (isTouching(border[3])) return Shape.Border.LEFT;
-    return Shape.Border.NONE;
+  public Game.Border[] touchingBorders() {
+    if (isOffscreen()) {
+      return new Game.Border[] { Game.Border.OFFSCREEN };
+    }
+    Set<Game.Border> touchingBorders = new HashSet<Game.Border>();
+    for (Game.Border border : Game.Border.all()) {
+      if (isTouching(border.getSegment())) {
+        touchingBorders.add(border);
+      }
+    }
+    return touchingBorders.toArray(new Game.Border[0]);
   }
 
   /**
@@ -222,15 +221,55 @@ public abstract class Shape {
         maxMovement = blockedEnd;
       }
     }
-    if (Game.isBorderSolid()) {
+    if (Game.getBorderBehavior() == Game.BorderBehavior.SOLID ||
+        Game.getBorderBehavior() == Game.BorderBehavior.BOUNCE
+    ) {
       for (Segment border: Game.getBorders()) {
         Point blockedEnd = this.maxMovement(end, border);
         if (Geometry.distance(getCenter(), blockedEnd) < Geometry.distance(getCenter(), maxMovement)) {
           maxMovement = blockedEnd;
         }
+        if (Game.getBorderBehavior() == Game.BorderBehavior.BOUNCE) {
+          bounce();
+        }
       }
     }
     setCenter(maxMovement);
+  }
+
+  // Contract: touchingBord
+  private void bounce() {
+    Game.Border[] borders = touchingBorders();
+    if (borders.length == 0 || borders[0] == Game.Border.OFFSCREEN) {
+      return;
+    }
+
+    for (Game.Border border : borders) {
+      if (!getDirection().isWithinQuarterTurnOf(
+          border.getDirection())
+      ) {
+        continue;
+      }
+      Vector old = new Vector(getDirection(), 1);
+      Vector newVector = null;
+      switch (border) {
+        case LEFT:
+        case RIGHT:
+          newVector = new Vector(
+            -1 * old.getXComponent(),
+            old.getYComponent()
+          );
+          break;
+        case TOP:
+        case BOTTOM:
+          newVector = new Vector(
+            old.getXComponent(),
+            -1 * old.getYComponent()
+          );
+          break;
+      }
+      setDirection(newVector.getDirection());
+    }
   }
 
   /**

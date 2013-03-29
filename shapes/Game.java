@@ -35,7 +35,8 @@ public abstract class Game {
   private static java.util.List<Integer> layers;
   private static Map<Shape, Integer> layerOf;
 
-  private static boolean borderSolid;
+  public enum BorderBehavior { NONE, SOLID, BOUNCE };
+  private static BorderBehavior borderBehavior;
 
   public static final int HEIGHT = 500;
   public static final int WIDTH = 800;
@@ -60,7 +61,7 @@ public abstract class Game {
     frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
 
     setBackgroundColor(Color.BLUE);
-    borderSolid = false;
+    setBorderBehavior(BorderBehavior.NONE);
     setup();
 
     frame.add(canvas);
@@ -181,23 +182,71 @@ public abstract class Game {
   }
 
   /**
-   * Set the solidity of the window borders. The window borders are not solid
-   * by default.
+   * Set the behavior of the window borders. The options are:
+   * <ul>
+   *  <li><code>NONE</code>: allow shapes to leave the window.</li>
+   *  <li><code>SOLID</code>: prevent shapes from leaving the window. (See
+   *  {@link Shape#setSolid}.)</li>
+   *  <li><code>BOUNCE</code>: make shapes bounce when they hit the window
+   *  borders, i.e., reverse direction as if bouncing off a physical
+   *  border.</li>
+   * </ul>
+   * <p>
+   * Syntax example:
+   * <code>
+   *  Game.setBorderBehavior(Game.BorderBehavior.SOLID);
+   * </code>
    *
-   * @param solid true to prevent shapes from leaving the window, false to
-   *              allow them to leave.
+   * @param behavior  specifies how shapes will act when they reach the border
+   *                  of the window.
    */
-  public static void setBorderSolid(boolean solid) {
-    Game.borderSolid = solid;
+  public static void setBorderBehavior(BorderBehavior behavior) {
+    Game.borderBehavior = behavior;
   }
 
   /**
-   * Returns true if the window borders are solid.
+   * Returns the behavior of the border windows. The options are:
+   * <ul>
+   *  <li><code>NONE</code>: allow shapes to leave the window.</li>
+   *  <li><code>SOLID</code>: prevent shapes from leaving the window. (See
+   *  {@link Shape#setSolid}.)</li>
+   *  <li><code>BOUNCE</code>: make shapes bounce when they hit the window
+   *  borders, i.e., reverse direction as if bouncing off a physical
+   *  border.</li>
+   * </ul>
    *
-   * @return  true if shapes are prevented from leaving the window, false if
-   *          they are allowed to leave.
+   * @return  a <code>BorderBehavior</code> specifying the way shapes react
+   *          when they reach the border of the window.
    */
-  public static boolean isBorderSolid() {
-    return borderSolid;
+  public static BorderBehavior getBorderBehavior() {
+    return borderBehavior;
   }
+
+  public enum Border { 
+    TOP(Direction.UP, new Segment(0, HEIGHT, WIDTH, HEIGHT)),
+    RIGHT(Direction.RIGHT, new Segment(WIDTH, HEIGHT, WIDTH, 0)),
+    BOTTOM(Direction.DOWN, new Segment(WIDTH, 0, 0, 0)),
+    LEFT(Direction.LEFT, new Segment(0, 0, 0, HEIGHT)),
+    OFFSCREEN(null, null);
+
+    private Direction direction;
+    private Segment segment;
+  
+    private Border(Direction d, Segment seg) {
+      direction = d;
+      segment = seg;
+    }
+
+    public Direction getDirection() {
+      return direction;
+    }
+
+    Segment getSegment() {
+      return segment;
+    }
+
+    public static Border[] all() {
+      return new Border[] { TOP, RIGHT, BOTTOM, LEFT };
+    }
+  };
 }

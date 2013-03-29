@@ -84,7 +84,7 @@ public class Direction {
     return isWithinQuarterTurnOf(DOWN);
   }
 
-  private boolean isWithinQuarterTurnOf(Direction dir) {
+  boolean isWithinQuarterTurnOf(Direction dir) {
     return
       Math.abs(dir.getDegrees() - degrees) < 90.0 ||
       Math.abs(dir.getDegrees() - degrees - 360.0) < 90.0 ||

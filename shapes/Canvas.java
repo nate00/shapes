@@ -9,7 +9,7 @@ class Canvas extends JPanel implements Runnable {
   private Thread animator;
   private Game game;
 
-  private final int DELAY = 20; // TODO: FPS should be a global constant
+  private final int DELAY = 100; // TODO: FPS should be a global constant
 
   Canvas(Game game) {
     super();
@@ -82,10 +82,10 @@ class Canvas extends JPanel implements Runnable {
 
   Segment[] getBorders() {
     return new Segment[] {
-      new Segment(new Point(0, game.HEIGHT), new Point(game.WIDTH, game.HEIGHT)),
-      new Segment(new Point(game.WIDTH, game.HEIGHT), new Point(game.WIDTH, 0)),
-      new Segment(new Point(game.WIDTH, 0), new Point(0, 0)),
-      new Segment(new Point(0, 0), new Point(0, game.HEIGHT))
+      Game.Border.TOP.getSegment(),
+      Game.Border.RIGHT.getSegment(),
+      Game.Border.BOTTOM.getSegment(),
+      Game.Border.LEFT.getSegment()
     };
   }
 }
