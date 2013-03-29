@@ -51,9 +51,7 @@ abstract class Geometry {
     }
 
     for (Segment side : poly.getSides()) {
-      Segment perp = perpendicularThrough(side, circle.getCenter());
-      if (perp.length() < circle.getRadius() + TOLERANCE &&
-          side.contains(perp.getEnd())) {
+      if (touching(circle, side)) {
         return true;
       }
     }
@@ -68,8 +66,7 @@ abstract class Geometry {
   static boolean touching(ConvexPolygon s, ConvexPolygon t) {
     for (Point corner : s.getCorners()) {
       for (Segment side : t.getSides()) {
-        Segment perp = perpendicularThrough(side, corner);
-        if (perp.length() < TOLERANCE && side.contains(perp.getEnd())) {
+        if (touching(side, corner)) {
           return true;
         }
       }
@@ -77,8 +74,7 @@ abstract class Geometry {
 
     for (Segment side : s.getSides()) {
       for (Point corner : t.getCorners()) {
-        Segment perp = perpendicularThrough(side, corner);
-        if (perp.length() < TOLERANCE && side.contains(perp.getEnd())) {
+        if (touching(side, corner)) {
           return true;
         }
       }
@@ -86,7 +82,7 @@ abstract class Geometry {
 
     for (Point cornerA : s.getCorners()) {
       for (Point cornerB : t.getCorners()) {
-        if (distance(cornerA, cornerB) < TOLERANCE) {
+        if (touching(cornerA, cornerB)) {
           return true;
         }
       }
@@ -112,18 +108,61 @@ abstract class Geometry {
     return centerDistance < s.getRadius() + t.getRadius() + TOLERANCE;
   }
 
+  static boolean touching(Circle circle, Segment seg) {
+    Segment perp = perpendicularThrough(seg, circle.getCenter());
+    if (perp.length() < circle.getRadius() + TOLERANCE &&
+        seg.contains(perp.getEnd())
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  static boolean touching(ConvexPolygon poly, Segment seg) {
+    for (Segment side : poly.getSides()) {
+      if (segmentIntersection(side, seg) != null) {
+        return true;
+      }
+    }
+
+    for (Point corner : poly.getCorners()) {
+      if (touching(seg, corner)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   // Returns false if the code for the given shape pair hasn't been written yet.
   // TODO: test
-  // TODO: move into each Shape?
   static boolean touching(Shape shape, Segment seg) {
     if (shape instanceof Circle) {
-      Circle circle = (Circle) shape;
-      Segment perp = perpendicularThrough(seg, circle.getCenter());
-      return perp.length() < circle.getRadius();
-    } else {
-      return false;
+      return touching((Circle) shape, seg);
+    } else if (shape instanceof ConvexPolygon) {
+      return touching((ConvexPolygon) shape, seg);
     }
+
+    return false;
   }
+
+  static boolean touching(Segment seg, Point point) {
+    Segment perp = perpendicularThrough(seg, point);
+    if (perp.length() < TOLERANCE && seg.contains(perp.getEnd())) {
+      return true;
+    }
+
+    return false;
+  }
+
+  static boolean touching(Point s, Point t) {
+    return distance(s, t) < TOLERANCE;
+  }
+
+  // static boolean touching(Segment, Segment);
+  // does not exist because the other touching methods test the interior
+  // of segments (using segmentIntersection) and their endpoints (using 
+  // touching(Segment, Point)) individually
 
   // TODO: test
   static Segment intersection(Circle circle, Segment seg) {
@@ -490,7 +529,7 @@ abstract class Geometry {
   static Point insertGap(Shape mover, Segment path, Point maxMove) {
     // TODO: put buffer between mover and obstacle, not along mover's path?
     Vector backwards =
-      new Vector(path.vector().getDirection().reverse(), TOLERANCE / 2.0);
+      new Vector(path.vector().getDirection().reverse(), TOLERANCE / 4.0);
     Point ret = maxMove.translation(backwards);
     if (!path.contains(ret)) {
       // but don't overcompensate
