@@ -10,6 +10,7 @@ import java.*;
 import javax.swing.*;
 import java.util.*;
 import java.util.concurrent.*;
+import java.lang.*;
 
 /**
  * A game built using the Shapes framework.
@@ -34,6 +35,9 @@ public abstract class Game {
   private static Map<Integer, java.util.List<Shape>> layerContents;
   private static java.util.List<Integer> layers;
   private static Map<Shape, Integer> layerOf;
+
+  private static String title;
+  private static int titleDuration;
 
   public enum BorderBehavior { NONE, SOLID, BOUNCE };
   private static BorderBehavior borderBehavior;
@@ -182,6 +186,37 @@ public abstract class Game {
 
   static Segment[] getBorders() {
     return canvas.getBorders();
+  }
+
+  boolean hasTitle() {
+    return titleDuration > 0;
+  }
+
+  public static void setTitle(String title, int duration) {
+    if (duration < 0) {
+      throw new IllegalArgumentException("Duration cannot be negative.");
+    }
+    if (title == null) {
+      throw new IllegalArgumentException("Title cannot be null.");
+    }
+    Game.title = title;
+    Game.titleDuration = duration;
+  }
+
+  void renderTitle(Graphics2D g) {
+    titleDuration--;
+    g.setFont(new Font("Times New Roman", Font.PLAIN, 60));
+    g.setColor(Color.BLACK);
+    Rectangle2D containingBox =
+      g.getFontMetrics(g.getFont()).getStringBounds(title, g);
+    double height = containingBox.getHeight();
+    double width = containingBox.getWidth();
+    Point bottomLeft = new Point(
+      (WIDTH - width) / 2.0,
+      HEIGHT / 2.0
+    );
+    System.out.println(bottomLeft.toString());
+    g.drawString(title, bottomLeft.getCanvasX(), bottomLeft.getCanvasY());
   }
 
   /**

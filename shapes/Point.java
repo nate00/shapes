@@ -30,12 +30,12 @@ public class Point {
     return y;
   }
   
-  double getCanvasX() {
-    return x;
+  int getCanvasX() {
+    return (int)x;
   }
 
-  double getCanvasY() {
-    return Game.HEIGHT - y;
+  int getCanvasY() {
+    return (int)(Game.HEIGHT - y);
   }
 
   public void setX(double x) {

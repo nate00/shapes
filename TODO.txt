@@ -2,7 +2,7 @@ ConvexPolygon rotation collision detection
 
 Important:
 -Count
--Title
+-Subtitle
 -Fail fast
 -Make constructors set up default values better.
 -Images
