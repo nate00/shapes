@@ -16,7 +16,6 @@ public class Triangle extends ConvexPolygon {
     this.center = center;
     this.size = size;
     setColor(Color.YELLOW);
-    setup();
   }
 
   public Triangle() {

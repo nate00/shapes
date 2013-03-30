@@ -3,6 +3,8 @@ import java.awt.Color;
 
 public class MyGame extends Game {
 
+  // Put variables here!
+
   @Override
   public void setup() {
     // Put code here!
@@ -21,5 +23,11 @@ public class MyGame extends Game {
 
   public static void main(String[] args) {
     new MyGame();
+  }
+
+  public MyGame() {
+    super();
+    setup();
+    ready();
   }
 }

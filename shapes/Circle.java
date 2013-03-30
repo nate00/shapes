@@ -17,13 +17,11 @@ public class Circle extends Shape {
     setDefaults();
     setCenter(center);
     setRadius(radius);
-    setup();
   }
 
   public Circle() {
     super();
     setDefaults();
-    setup();
   }
 
   private void setDefaults() {

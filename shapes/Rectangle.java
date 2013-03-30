@@ -15,7 +15,6 @@ public class Rectangle extends ConvexPolygon {
     this.center = center;
     this.width = width;
     this.height = height;
-    setup();
   }
 
   public Rectangle() {

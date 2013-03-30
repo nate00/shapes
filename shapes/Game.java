@@ -62,8 +62,11 @@ public abstract class Game {
 
     setBackgroundColor(Color.BLUE);
     setBorderBehavior(BorderBehavior.NONE);
-    setup();
+//    setup();
 
+  }
+  
+  protected void ready() {
     frame.add(canvas);
     frame.pack();
     frame.setLocationRelativeTo(null);

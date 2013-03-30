@@ -1,9 +1,7 @@
 ConvexPolygon rotation collision detection
 
 Important:
--Rectangle
 -Count
--Triangle
 -Title
 -Fail fast
 -Make constructors set up default values better.
@@ -30,4 +28,4 @@ Wishlist:
 -Music
 -BorderBehavior.WRAP
 -pushiness
--gravity, bounce
+-gravity
