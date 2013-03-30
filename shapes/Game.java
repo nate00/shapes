@@ -37,6 +37,7 @@ public abstract class Game {
   private static Map<Shape, Integer> layerOf;
 
   private static String title;
+  private static TextStyle titleStyle;
   private static int titleDuration;
 
   public enum BorderBehavior { NONE, SOLID, BOUNCE };
@@ -64,10 +65,16 @@ public abstract class Game {
     frame.addKeyListener(new Keyboard());
     frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
 
+    setDefaults();
+  }
+
+  private void setDefaults() {
     setBackgroundColor(Color.BLUE);
     setBorderBehavior(BorderBehavior.NONE);
-//    setup();
 
+    TextStyle titleStyle = TextStyle.sansSerif();
+    titleStyle.setFontSize(40);
+    setTitleStyle(titleStyle);
   }
   
   protected void ready() {
@@ -192,6 +199,14 @@ public abstract class Game {
     return titleDuration > 0;
   }
 
+  public static void setTitleStyle(TextStyle titleStyle) {
+    Game.titleStyle = titleStyle;
+  }
+
+  public static TextStyle getTitleStyle() {
+    return titleStyle;
+  }
+
   public static void setTitle(String title, int duration) {
     if (duration < 0) {
       throw new IllegalArgumentException("Duration cannot be negative.");
@@ -205,18 +220,22 @@ public abstract class Game {
 
   void renderTitle(Graphics2D g) {
     titleDuration--;
-    g.setFont(new Font("Times New Roman", Font.PLAIN, 60));
-    g.setColor(Color.BLACK);
-    Rectangle2D containingBox =
-      g.getFontMetrics(g.getFont()).getStringBounds(title, g);
-    double height = containingBox.getHeight();
-    double width = containingBox.getWidth();
-    Point bottomLeft = new Point(
-      (WIDTH - width) / 2.0,
-      HEIGHT / 2.0
+    titleStyle.renderString(
+      title,
+      g,
+      new Point(WIDTH / 2.0, HEIGHT / 2.0),
+      TextStyle.ReferencePointLocation.CENTER
     );
-    System.out.println(bottomLeft.toString());
-    g.drawString(title, bottomLeft.getCanvasX(), bottomLeft.getCanvasY());
+//    titleStyle.applyTo(g);
+//    Rectangle2D containingBox =
+//      g.getFontMetrics(g.getFont()).getStringBounds(title, g);
+//    double height = containingBox.getHeight();
+//    double width = containingBox.getWidth();
+//    Point bottomLeft = new Point(
+//      (WIDTH - width) / 2.0,
+//      HEIGHT / 2.0
+//    );
+//    g.drawString(title, bottomLeft.getCanvasX(), bottomLeft.getCanvasY());
   }
 
   /**

@@ -29,25 +29,7 @@ public class Circle extends Shape {
     setRadius(10);
     setColor(Color.PINK);
     setFilled(true);
-    setSpeechColor(Color.BLACK);
-  }
-
-  private void renderSpeech(Graphics2D g) {
-    if (!isSpeaking()) {
-      return;
-    }
-    g.setColor(getSpeechColor());
-    Point upperLeft =
-      getCenter().translation(new Vector(getRadius(), getRadius()));
-    Vector heightOffset =
-      new Vector(0.0, -1.0 * g.getFontMetrics(g.getFont()).getDescent());
-
-    Point lowerLeft = upperLeft.translation(heightOffset);
-    g.drawString(
-      getSpeech(),
-      (int)lowerLeft.getCanvasX(),
-      (int)lowerLeft.getCanvasY()
-    );
+    setSpeechStyle(TextStyle.sansSerif());
   }
 
   public boolean contains(Point p) {

@@ -21,6 +21,8 @@ Trivialities:
 Bugs:
 -Speech isn't visible when shape goes off the right or top of the screen
 -Very fast mouse clicks (between frames) might not work
+-Pressing Space + Up + Left doesn't work?
+-KeyBindings for Mac?
 
 Wishlist:
 -maxMovement is a mess - reorganize

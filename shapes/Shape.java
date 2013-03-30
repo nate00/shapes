@@ -24,7 +24,7 @@ public abstract class Shape {
   private boolean solid;
   private String speech;
   private int speechDuration;
-  private Color speechColor;
+  private TextStyle speechStyle;
   private boolean destroyed;
   protected Direction direction;
   private double speed;
@@ -47,6 +47,19 @@ public abstract class Shape {
    * Draws the shape to the canvas.
    */
   abstract void render(Graphics2D g);
+
+  void renderSpeech(Graphics2D g) {
+    if (!isSpeaking()) {
+      return;
+    }
+    Point bottomLeft = new Point(getRight(), getTop());
+    getSpeechStyle().renderString(
+      getSpeech(),
+      g,
+      bottomLeft,
+      TextStyle.ReferencePointLocation.BOTTOM_LEFT
+    );
+  }
 
   /**
    * Checks if this shape contains another given shape.
@@ -91,7 +104,7 @@ public abstract class Shape {
     // set default values
     setColor(Color.GREEN);
     setFilled(true);
-    setSpeechColor(Color.BLACK);
+    setSpeechStyle(TextStyle.sansSerif());
     setDirection(Direction.RIGHT);
     destroyed = false;
   }
@@ -373,7 +386,7 @@ public abstract class Shape {
    *
    * @param   speech  what the shape says.
    * @see     #say(String, int)
-   * @see     #setSpeechColor(Color)
+   * @see     #setSpeechStyle(TextStyle)
    * @see     #getSpeech()
    * @see     #isSpeaking()
    */
@@ -388,7 +401,7 @@ public abstract class Shape {
    * @param   speech  what the shape says.
    * @param   frames  how long the shape speaks.
    * @see     #say(String)
-   * @see     #setSpeechColor(Color)
+   * @see     #setSpeechStyle(TextStyle)
    * @see     #getSpeech()
    * @see     #isSpeaking()
    */
@@ -414,23 +427,25 @@ public abstract class Shape {
   }
 
   /**
-   * Sets the color of this shape's speech.
+   * Sets the visual style of this shape's speech text. The speech's size, font,
+   * color and bold/italics can be customized with the passed {@link TextStyle}
+   * object.
    *
-   * @param   speechColor the color of this shape's speech.
-   * @see     #getSpeechColor()
+   * @param   speechStyle the styling of this shape's speech.
+   * @see     #getSpeechStyle()
    */
-  public void setSpeechColor(Color speechColor) {
-    this.speechColor = speechColor;
+  public void setSpeechStyle(TextStyle speechStyle) {
+    this.speechStyle = speechStyle;
   }
 
   /**
-   * Returns the color of this shape's speech.
+   * Returns information about the visual styling of this shape's speech text.
    *
-   * @return  the color of this shape's speech.
-   * @see     #setSpeechColor(Color)
+   * @return  the style of this shape's speech text.
+   * @see     #setSpeechStyle(TextStyle)
    */
-  public Color getSpeechColor() {
-    return speechColor;
+  public TextStyle getSpeechStyle() {
+    return speechStyle;
   }
 
   /**

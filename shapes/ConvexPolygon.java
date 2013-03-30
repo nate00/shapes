@@ -7,7 +7,7 @@ import java.awt.*;
  * You won't use <code>ConvexPolygon</code> directly. Instead, you'll use one
  * of its subclasses, {@link Rectangle} or {@link Triangle}.
  */
-public abstract class ConvexPolygon extends Shape {
+abstract class ConvexPolygon extends Shape {
 
   protected boolean displaysRotation;
   abstract Point[] getUnrotatedCorners();
@@ -126,32 +126,6 @@ public abstract class ConvexPolygon extends Shape {
       }
     }
     return true;
-  }
-
-  void renderSpeech(Graphics2D g) {
-    if (!isSpeaking()) {
-      return;
-    }
-    g.setColor(getSpeechColor());
-    // upper left of the talk bubble - upper right of the polygon
-    Point upperLeft = null;
-    for (Point corner : getCorners()) {
-      if (upperLeft == null) {
-        upperLeft = corner;
-        continue;
-      }
-      upperLeft.setX(Math.max(upperLeft.getX(), corner.getX()));
-      upperLeft.setY(Math.max(upperLeft.getY(), corner.getY()));
-    }
-    Vector heightOffset =
-      new Vector(0.0, -1.0 * g.getFontMetrics(g.getFont()).getDescent());
-
-    Point lowerLeft = upperLeft.translation(heightOffset);
-    g.drawString(
-      getSpeech(),
-      (int)lowerLeft.getCanvasX(),
-      (int)lowerLeft.getCanvasY()
-    );
   }
 
   void render(Graphics2D g) {
