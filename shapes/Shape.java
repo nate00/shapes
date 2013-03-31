@@ -48,19 +48,6 @@ public abstract class Shape {
    */
   abstract void render(Graphics2D g);
 
-  void renderSpeech(Graphics2D g) {
-    if (!isSpeaking()) {
-      return;
-    }
-    Point bottomLeft = new Point(getRight(), getTop());
-    getSpeechStyle().renderString(
-      getSpeech(),
-      g,
-      bottomLeft,
-      TextStyle.ReferencePointLocation.BOTTOM_LEFT
-    );
-  }
-
   /**
    * Checks if this shape contains another given shape.
    *
@@ -68,6 +55,19 @@ public abstract class Shape {
    * @return    true if s is entirely inside this shape, false otherwise.
    */
   abstract public boolean contains(Shape s);
+
+  void renderSpeech(Graphics2D g) {
+    if (!isSpeaking()) {
+      return;
+    }
+    Point bottomLeft = new Point(getRight(), getTop());
+    getSpeechStyle().renderString(
+      getSpeech(),
+      bottomLeft,
+      TextStyle.ReferencePointLocation.BOTTOM_LEFT,
+      g
+    );
+  }
 
   /**
    * Checks if this shape contains a given point.

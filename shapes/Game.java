@@ -32,6 +32,9 @@ public abstract class Game {
   private static Set<Shape> solidShapes;
   private static Set<Shape> allShapes;
 
+  private static java.util.List<Counter> counters;
+  private static TextStyle counterStyle;
+
   private static Map<Integer, java.util.List<Shape>> layerContents;
   private static java.util.List<Integer> layers;
   private static Map<Shape, Integer> layerOf;
@@ -58,6 +61,8 @@ public abstract class Game {
     layers = new CopyOnWriteArrayList<Integer>();
     layerOf = new ConcurrentHashMap<Shape, Integer>();
 
+    counters = new ArrayList<Counter>();
+
     frame = new JFrame();
     Mouse mouse = new Mouse();
     frame.addMouseMotionListener(mouse);
@@ -75,6 +80,7 @@ public abstract class Game {
     TextStyle titleStyle = TextStyle.sansSerif();
     titleStyle.setFontSize(40);
     setTitleStyle(titleStyle);
+    setCounterStyle(TextStyle.sansSerif());
   }
   
   protected void ready() {
@@ -174,6 +180,22 @@ public abstract class Game {
     return layers;
   }
 
+  static void addCounter(Counter counter) {
+    counters.add(counter);
+  }
+
+  static void removeCounter(Counter counter) {
+    counters.remove(counter);
+  }
+
+  public static void setCounterStyle(TextStyle counterStyle) {
+    Game.counterStyle = counterStyle;
+  }
+
+  public static TextStyle getCounterStyle() {
+    return Game.counterStyle;
+  }
+
   public static Color getBackgroundColor() {
     return canvas.getBackground();
   }
@@ -222,20 +244,14 @@ public abstract class Game {
     titleDuration--;
     titleStyle.renderString(
       title,
-      g,
       new Point(WIDTH / 2.0, HEIGHT / 2.0),
-      TextStyle.ReferencePointLocation.CENTER
+      TextStyle.ReferencePointLocation.CENTER,
+      g
     );
-//    titleStyle.applyTo(g);
-//    Rectangle2D containingBox =
-//      g.getFontMetrics(g.getFont()).getStringBounds(title, g);
-//    double height = containingBox.getHeight();
-//    double width = containingBox.getWidth();
-//    Point bottomLeft = new Point(
-//      (WIDTH - width) / 2.0,
-//      HEIGHT / 2.0
-//    );
-//    g.drawString(title, bottomLeft.getCanvasX(), bottomLeft.getCanvasY());
+  }
+
+  void renderCounters(Graphics2D g) {
+    Counter.renderCounters(counters, counterStyle, g);
   }
 
   /**

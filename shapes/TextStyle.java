@@ -38,15 +38,22 @@ public class TextStyle {
 
   void renderString(
     String string,
-    Graphics2D g,
     Point referencePoint,
-    ReferencePointLocation referenceLocation
+    ReferencePointLocation referenceLocation,
+    Graphics2D g
   ) {
     FontMetrics metrics = g.getFontMetrics(getFont());
-    double width = metrics.stringWidth(string);
+    String[] lines = string.split("\n");
+    double width = 0.0;
+    for (String line : lines) {
+      width = Math.max(width, metrics.stringWidth(string));
+    }
     // getAscent() includes room for accents, etc., so we shrink it by
     // an arbitrary amount
-    double height = metrics.getAscent() * 0.8;
+    double wordHeight = metrics.getAscent() * 0.8;
+    double spaceHeight = metrics.getHeight() - wordHeight;
+    double height =
+      (lines.length - 1) * spaceHeight + lines.length * wordHeight;
     Vector offset = null;
     switch (referenceLocation) {
       case CENTER:
@@ -60,8 +67,12 @@ public class TextStyle {
         break;
     }
     Point bottomLeft = referencePoint.translation(offset);
+    Vector lineOffset= new Vector(0, wordHeight + spaceHeight);
     applyTo(g);
-    g.drawString(string, bottomLeft.getCanvasX(), bottomLeft.getCanvasY());
+    for (int i = lines.length - 1; i >= 0; i--) {
+      g.drawString(lines[i], bottomLeft.getCanvasX(), bottomLeft.getCanvasY());
+      bottomLeft = bottomLeft.translation(lineOffset);
+    }
   }
 
   public static TextStyle monospaced() {

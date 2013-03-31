@@ -38,6 +38,7 @@ class Canvas extends JPanel implements Runnable {
           }
         }
       }
+      game.renderCounters(g);
     }
 
     Toolkit.getDefaultToolkit().sync();
