@@ -24,6 +24,13 @@ public class Circle extends Shape {
     setDefaults();
   }
 
+  // call for a non-displaying circle (for geometrical calculations)
+  Circle(Point center, double radius, boolean display) {
+    System.out.println("No display!");
+    setCenter(center);
+    setRadius(radius);
+  }
+
   private void setDefaults() {
     setCenter(new Point(200, 400));
     setRadius(10);
@@ -144,5 +151,11 @@ public class Circle extends Shape {
       throw new IllegalArgumentException("Radius must be positive.");
     }
     this.radius = radius;
+  }
+
+  public String toString() {
+    return
+      "Circle at " + getCenter().toString() +
+      " with radius " + getRadius();
   }
 }

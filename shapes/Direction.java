@@ -20,6 +20,13 @@ public class Direction {
     setDegrees(degrees);
   }
 
+  public Direction(Point origin, Point terminus) {
+    double deltaX = terminus.getX() - origin.getX();
+    double deltaY = terminus.getY() - origin.getY();
+    double radians = Math.atan2(deltaY, deltaX);
+    setRadians(radians);
+  }
+
   public static Direction inRadians(double radians) {
     return new Direction(radians / Math.PI * 180.0);
   }
@@ -42,6 +49,11 @@ public class Direction {
       degrees += 360.0;
     }
     this.degrees = degrees;
+  }
+
+  private void setRadians(double radians) {
+    double degrees = radians / Math.PI * 180.0;
+    setDegrees(degrees);
   }
 
   public Direction reverse() {

@@ -164,6 +164,33 @@ abstract class Geometry {
   // of segments (using segmentIntersection) and their endpoints (using 
   // touching(Segment, Point)) individually
 
+  // returns null for no intersection
+  static Point[] intersection(BasicCircle s, BasicCircle t) {
+    double distance = distance(s.center, t.center);
+    if (distance > s.radius + t.radius) {
+      return null;
+    }
+    
+    // in the triangle formed by two radii and the segment connecting the
+    // circles' centers, theta is the angle at s's center.
+    double theta = acos(
+      (-1 * sq(s.radius) + sq(t.radius) + sq(distance)) /
+      (2 * t.radius * distance)
+    );  // law of cosines
+
+    Direction betweenCenters = new Direction(t.center, s.center);
+    Direction[] radiiDirections = new Direction[2];
+    radiiDirections[0] = betweenCenters.rotationByRadians(theta);
+    radiiDirections[1] = betweenCenters.rotationByRadians(-1.0 * theta);
+
+    Point[] intersections = new Point[2];
+    for (int i = 0; i < intersections.length; i++) {
+      Vector radius = new Vector(radiiDirections[i], t.radius);
+      intersections[i] = t.center.translation(radius);
+    }
+    return intersections;
+  }
+
   // TODO: test
   static Segment intersection(Circle circle, Segment seg) {
     Segment perp = perpendicularThrough(seg, circle.getCenter());
@@ -295,7 +322,6 @@ abstract class Geometry {
     double distanceBetweenCenters = mover.getRadius() + obstacle.getRadius();
 
     if (distanceToPath > distanceBetweenCenters) {
-      System.out.println("No collision!");
       return target;   // no collision
     }
 
@@ -539,6 +565,27 @@ abstract class Geometry {
     return ret;
   }
 
+  static Direction insertGap(
+      Shape rotator,
+      int rotationalDirection,
+      Direction target,
+      Direction maxRotate
+  ) {
+    Direction ret;
+    if (rotationalDirection > 0) {
+      ret = maxRotate.rotationByDegrees(-2);
+    } else {
+      ret = maxRotate.rotationByDegrees(2);
+    }
+    if (closer(rotator.getDirection(), rotationalDirection, ret, maxRotate) ==
+        ret
+    ) {
+      return ret;
+    } else {
+      return rotator.getDirection();
+    }
+  }
+
   static double interiorRadians(Direction dirA, Direction dirB) {
     double difference = abs(dirA.getRadians() - dirB.getRadians());
     if (difference > PI) {
@@ -564,6 +611,164 @@ abstract class Geometry {
     return
       distance(candidate, path.getStart()) <
       distance(leader, path.getStart());
+  }
+
+  static Direction maxRotation(
+      Shape rotator,
+      Direction target,
+      int rotationalDirection,
+      Shape obstacle
+  ) {
+    Direction maxRotate = null;
+    if (rotator instanceof Circle) {
+      maxRotate = target;   // circle rotation doesn't cause collisions
+    } else if (rotator instanceof ConvexPolygon) {
+      if (obstacle instanceof Circle) {
+        maxRotate = maxRotation(
+          (ConvexPolygon) rotator,
+          target,
+          rotationalDirection,
+          (Circle) obstacle
+        );
+      } else if (obstacle instanceof ConvexPolygon) {
+        maxRotate = maxRotation(
+          (ConvexPolygon) rotator,
+          target,
+          rotationalDirection,
+          (ConvexPolygon) obstacle
+        );
+      }
+    } 
+    if (maxRotate == null) {
+      return target;
+    }
+
+    maxRotate = insertGap(rotator, rotationalDirection, target, maxRotate);
+
+    return maxRotate;
+  }
+
+  static Direction maxRotation(
+      ConvexPolygon rotator,
+      Direction target,
+      int rotationalDirection,
+      Circle obstacle
+  ) {
+    Direction maxRotate = target;
+    Direction origin = rotator.getDirection();
+
+    for (Point corner : rotator.getCorners()) {
+      Direction cornerOrigin = new Direction(rotator.getCenter(), corner);
+      double cornerOffset = cornerOrigin.getRadians() - origin.getRadians();
+      Direction cornerTarget = target.rotationByRadians(cornerOffset);
+      Direction cornerCandidate = maxRotation(
+        corner,
+        rotator.getCenter(),
+        cornerTarget,
+        rotationalDirection,
+        obstacle
+      );
+      Direction candidate =
+        cornerCandidate.rotationByRadians(-1 * cornerOffset);
+      maxRotate = closer(origin, rotationalDirection, candidate, maxRotate);
+    }
+
+    for (Segment side : rotator.getSides()) {
+//      Direction candidate = maxRotation(
+//        side,
+//        rotator.getCenter(),
+//        target,
+//        rotationalDirection,
+//        obstacle
+//      );
+//      maxRotate = closer(origin, rotationalDirection, candidate, maxRotate);
+    }
+
+    return maxRotate;
+  }
+
+  static Direction maxRotation(
+      ConvexPolygon rotator,
+      Direction target,
+      int rotationalDirection,
+      ConvexPolygon obstacle
+  ) {
+    // TODO
+    return target;
+  }
+
+  static Direction maxRotation(
+    Point rotator,
+    Point pivot,
+    Direction target,
+    int rotationalDirection,
+    Circle obstacle
+  ) {
+    Direction maxRotate = target;
+    Direction origin = new Direction(pivot, rotator);
+    
+    BasicCircle path = new BasicCircle(pivot, distance(pivot, rotator));
+    Point[] intersections = intersection(path, new BasicCircle(obstacle));
+    if (intersections == null) {
+      return target;  // no collision
+    }
+    for (Point intersection : intersections) {
+      maxRotate = closer(
+        origin,
+        rotationalDirection,
+        new Direction(pivot, intersection),
+        maxRotate
+      );
+    }
+
+    return maxRotate;
+  }
+
+  static Direction maxRotation(
+    Segment rotator,
+    Point pivot,
+    Direction target,
+    int rotationalDirection,
+    Circle obstacle
+  ) {
+    return target;
+  }
+
+  static Direction closer(
+    Direction origin,
+    int rotationalDirection,
+    Direction s,
+    Direction t
+  ) {
+    Direction z;
+    if (rotationalDistance(origin, rotationalDirection, s) <
+        rotationalDistance(origin, rotationalDirection, t)) {
+      z= s;
+    } else {
+      z = t;
+    }
+
+    // TODO: fix stupid code
+    return z;
+  }
+
+  // TODO: test
+  static double rotationalDistance(
+    Direction origin,
+    int rotationalDirection,
+    Direction target
+  ) {
+    if (origin.equals(target)) {
+      return 0.0;
+    }
+    double distance = target.getDegrees() - origin.getDegrees();
+    if (distance < 0) {
+      distance += 360;
+    }
+    if (rotationalDirection < 0) {
+      distance = 360 - distance;
+    }
+    return distance;
   }
 
   static boolean offscreen(Point point) {
@@ -609,5 +814,20 @@ abstract class Geometry {
 
   static double hypoteneuse(double legA, double legB) {
     return sqrt(sq(legA) + sq(legB));
+  }
+}
+
+class BasicCircle {
+  Point center;
+  double radius;
+
+  BasicCircle(Point center, double radius) {
+    this.center = center;
+    this.radius = radius;
+  }
+
+  BasicCircle(Circle circle) {
+    this.center = circle.getCenter();
+    this.radius = circle.getRadius();
   }
 }

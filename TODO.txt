@@ -1,7 +1,6 @@
 ConvexPolygon rotation collision detection!!!!!!!!!
 
 Important:
--Count
 -Subtitle
 -Fail fast
 -Make constructors set up default values better.
@@ -19,6 +18,8 @@ Trivialities:
 -ensure partitioning of methods between Geometry and Shape subclasses is consistent
 
 Bugs:
+-Make move() and rotate() not always lose gap
+-Solids move through other shapes
 -Speech isn't visible when shape goes off the right or top of the screen
 -Very fast mouse clicks (between frames) might not work
 -Pressing Space + Up + Left doesn't work?

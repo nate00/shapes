@@ -192,9 +192,24 @@ public abstract class Shape {
    *                    can move towards <code>target</code>.
    */
   abstract Point maxMovement(Point target, Shape obstacle);
+  // TODO: move code here
 
   // TODO
   abstract Point maxMovement(Point target, Segment obstacle);
+
+  private Direction maxRotation(
+      Direction target,
+      int rotationalDirection,
+      Shape obstacle
+  ) {
+    Direction maxRotation = Geometry.maxRotation(
+      this,
+      target,
+      rotationalDirection,
+      obstacle
+    );
+    return maxRotation;
+  }
 
   /**
    * Moves in the shape's direction.
@@ -535,7 +550,30 @@ public abstract class Shape {
    * @param degrees the number of degrees by which to rotate.
    */
   public void rotate(double degrees) {
-    setDirection(getDirection().rotation(degrees));
+    if (Math.abs(degrees) < Geometry.EPSILON) return;
+    Direction target = getDirection().rotation(degrees);
+    int rotationalDirection = degrees > 0 ? 1 : -1;
+    Direction maxRotate = target;
+    Shape[] obstacles;
+    if (isSolid()) {
+      obstacles = Game.getAllShapes();
+    } else {
+      obstacles = Game.getSolids().toArray(new Shape[0]);
+    }
+    for (Shape obstacle : obstacles) {
+      if (obstacle == this) continue;
+      Direction blockedRotate =
+        maxRotation(target, rotationalDirection, obstacle);
+      maxRotate = Geometry.closer(
+        getDirection(),
+        rotationalDirection,
+        blockedRotate,
+        maxRotate
+      );
+    }
+    // TODO: handle borders
+
+    setDirection(maxRotate);
   }
 
   /**
