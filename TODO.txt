@@ -24,8 +24,7 @@ Bugs:
 -Very fast mouse clicks (between frames) might not work
 -Pressing Space + Up + Left doesn't work?
 -KeyBindings for Mac?
--insertGap() for rotation doesn't work well for large shapes because the gap is
-in degrees, not pixels. Fixing it is nontrivial.
+-insertGap() for rotation doesn't work well for large shapes because the gap is in degrees, not pixels. Fixing it is nontrivial because gap insertion must be per possible intersection point, not per rotation.
 
 Wishlist:
 -maxMovement is a mess - reorganize

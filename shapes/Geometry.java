@@ -192,15 +192,17 @@ abstract class Geometry {
   }
 
   // TODO: test
-  static Segment intersection(Circle circle, Segment seg) {
-    Segment perp = perpendicularThrough(seg, circle.getCenter());
-    if (perp.length() > circle.getRadius()) {
+  // line intersection, not segment intersection
+  // returns null for no intersection
+  static Segment lineIntersection(BasicCircle circle, Segment seg) {
+    Segment perp = perpendicularThrough(seg, circle.center);
+    if (perp.length() > circle.radius) {
       return null;
     }
 
     // angle (at the center of the circle) between the perpendicular and
     // the radii to points of intersection
-    double radiansFromPerp = acos(perp.length() / circle.getRadius());
+    double radiansFromPerp = acos(perp.length() / circle.radius);
 
     // direction of radii to points of intersection
     Direction[] radiusDirection = new Direction[] {
@@ -210,9 +212,9 @@ abstract class Geometry {
 
     Point[] pointOfIntersection = new Point[radiusDirection.length];
     for (int i = 0; i < radiusDirection.length; i++) {
-      Vector radius = new Vector(radiusDirection[i], circle.getRadius());
+      Vector radius = new Vector(radiusDirection[i], circle.radius);
       pointOfIntersection[i] =
-        circle.getCenter().translation(radius);
+        circle.center.translation(radius);
     }
 
     return new Segment(
@@ -471,7 +473,8 @@ abstract class Geometry {
       Point cornerTarget = target.translation(cornerOffset);
       Segment cornerPath = new Segment(corner, cornerTarget);
 
-      Segment intersection = intersection(obstacle, cornerPath);
+      Segment intersection =
+        lineIntersection(new BasicCircle(obstacle), cornerPath);
       if (intersection == null) {
         continue;
       }
@@ -672,14 +675,15 @@ abstract class Geometry {
     }
 
     for (Segment side : rotator.getSides()) {
-      Direction candidate = maxRotation(
-        side,
-        rotator.getCenter(),
-        target,
-        clockwise,
-        obstacle
-      );
-      maxRotate = closer(origin, clockwise, candidate, maxRotate);
+      // TODO: I think this call is incorrect
+//      Direction candidate = maxRotation(
+//        side,
+//        rotator.getCenter(),
+//        target,
+//        clockwise,
+//        obstacle
+//      );
+//      maxRotate = closer(origin, clockwise, candidate, maxRotate);
     }
 
     return maxRotate;
@@ -690,6 +694,67 @@ abstract class Geometry {
       Direction target,
       boolean clockwise,
       ConvexPolygon obstacle
+  ) {
+    Direction maxRotate = target;
+    Direction origin = rotator.getDirection();
+
+    for (Point corner : rotator.getCorners()) {
+      Direction cornerOrigin = new Direction(rotator.getCenter(), corner);
+      double cornerOffset = cornerOrigin.getRadians() - origin.getRadians();
+      Direction cornerTarget = target.rotationByRadians(cornerOffset);
+      for (Segment obstacleSide : obstacle.getSides()) {
+        Direction cornerCandidate = maxRotation(
+          corner,
+          rotator.getCenter(),
+          cornerTarget,
+          clockwise,
+          obstacleSide
+        );
+        Direction candidate =
+          cornerCandidate.rotationByRadians(-1 * cornerOffset);
+        maxRotate = closer(origin, clockwise, candidate, maxRotate);
+      }
+    }
+
+    for (Segment side : rotator.getSides()) {
+      Direction sideOrigin =
+        new Direction(rotator.getCenter(), side.getStart());
+      double sideOffset = sideOrigin.getRadians() - origin.getRadians();
+      Direction sideTarget = target.rotationByRadians(sideOffset);
+      for (Point obstacleCorner : obstacle.getCorners()) {
+        Direction sideCandidate = maxRotation(
+          side,
+          rotator.getCenter(),
+          sideTarget,
+          clockwise,
+          obstacleCorner
+        );
+        Direction candidate =
+          sideCandidate.rotationByRadians(-1 * sideOffset);
+        maxRotate = closer(origin, clockwise, candidate, maxRotate);
+      }
+    }
+
+    return maxRotate;
+  }
+
+  static Direction maxRotation(
+    Segment rotator,
+    Point pivot,
+    Direction target,
+    boolean clockwise,
+    Circle obstacle
+  ) {
+    // TODO
+    return target;
+  }
+
+  static Direction maxRotation(
+    Segment rotator,
+    Point pivot,
+    Direction target,
+    boolean clockwise,
+    Point obstacle
   ) {
     // TODO
     return target;
@@ -723,14 +788,34 @@ abstract class Geometry {
   }
 
   static Direction maxRotation(
-    Segment rotator,
+    Point rotator,
     Point pivot,
     Direction target,
     boolean clockwise,
-    Circle obstacle
+    Segment obstacle
   ) {
-    // TODO
-    return target;
+    Direction maxRotate = target;
+    Direction origin = new Direction(pivot, rotator);
+
+    BasicCircle path = new BasicCircle(pivot, distance(rotator, pivot));
+    Segment intersectionSeg = lineIntersection(path, obstacle);
+    if (intersectionSeg == null) {
+      return target;  // no collision
+    }
+    Point[] intersections = intersectionSeg.getEndpoints();
+    for (int i = 0; i < intersections.length; i++) {
+      if (!obstacle.contains(intersections[i])) {
+        continue;
+      }
+      maxRotate = closer(
+        origin,
+        clockwise,
+        new Direction(pivot, intersections[i]),
+        maxRotate
+      );
+    }
+
+    return maxRotate;
   }
 
   static Direction closer(
@@ -739,16 +824,11 @@ abstract class Geometry {
     Direction s,
     Direction t
   ) {
-    Direction z;
     if (rotationalDistance(origin, clockwise, s) <
         rotationalDistance(origin, clockwise, t)) {
-      z= s;
-    } else {
-      z = t;
+      return s;
     }
-
-    // TODO: fix stupid code
-    return z;
+    return t;
   }
 
   // TODO: test

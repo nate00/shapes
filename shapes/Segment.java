@@ -65,6 +65,10 @@ class Segment {
     return start;
   }
 
+  Point[] getEndpoints() {
+    return new Point[] { getStart(), getEnd() };
+  }
+
   // Ax + By = C
   double getA() {
     return end.getY() - start.getY();
