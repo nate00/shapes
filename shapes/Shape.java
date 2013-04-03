@@ -199,13 +199,13 @@ public abstract class Shape {
 
   private Direction maxRotation(
       Direction target,
-      int rotationalDirection,
+      boolean clockwise,
       Shape obstacle
   ) {
     Direction maxRotation = Geometry.maxRotation(
       this,
       target,
-      rotationalDirection,
+      clockwise,
       obstacle
     );
     return maxRotation;
@@ -552,7 +552,7 @@ public abstract class Shape {
   public void rotate(double degrees) {
     if (Math.abs(degrees) < Geometry.EPSILON) return;
     Direction target = getDirection().rotation(degrees);
-    int rotationalDirection = degrees > 0 ? 1 : -1;
+    boolean clockwise = degrees < 0;
     Direction maxRotate = target;
     Shape[] obstacles;
     if (isSolid()) {
@@ -563,10 +563,10 @@ public abstract class Shape {
     for (Shape obstacle : obstacles) {
       if (obstacle == this) continue;
       Direction blockedRotate =
-        maxRotation(target, rotationalDirection, obstacle);
+        maxRotation(target, clockwise, obstacle);
       maxRotate = Geometry.closer(
         getDirection(),
-        rotationalDirection,
+        clockwise,
         blockedRotate,
         maxRotate
       );

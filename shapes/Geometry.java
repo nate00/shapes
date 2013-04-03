@@ -567,19 +567,17 @@ abstract class Geometry {
 
   static Direction insertGap(
       Shape rotator,
-      int rotationalDirection,
+      boolean clockwise,
       Direction target,
       Direction maxRotate
   ) {
     Direction ret;
-    if (rotationalDirection > 0) {
-      ret = maxRotate.rotationByDegrees(-2);
-    } else {
+    if (clockwise) {
       ret = maxRotate.rotationByDegrees(2);
+    } else {
+      ret = maxRotate.rotationByDegrees(-2);
     }
-    if (closer(rotator.getDirection(), rotationalDirection, ret, maxRotate) ==
-        ret
-    ) {
+    if (closer(rotator.getDirection(), clockwise, ret, maxRotate) == ret) {
       return ret;
     } else {
       return rotator.getDirection();
@@ -616,7 +614,7 @@ abstract class Geometry {
   static Direction maxRotation(
       Shape rotator,
       Direction target,
-      int rotationalDirection,
+      boolean clockwise,
       Shape obstacle
   ) {
     Direction maxRotate = null;
@@ -627,14 +625,14 @@ abstract class Geometry {
         maxRotate = maxRotation(
           (ConvexPolygon) rotator,
           target,
-          rotationalDirection,
+          clockwise,
           (Circle) obstacle
         );
       } else if (obstacle instanceof ConvexPolygon) {
         maxRotate = maxRotation(
           (ConvexPolygon) rotator,
           target,
-          rotationalDirection,
+          clockwise,
           (ConvexPolygon) obstacle
         );
       }
@@ -643,7 +641,7 @@ abstract class Geometry {
       return target;
     }
 
-    maxRotate = insertGap(rotator, rotationalDirection, target, maxRotate);
+    maxRotate = insertGap(rotator, clockwise, target, maxRotate);
 
     return maxRotate;
   }
@@ -651,7 +649,7 @@ abstract class Geometry {
   static Direction maxRotation(
       ConvexPolygon rotator,
       Direction target,
-      int rotationalDirection,
+      boolean clockwise,
       Circle obstacle
   ) {
     Direction maxRotate = target;
@@ -665,23 +663,23 @@ abstract class Geometry {
         corner,
         rotator.getCenter(),
         cornerTarget,
-        rotationalDirection,
+        clockwise,
         obstacle
       );
       Direction candidate =
         cornerCandidate.rotationByRadians(-1 * cornerOffset);
-      maxRotate = closer(origin, rotationalDirection, candidate, maxRotate);
+      maxRotate = closer(origin, clockwise, candidate, maxRotate);
     }
 
     for (Segment side : rotator.getSides()) {
-//      Direction candidate = maxRotation(
-//        side,
-//        rotator.getCenter(),
-//        target,
-//        rotationalDirection,
-//        obstacle
-//      );
-//      maxRotate = closer(origin, rotationalDirection, candidate, maxRotate);
+      Direction candidate = maxRotation(
+        side,
+        rotator.getCenter(),
+        target,
+        clockwise,
+        obstacle
+      );
+      maxRotate = closer(origin, clockwise, candidate, maxRotate);
     }
 
     return maxRotate;
@@ -690,7 +688,7 @@ abstract class Geometry {
   static Direction maxRotation(
       ConvexPolygon rotator,
       Direction target,
-      int rotationalDirection,
+      boolean clockwise,
       ConvexPolygon obstacle
   ) {
     // TODO
@@ -701,7 +699,7 @@ abstract class Geometry {
     Point rotator,
     Point pivot,
     Direction target,
-    int rotationalDirection,
+    boolean clockwise,
     Circle obstacle
   ) {
     Direction maxRotate = target;
@@ -715,7 +713,7 @@ abstract class Geometry {
     for (Point intersection : intersections) {
       maxRotate = closer(
         origin,
-        rotationalDirection,
+        clockwise,
         new Direction(pivot, intersection),
         maxRotate
       );
@@ -728,21 +726,22 @@ abstract class Geometry {
     Segment rotator,
     Point pivot,
     Direction target,
-    int rotationalDirection,
+    boolean clockwise,
     Circle obstacle
   ) {
+    // TODO
     return target;
   }
 
   static Direction closer(
     Direction origin,
-    int rotationalDirection,
+    boolean clockwise,
     Direction s,
     Direction t
   ) {
     Direction z;
-    if (rotationalDistance(origin, rotationalDirection, s) <
-        rotationalDistance(origin, rotationalDirection, t)) {
+    if (rotationalDistance(origin, clockwise, s) <
+        rotationalDistance(origin, clockwise, t)) {
       z= s;
     } else {
       z = t;
@@ -755,7 +754,7 @@ abstract class Geometry {
   // TODO: test
   static double rotationalDistance(
     Direction origin,
-    int rotationalDirection,
+    boolean clockwise,
     Direction target
   ) {
     if (origin.equals(target)) {
@@ -765,7 +764,7 @@ abstract class Geometry {
     if (distance < 0) {
       distance += 360;
     }
-    if (rotationalDirection < 0) {
+    if (clockwise) {
       distance = 360 - distance;
     }
     return distance;

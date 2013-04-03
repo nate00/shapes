@@ -24,10 +24,11 @@ Bugs:
 -Very fast mouse clicks (between frames) might not work
 -Pressing Space + Up + Left doesn't work?
 -KeyBindings for Mac?
+-insertGap() for rotation doesn't work well for large shapes because the gap is
+in degrees, not pixels. Fixing it is nontrivial.
 
 Wishlist:
 -maxMovement is a mess - reorganize
--more speech options: font
 -Music
 -BorderBehavior.WRAP
 -pushiness
