@@ -10,7 +10,7 @@ public class TextStyle {
   private boolean bold;
   private boolean italic;
 
-  enum ReferencePointLocation { CENTER, BOTTOM_LEFT, TOP_LEFT };
+  enum ReferencePointLocation { CENTER, BOTTOM_LEFT, TOP_LEFT, BOTTOM_CENTER };
 
   public TextStyle(String fontName, int fontSize, Color color) {
     setFontName(fontName);
@@ -48,13 +48,13 @@ public class TextStyle {
     for (String line : lines) {
       width = Math.max(width, metrics.stringWidth(string));
     }
-    // getAscent() includes room for accents, etc., so we shrink it by
-    // an arbitrary amount
+    // getAscent() includes room for accents, etc., so we shrink it (by
+    // an arbitrary amount)
     double wordHeight = metrics.getAscent() * 0.8;
     double spaceHeight = metrics.getHeight() - wordHeight;
     double height =
       (lines.length - 1) * spaceHeight + lines.length * wordHeight;
-    Vector offset = null;
+    Vector offset = null; // from reference point to bottom left
     switch (referenceLocation) {
       case CENTER:
         offset = new Vector(width / -2.0, height / -2.0);
@@ -64,6 +64,9 @@ public class TextStyle {
         break;
       case TOP_LEFT:
         offset = new Vector(0, -1.0 * height);
+        break;
+      case BOTTOM_CENTER:
+        offset = new Vector(width / -2.0, 0);
         break;
     }
     Point bottomLeft = referencePoint.translation(offset);

@@ -5,6 +5,7 @@ Important:
 -Fail fast
 -Make constructors set up default values better.
 -Images
+-Speech bubble
 
 Finishing touches:
 -make direction, center, etc. consistently private or protected

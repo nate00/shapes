@@ -675,15 +675,20 @@ abstract class Geometry {
     }
 
     for (Segment side : rotator.getSides()) {
-      // TODO: I think this call is incorrect
-//      Direction candidate = maxRotation(
-//        side,
-//        rotator.getCenter(),
-//        target,
-//        clockwise,
-//        obstacle
-//      );
-//      maxRotate = closer(origin, clockwise, candidate, maxRotate);
+      Direction sideOrigin =
+        new Direction(rotator.getCenter(), side.getStart());
+      double sideOffset = sideOrigin.getRadians() - origin.getRadians();
+      Direction sideTarget = target.rotationByRadians(sideOffset);
+      Direction sideCandidate = maxRotation(
+        side,
+        rotator.getCenter(),
+        sideTarget,
+        clockwise,
+        obstacle
+      );
+      Direction candidate =
+        sideCandidate.rotationByRadians(-1 * sideOffset);
+      maxRotate = closer(origin, clockwise, candidate, maxRotate);
     }
 
     return maxRotate;
@@ -784,7 +789,6 @@ abstract class Geometry {
         maxRotate
       );
     }
-    // TODO CODING
     return maxRotate;
   }
 

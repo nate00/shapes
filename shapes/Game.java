@@ -43,6 +43,10 @@ public abstract class Game {
   private static TextStyle titleStyle;
   private static int titleDuration;
 
+  private static String subtitle;
+  private static TextStyle subtitleStyle;
+  private static int subtitleDuration;
+
   public enum BorderBehavior { NONE, SOLID, BOUNCE };
   private static BorderBehavior borderBehavior;
 
@@ -81,6 +85,7 @@ public abstract class Game {
     titleStyle.setFontSize(40);
     setTitleStyle(titleStyle);
     setCounterStyle(TextStyle.sansSerif());
+    setSubtitleStyle(TextStyle.sansSerif());
   }
   
   protected void ready() {
@@ -217,8 +222,14 @@ public abstract class Game {
     return canvas.getBorders();
   }
 
+  // not public because no user-defined methods should be executing while
+  // a title is displayed.
   boolean hasTitle() {
     return titleDuration > 0;
+  }
+
+  public boolean hasSubtitle() {
+    return subtitleDuration > 0 || subtitleDuration == -1;
   }
 
   public static void setTitleStyle(TextStyle titleStyle) {
@@ -246,6 +257,44 @@ public abstract class Game {
       title,
       new Point(WIDTH / 2.0, HEIGHT / 2.0),
       TextStyle.ReferencePointLocation.CENTER,
+      g
+    );
+  }
+
+  public static void setSubtitleStyle(TextStyle subtitleStyle) {
+    Game.subtitleStyle = subtitleStyle;
+  }
+
+  public static TextStyle getSubtitleStyle() {
+    return subtitleStyle;
+  }
+
+  public static void setSubtitle(String subtitle, int duration) {
+    if (duration < 0) {
+      throw new IllegalArgumentException("Duration cannot be negative.");
+    }
+    if (subtitle == null) {
+      duration = 0;
+    }
+    Game.subtitle = subtitle;
+    Game.subtitleDuration = duration;
+  }
+
+  public static void setSubtitle(String subtitle) {
+    if (subtitle == null) {
+      Game.subtitleDuration = 0;
+    } else {
+      Game.subtitleDuration = -1;
+    }
+    Game.subtitle = subtitle;
+  }
+
+  void renderSubtitle(Graphics2D g) {
+    subtitleDuration--;
+    subtitleStyle.renderString(
+      subtitle,
+      new Point(WIDTH / 2.0, 30),
+      TextStyle.ReferencePointLocation.BOTTOM_CENTER,
       g
     );
   }

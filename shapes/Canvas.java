@@ -39,6 +39,9 @@ class Canvas extends JPanel implements Runnable {
         }
       }
       game.renderCounters(g);
+      if (game.hasSubtitle()) {
+        game.renderSubtitle(g);
+      }
     }
 
     Toolkit.getDefaultToolkit().sync();
