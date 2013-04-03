@@ -12,6 +12,7 @@ Finishing touches:
 -equals(), toString(), other basic methods
 -ensure width consistently comes before height (and x before y)
 -write @Override annotations
+-make naming decisions for accessors [.x() vs .getX()] more consistent
 
 Trivialities:
 -make imports consistent (* or not)

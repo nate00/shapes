@@ -756,8 +756,36 @@ abstract class Geometry {
     boolean clockwise,
     Point obstacle
   ) {
-    // TODO
-    return target;
+    Direction maxRotate = target;
+    Direction origin = new Direction(pivot, rotator.getStart());
+
+    BasicCircle intersectionPath =
+      new BasicCircle(pivot, distance(pivot, obstacle));
+    Segment intersectionOriginSeg = lineIntersection(intersectionPath, rotator);
+    if (intersectionOriginSeg == null) {
+      return target;  // no collision
+    }
+    Point[] intersectionOrigins = intersectionOriginSeg.getEndpoints();
+    for (Point intersectionOrigin : intersectionOrigins) {
+      if (!rotator.contains(intersectionOrigin)) {
+        continue;
+      }
+      Direction intersectionOriginDirection =
+        new Direction(pivot, intersectionOrigin);
+      double intersectionOffset =
+        intersectionOriginDirection.getRadians() - origin.getRadians();
+      Direction intersectionDirection = new Direction(pivot, obstacle);
+      Direction candidate =
+        intersectionDirection.rotationByRadians(-1 * intersectionOffset);
+      maxRotate = closer(
+        origin,
+        clockwise,
+        candidate,
+        maxRotate
+      );
+    }
+    // TODO CODING
+    return maxRotate;
   }
 
   static Direction maxRotation(
