@@ -14,37 +14,26 @@ import java.util.concurrent.*;
  * <code>shape.move(Keyboard.direction(), 10);</code>
  */
 public class Keyboard extends KeyAdapter {
-  private static Set<KeyEvent> keysPressed;
-  private static KeyEvent mostRecentKeyPressed;
+  private static Set<Integer> keysPressed;
+  private static Integer mostRecentKeyPressed;
   private static boolean printKeyPresses = false;
 
   public Keyboard() {
     if (keysPressed == null) {
       keysPressed =
-        Collections.newSetFromMap(new ConcurrentHashMap<KeyEvent, Boolean>());
+        Collections.newSetFromMap(new ConcurrentHashMap<Integer, Boolean>());
     }
   }
 
   /**
    * Print keypresses to standard output. Most of the methods in this class use
-   * strings to represent keys, so this method can be used to determine which
-   * strings represent which keys.
+   * codes to represent keys, so this method can be used to determine which
+   * codes represent which keys.
    * <p>
-   * Here are some representative examples:
-   * <ul>
-   *  <li>
-   *    The up arrow key: <code>"Up"</code>
-   *  </li>
-   *  <li>
-   *    The shift key: <code>"Shift"</code>
-   *  </li>
-   *  <li>
-   *    The space bar: <code>"Space"</code>
-   *  </li>
-   *  <li>
-   *    The letter a: <code>"A"</code>
-   *  </li>
-   * </ul>
+   * This class has constants equal to the codes for most common keys. For
+   * example,
+   * <code>boolean upIsPressed = Keyboard.keyIsPressed(Keyboard.UP);</code> can
+   * be used to determine whether the up arrow is pressed.
    *
    * @param printKeyPresses passing <code>true</code> prints all key presses.
    */
@@ -55,14 +44,14 @@ public class Keyboard extends KeyAdapter {
   /**
    * Returns true if the given key is being pressed.
    *
-   * @param key string representing the key whose presses to detect. (See
-   *            {@link #printKeyPresses} to find which strings represent
-   *            which keys.)
-   * @return    true if the key is being pressed, false otherwise.
+   * @param keyCode integer representing the key whose presses to detect. (See
+   *                {@link #printKeyPresses} to find which strings represent
+   *                which keys.)
+   * @return        true if the key is being pressed, false otherwise.
    */
-  public static boolean keyIsPressed(String key) {
-    for (KeyEvent event : keysPressed) {
-      if (key.equals(KeyEvent.getKeyText(event.getKeyCode()))) {
+  public static boolean keyIsPressed(int keyCode) {
+    for (int pressedCode : keysPressed) {
+      if (keyCode == pressedCode) {
         return true;
       }
     }
@@ -70,35 +59,32 @@ public class Keyboard extends KeyAdapter {
   }
 
   /**
-   * Returns an array of strings representing all keys currently being pressed.
+   * Returns an array of integers representing all keys currently being pressed.
    * Returns an empty array if no keys are being pressed. See
-   * {@link #printKeyPresses} to find which strings represent which keys.
+   * {@link #printKeyPresses} to find which codes represent which keys.
    *
-   * @return  an array of strings representing all keys currently being pressed.
+   * @return  an array of integers representing all keys currently being pressed.
    */
-  public static String[] keys() {
-    Iterator<KeyEvent> keyEventIterator = keysPressed.iterator();
-    String[] keys = new String[keysPressed.size()];
-    for (int i = 0; i < keys.length && keyEventIterator.hasNext(); i++) {
-      keys[i] = keyToString(keyEventIterator.next());
+  public static int[] keys() {
+    Iterator<Integer> keyPressedIterator = keysPressed.iterator();
+    int[] keys = new int[keysPressed.size()];
+    for (int i = 0; i < keys.length && keyPressedIterator.hasNext(); i++) {
+      keys[i] = keyPressedIterator.next();
     }
 
     return keys;
   }
 
   /**
-   * Returns a string representing the most recently pressed key. Returns null
+   * Returns an integer code representing the most recently pressed key.
+   * Returns <code>Keyboard.NO_KEY</code>
    * if no key is currently being pressed. See {@link #printKeyPresses} to find
-   * which strings represent which keys.
+   * which integer codes represent which keys.
    *
-   * @return  a string representing the most recently pressed key.
+   * @return  an integer code representing the most recently pressed key.
    */
-  public static String key() {
-    if (mostRecentKeyPressed == null) {
-      return null;
-    }
-
-    return keyToString(mostRecentKeyPressed);
+  public static int key() {
+    return mostRecentKeyPressed;
   }
 
   /**
@@ -125,7 +111,7 @@ public class Keyboard extends KeyAdapter {
    */
   public static Direction direction(KeySet set) {
     ArrayList<Vector> vectorsPressed = new ArrayList<Vector>();
-    for (KeyEvent keyPressed : keysPressed) {
+    for (int keyPressed : keysPressed) {
       Vector vectorPressed = set.getVector(keyPressed);
       if (vectorPressed != null) {
         vectorsPressed.add(vectorPressed);
@@ -150,11 +136,11 @@ public class Keyboard extends KeyAdapter {
    * pressed.
    */
   @Override
-  public void keyPressed(KeyEvent keyPressed) {
-    keysPressed.add(keyPressed);
-    mostRecentKeyPressed = keyPressed;
+  public void keyPressed(KeyEvent keyPressedEvent) {
+    keysPressed.add(keyPressedEvent.getKeyCode());
+    mostRecentKeyPressed = keyPressedEvent.getKeyCode();
     if (printKeyPresses) {
-      System.out.println(keyToString(keyPressed));
+      System.out.println(keyPressedEvent.getKeyCode());
     }
   }
 
@@ -163,22 +149,68 @@ public class Keyboard extends KeyAdapter {
    * released.
    */
   @Override
-  public void keyReleased(KeyEvent keyReleased) {
+  public void keyReleased(KeyEvent keyReleasedEvent) {
     // remove from keysPressed
-    Iterator<KeyEvent> iter = keysPressed.iterator();
+    Iterator<Integer> iter = keysPressed.iterator();
     while (iter.hasNext()) {
-      if (iter.next().getKeyCode() == keyReleased.getKeyCode()) {
+      if (iter.next() == keyReleasedEvent.getKeyCode()) {
         iter.remove();
       }
     }
 
-    if (mostRecentKeyPressed != null &&
-        mostRecentKeyPressed.getKeyCode() == keyReleased.getKeyCode()) {
-      mostRecentKeyPressed = null;
+    if (mostRecentKeyPressed == keyReleasedEvent.getKeyCode()) {
+      mostRecentKeyPressed = NO_KEY;
     }
   }
 
-  private static String keyToString(KeyEvent key) {
-    return KeyEvent.getKeyText(mostRecentKeyPressed.getKeyCode());
-  }
+  public final static int A = 65;
+  public final static int B = 66;
+  public final static int C = 67;
+  public final static int D = 68;
+  public final static int E = 69;
+  public final static int F = 70;
+  public final static int G = 71;
+  public final static int H = 72;
+  public final static int I = 73;
+  public final static int J = 74;
+  public final static int K = 75;
+  public final static int L = 76;
+  public final static int M = 77;
+  public final static int N = 78;
+  public final static int O = 79;
+  public final static int P = 80;
+  public final static int Q = 81;
+  public final static int R = 82;
+  public final static int S = 83;
+  public final static int T = 84;
+  public final static int U = 85;
+  public final static int V = 86;
+  public final static int W = 87;
+  public final static int X = 88;
+  public final static int Y = 89;
+  public final static int Z = 90;
+
+  public final static int NUMBER_0 = 48;
+  public final static int NUMBER_1 = 49;
+  public final static int NUMBER_2 = 50;
+  public final static int NUMBER_3 = 51;
+  public final static int NUMBER_4 = 52;
+  public final static int NUMBER_5 = 53;
+  public final static int NUMBER_6 = 54;
+  public final static int NUMBER_7 = 55;
+  public final static int NUMBER_8 = 56;
+  public final static int NUMBER_9 = 57;
+
+  public final static int LEFT = 37;
+  public final static int UP = 38;
+  public final static int RIGHT = 39;
+  public final static int DOWN = 40;
+
+  public final static int SPACE = 32;
+  public final static int ENTER = 10;
+  public final static int ESC = 27;
+  public final static int SHIFT = 16;
+  public final static int BACKSPACE = 8;
+
+  public final static int NO_KEY = -1;
 }

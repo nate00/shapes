@@ -7,8 +7,8 @@ import java.awt.event.KeyEvent;
  * direction keys to listen to. Either the arrow keys or WASD.
  */
 public enum KeySet {
-  ARROWS(KeyEvent.VK_UP, KeyEvent.VK_DOWN, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT),
-  WASD(KeyEvent.VK_W, KeyEvent.VK_S, KeyEvent.VK_A, KeyEvent.VK_D);
+  ARROWS(Keyboard.UP, Keyboard.DOWN, Keyboard.LEFT, Keyboard.RIGHT),
+  WASD(Keyboard.W, Keyboard.S, Keyboard.A, Keyboard.D);
 
   public int UP, DOWN, LEFT, RIGHT;
 
@@ -19,15 +19,14 @@ public enum KeySet {
     RIGHT = right;
   }
 
-  public Vector getVector(KeyEvent key) {
-    int code = key.getKeyCode();
-    if (code == UP)
+  public Vector getVector(int keyCode) {
+    if (keyCode == UP)
       return Vector.UP;
-    if (code == DOWN)
+    if (keyCode == DOWN)
       return Vector.DOWN;
-    if (code == LEFT)
+    if (keyCode == LEFT)
       return Vector.LEFT;
-    if (code == RIGHT)
+    if (keyCode == RIGHT)
       return Vector.RIGHT;
 
     return null;
