@@ -216,6 +216,20 @@ public abstract class Shape {
     return maxRotation;
   }
 
+  private Direction maxRotation(
+    Direction target,
+    boolean clockwise,
+    Segment obstacle
+  ) {
+    return
+      Geometry.maxRotation(
+        this,
+        target,
+        clockwise,
+        obstacle
+      );
+  }
+
   /**
    * Moves in the shape's direction.
    * <p>
@@ -246,10 +260,15 @@ public abstract class Shape {
     }
     Point end = getCenter().translation(new Vector(direction, pixels));
     Point maxMovement = end;
-    Set<Shape> solids = Game.getSolids();
-    for (Shape solid : solids) {
-      if (solid == this) continue;
-      Point blockedEnd = this.maxMovement(end, solid);
+    Shape[] obstacles;
+    if (isSolid()) {
+      obstacles = Game.getAllShapes();
+    } else {
+      obstacles = Game.getSolids();
+    }
+    for (Shape obstacle : obstacles) {
+      if (obstacle == this) continue;
+      Point blockedEnd = this.maxMovement(end, obstacle);
       if (Geometry.distance(getCenter(), blockedEnd) < Geometry.distance(getCenter(), maxMovement)) {
         maxMovement = blockedEnd;
       }
@@ -277,7 +296,7 @@ public abstract class Shape {
     }
     if (getDirection() == null) return;
 
-    // We assume that, with these old limits, this shape is not "stuck" to the
+    // We assume that, with these old limits, this shape is not "stuck" on the
     // border. Rotation may cause the shape to get "stuck," so we'll
     // translate it back to these old limits after rotation.
     double[] oldLimit = new double[borders.length];
@@ -563,7 +582,7 @@ public abstract class Shape {
     if (isSolid()) {
       obstacles = Game.getAllShapes();
     } else {
-      obstacles = Game.getSolids().toArray(new Shape[0]);
+      obstacles = Game.getSolids();
     }
     for (Shape obstacle : obstacles) {
       if (obstacle == this) continue;
@@ -576,9 +595,24 @@ public abstract class Shape {
         maxRotate
       );
     }
-    // TODO: handle borders
-
+    if (Game.getBorderBehavior() == Game.BorderBehavior.SOLID ||
+        Game.getBorderBehavior() == Game.BorderBehavior.BOUNCE
+    ) {
+      for (Segment border: Game.getBorders()) {
+        Direction blockedEnd =
+          this.maxRotation(target, clockwise, border);
+        maxRotate = Geometry.closer(
+          getDirection(),
+          clockwise,
+          blockedEnd,
+          maxRotate
+        );
+      }
+    }
     setDirection(maxRotate);
+    if (Game.getBorderBehavior() == Game.BorderBehavior.BOUNCE) {
+      bounce();
+    }
   }
 
   /**

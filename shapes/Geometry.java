@@ -659,6 +659,60 @@ abstract class Geometry {
   }
 
   static Direction maxRotation(
+      Shape rotator,
+      Direction target,
+      boolean clockwise,
+      Segment obstacle
+  ) {
+    Direction maxRotate = null;
+    if (rotator instanceof Circle) {
+      maxRotate = target;   // circle rotation doesn't cause collisions
+    } else if (rotator instanceof ConvexPolygon) {
+      maxRotate = maxRotation(
+        (ConvexPolygon) rotator,
+        target,
+        clockwise,
+        obstacle
+      );
+    }
+    if (maxRotate == null) {
+      return target;
+    }
+
+    maxRotate = insertGap(rotator, clockwise, target, maxRotate);
+
+    return maxRotate;
+  }
+  
+  static Direction maxRotation(
+      ConvexPolygon rotator,
+      Direction target,
+      boolean clockwise,
+      Segment obstacle
+  ) {
+    Direction maxRotate = target;
+    Direction origin = rotator.getDirection();
+
+    for (Point corner : rotator.getCorners()) {
+      Direction cornerOrigin = new Direction(rotator.getCenter(), corner);
+      double cornerOffset = cornerOrigin.getRadians() - origin.getRadians();
+      Direction cornerTarget = target.rotationByRadians(cornerOffset);
+      Direction cornerCandidate = maxRotation(
+        corner,
+        rotator.getCenter(),
+        cornerTarget,
+        clockwise,
+        obstacle
+      );
+      Direction candidate =
+        cornerCandidate.rotationByRadians(-1 * cornerOffset);
+      maxRotate = closer(origin, clockwise, candidate, maxRotate);
+    }
+
+    return maxRotate;
+  }
+
+  static Direction maxRotation(
       ConvexPolygon rotator,
       Direction target,
       boolean clockwise,

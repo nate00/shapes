@@ -123,8 +123,8 @@ public abstract class Game {
     }
   }
 
-  static Set<Shape> getSolids() {
-    return solidShapes;
+  static Shape[] getSolids() {
+    return solidShapes.toArray(new Shape[0]);
   }
 
   static void addSolid(Shape shape) {
