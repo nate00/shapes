@@ -45,6 +45,8 @@ public class TextStyle {
     Point speechOrigin
   ) {
     int boxMargin = 3;
+
+    // find height and width of rendered speech
     FontMetrics metrics = g.getFontMetrics(getFont());
     String[] lines = string.split("\n");
     double width = 0.0;
@@ -79,7 +81,10 @@ public class TextStyle {
     Point bottomLeft = referencePoint.translation(offset);
     Point textBottomLeft = bottomLeft;
     Vector lineOffset = new Vector(0, wordHeight + spaceHeight);
+
+    // render background
     if (backgroundColor != null) {
+      height += metrics.getDescent();
       Point topLeft = bottomLeft.translation(new Vector(0, height));
 
       g.setColor(backgroundColor);
@@ -90,26 +95,31 @@ public class TextStyle {
         (int) height
       );
 
-      textBottomLeft =
-        bottomLeft.translation(new Vector(boxMargin, boxMargin));
+      textBottomLeft = bottomLeft.translation(
+        new Vector(boxMargin, boxMargin + metrics.getDescent())
+      );
 
+      // render speech bubble "foot"
       if (speechOrigin != null) {
-        Point third = bottomLeft.translation(new Vector(7, height));  // TODO: height?
+        Point third = bottomLeft.translation(new Vector(7, 0));  // TODO: height?
         int[] x = new int[] {
           bottomLeft.getCanvasX(),
           speechOrigin.getCanvasX(),
           third.getCanvasX()
         };
         int[] y = new int[] {
-          bottomLeft.getCanvasY(),
+          bottomLeft.translation(new Vector(0, 1)).getCanvasY(),
           speechOrigin.getCanvasY(),
-          third.getCanvasY()
+          // translate upward to eliminate gap between foot and main background
+          // caused by rounding
+          third.translation(new Vector(0, 1)).getCanvasY()
         };
 
         g.fillPolygon(x, y, 3);
       }
     }
-    // TODO CODING
+
+    // render text
     applyTo(g);
     for (int i = lines.length - 1; i >= 0; i--) {
       g.drawString(
@@ -118,9 +128,6 @@ public class TextStyle {
         textBottomLeft.getCanvasY()
       );
       bottomLeft = bottomLeft.translation(lineOffset);
-    }
-    // draw speech bubble "foot"
-    if (speechOrigin != null && backgroundColor != null) {
     }
   }
 
