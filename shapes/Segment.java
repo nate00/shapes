@@ -69,6 +69,13 @@ class Segment {
     return new Point[] { getStart(), getEnd() };
   }
 
+  Segment translation(Vector vector) {
+    return new Segment(
+      start.translation(vector),
+      end.translation(vector)
+    );
+  }
+
   // Ax + By = C
   double getA() {
     return end.getY() - start.getY();

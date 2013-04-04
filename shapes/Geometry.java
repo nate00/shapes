@@ -1,5 +1,6 @@
 package shapes;
 
+import java.util.*;
 import static java.lang.Math.*;
 
 abstract class Geometry {
@@ -193,11 +194,11 @@ abstract class Geometry {
 
   // TODO: test
   // line intersection, not segment intersection
-  // returns null for no intersection
-  static Segment lineIntersection(BasicCircle circle, Segment seg) {
-    Segment perp = perpendicularThrough(seg, circle.center);
+  // returns empty array for no intersection
+  static Point[] lineIntersection(BasicCircle circle, Segment line) {
+    Segment perp = perpendicularThrough(line, circle.center);
     if (perp.length() > circle.radius) {
-      return null;
+      return new Point[0];
     }
 
     // angle (at the center of the circle) between the perpendicular and
@@ -217,10 +218,17 @@ abstract class Geometry {
         circle.center.translation(radius);
     }
 
-    return new Segment(
-      pointOfIntersection[0],
-      pointOfIntersection[1]
-    );
+    return pointOfIntersection;
+  }
+
+  static Point[] segmentIntersection(BasicCircle circle, Segment seg) {
+    List<Point> segmentIntersections = new ArrayList<Point>();
+    for (Point intersection : lineIntersection(circle, seg)) {
+      if (seg.contains(intersection)) {
+        segmentIntersections.add(intersection);
+      }
+    }
+    return segmentIntersections.toArray(new Point[0]);
   }
 
   // returns null for parallel lines
@@ -473,21 +481,22 @@ abstract class Geometry {
       Point cornerTarget = target.translation(cornerOffset);
       Segment cornerPath = new Segment(corner, cornerTarget);
 
-      Segment intersection =
+      Point[] intersections =
         lineIntersection(new BasicCircle(obstacle), cornerPath);
-      if (intersection == null) {
+      if (intersections.length < 2) {
+        // length is either 0 or 2
         continue;
       }
 
       // of the two intersection points, this one is closer to mover's starting point
       Point closer; 
       if (
-        distance(intersection.getStart(), corner) <
-        distance(intersection.getEnd(), corner)
+        distance(intersections[0], corner) <
+        distance(intersections[1], corner)
       ) {
-        closer = intersection.getStart();
+        closer = intersections[0];
       } else {
-        closer = intersection.getEnd();
+        closer = intersections[1];
       }
 
       Point centerDestination = closer.translation(cornerOffset.reverse());
@@ -576,9 +585,9 @@ abstract class Geometry {
   ) {
     Direction ret;
     if (clockwise) {
-      ret = maxRotate.rotationByDegrees(2);
+      ret = maxRotate.rotationByDegrees(0.05);
     } else {
-      ret = maxRotate.rotationByDegrees(-2);
+      ret = maxRotate.rotationByDegrees(-0.05);
     }
     if (closer(rotator.getDirection(), clockwise, ret, maxRotate) == ret) {
       return ret;
@@ -743,6 +752,7 @@ abstract class Geometry {
     return maxRotate;
   }
 
+  // returns direction from pivot to rotator.getStart()
   static Direction maxRotation(
     Segment rotator,
     Point pivot,
@@ -750,8 +760,48 @@ abstract class Geometry {
     boolean clockwise,
     Circle obstacle
   ) {
-    // TODO
-    return target;
+    Direction maxRotate = target;
+    Direction origin = new Direction(pivot, rotator.getStart());
+
+    // Instead of rotating rotator, imagine revolving obstacle around pivot
+    // and finding the points where it is tangent to rotator. To do so, draw
+    // a circle (obstacleRevolution) around pivot and find the points
+    // (revolutionIntersections) on the circle that are obstacle.getRadius()
+    // pixels away from rotator.
+    BasicCircle obstacleRevolution = new BasicCircle(
+      pivot,
+      distance(pivot, obstacle.getCenter())
+    );
+
+    Vector[] rotatorShifts = new Vector[2];
+    rotatorShifts[0] = new Vector(
+      rotator.direction().perpendicular(),
+      obstacle.getRadius()
+    );
+    rotatorShifts[1] = rotatorShifts[0].reverse();
+
+    List<Point> revolutionIntersections = new ArrayList<Point>();
+    for (Vector rotatorShift : rotatorShifts) {
+      Segment shifted = rotator.translation(rotatorShift);
+      Collections.addAll(
+        revolutionIntersections,
+        segmentIntersection(obstacleRevolution, shifted)
+      );
+    }
+
+    Direction obstacleDirection = new Direction(pivot, obstacle.getCenter());
+    for (Point revolutionIntersection : revolutionIntersections) {
+      Direction d = new Direction(pivot, revolutionIntersection);
+      double intersectionOffset =
+        obstacleDirection.getRadians() - d.getRadians();
+      Direction candidate =
+        origin.rotationByRadians(intersectionOffset);
+
+      maxRotate = closer(origin, clockwise, candidate, maxRotate);
+    }
+
+    // TODO CODING
+    return maxRotate;
   }
 
   static Direction maxRotation(
@@ -766,11 +816,7 @@ abstract class Geometry {
 
     BasicCircle intersectionPath =
       new BasicCircle(pivot, distance(pivot, obstacle));
-    Segment intersectionOriginSeg = lineIntersection(intersectionPath, rotator);
-    if (intersectionOriginSeg == null) {
-      return target;  // no collision
-    }
-    Point[] intersectionOrigins = intersectionOriginSeg.getEndpoints();
+    Point[] intersectionOrigins = lineIntersection(intersectionPath, rotator);
     for (Point intersectionOrigin : intersectionOrigins) {
       if (!rotator.contains(intersectionOrigin)) {
         continue;
@@ -782,12 +828,7 @@ abstract class Geometry {
       Direction intersectionDirection = new Direction(pivot, obstacle);
       Direction candidate =
         intersectionDirection.rotationByRadians(-1 * intersectionOffset);
-      maxRotate = closer(
-        origin,
-        clockwise,
-        candidate,
-        maxRotate
-      );
+      maxRotate = closer(origin, clockwise, candidate, maxRotate);
     }
     return maxRotate;
   }
@@ -830,11 +871,7 @@ abstract class Geometry {
     Direction origin = new Direction(pivot, rotator);
 
     BasicCircle path = new BasicCircle(pivot, distance(rotator, pivot));
-    Segment intersectionSeg = lineIntersection(path, obstacle);
-    if (intersectionSeg == null) {
-      return target;  // no collision
-    }
-    Point[] intersections = intersectionSeg.getEndpoints();
+    Point[] intersections = lineIntersection(path, obstacle);
     for (int i = 0; i < intersections.length; i++) {
       if (!obstacle.contains(intersections[i])) {
         continue;
