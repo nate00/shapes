@@ -257,7 +257,8 @@ public abstract class Game {
       title,
       new Point(WIDTH / 2.0, HEIGHT / 2.0),
       TextStyle.ReferencePointLocation.CENTER,
-      g
+      g,
+      null
     );
   }
 
@@ -295,7 +296,8 @@ public abstract class Game {
       subtitle,
       new Point(WIDTH / 2.0, 30),
       TextStyle.ReferencePointLocation.BOTTOM_CENTER,
-      g
+      g,
+      null
     );
   }
 

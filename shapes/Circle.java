@@ -98,6 +98,10 @@ public class Circle extends Shape {
     return maxMove;
   }
 
+  Point getSpeechOrigin() {
+    return center.translation(new Vector(new Direction(45), radius));
+  }
+
   // Override this!
   public void update() {}
 

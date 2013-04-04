@@ -65,8 +65,13 @@ public abstract class Shape {
       getSpeech(),
       bottomLeft,
       TextStyle.ReferencePointLocation.BOTTOM_LEFT,
-      g
+      g,
+      getSpeechOrigin()
     );
+  }
+
+  Point getSpeechOrigin() {
+    return getCenter();
   }
 
   /**

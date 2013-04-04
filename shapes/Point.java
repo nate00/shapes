@@ -6,7 +6,9 @@ import java.awt.*;
 /**
  * Represents a point in the 2D plane. Points are not displayed in the game.
  */
-public class Point extends Shape {
+// TODO: debugging
+public class Point //extends Shape {
+{
   private double x, y;
 
   public Point(double x, double y) {

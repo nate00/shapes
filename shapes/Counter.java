@@ -50,7 +50,8 @@ public class Counter {
       buf.toString(),
       countersTopLeft,
       TextStyle.ReferencePointLocation.TOP_LEFT,
-      g
+      g,
+      null
     );
   }
 

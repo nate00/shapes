@@ -7,6 +7,7 @@ public class TextStyle {
   private String fontName;
   private int fontSize;
   private Color color;
+  private Color backgroundColor;
   private boolean bold;
   private boolean italic;
 
@@ -40,8 +41,10 @@ public class TextStyle {
     String string,
     Point referencePoint,
     ReferencePointLocation referenceLocation,
-    Graphics2D g
+    Graphics2D g,
+    Point speechOrigin
   ) {
+    int boxMargin = 3;
     FontMetrics metrics = g.getFontMetrics(getFont());
     String[] lines = string.split("\n");
     double width = 0.0;
@@ -55,6 +58,10 @@ public class TextStyle {
     double height =
       (lines.length - 1) * spaceHeight + lines.length * wordHeight;
     Vector offset = null; // from reference point to bottom left
+    if (backgroundColor != null) {
+      width += 2 * boxMargin;
+      height += 2 * boxMargin;
+    }
     switch (referenceLocation) {
       case CENTER:
         offset = new Vector(width / -2.0, height / -2.0);
@@ -70,11 +77,50 @@ public class TextStyle {
         break;
     }
     Point bottomLeft = referencePoint.translation(offset);
-    Vector lineOffset= new Vector(0, wordHeight + spaceHeight);
+    Point textBottomLeft = bottomLeft;
+    Vector lineOffset = new Vector(0, wordHeight + spaceHeight);
+    if (backgroundColor != null) {
+      Point topLeft = bottomLeft.translation(new Vector(0, height));
+
+      g.setColor(backgroundColor);
+      g.fillRect(
+        topLeft.getCanvasX(),
+        topLeft.getCanvasY(),
+        (int) width,
+        (int) height
+      );
+
+      textBottomLeft =
+        bottomLeft.translation(new Vector(boxMargin, boxMargin));
+
+      if (speechOrigin != null) {
+        Point third = bottomLeft.translation(new Vector(7, height));  // TODO: height?
+        int[] x = new int[] {
+          bottomLeft.getCanvasX(),
+          speechOrigin.getCanvasX(),
+          third.getCanvasX()
+        };
+        int[] y = new int[] {
+          bottomLeft.getCanvasY(),
+          speechOrigin.getCanvasY(),
+          third.getCanvasY()
+        };
+
+        g.fillPolygon(x, y, 3);
+      }
+    }
+    // TODO CODING
     applyTo(g);
     for (int i = lines.length - 1; i >= 0; i--) {
-      g.drawString(lines[i], bottomLeft.getCanvasX(), bottomLeft.getCanvasY());
+      g.drawString(
+        lines[i],
+        textBottomLeft.getCanvasX(),
+        textBottomLeft.getCanvasY()
+      );
       bottomLeft = bottomLeft.translation(lineOffset);
+    }
+    // draw speech bubble "foot"
+    if (speechOrigin != null && backgroundColor != null) {
     }
   }
 
@@ -133,5 +179,13 @@ public class TextStyle {
 
   public boolean isItalic() {
     return italic;
+  }
+
+  public void setBackgroundColor(Color background) {
+    this.backgroundColor = background;
+  }
+
+  public Color getBackgroundColor() {
+    return backgroundColor;
   }
 }
