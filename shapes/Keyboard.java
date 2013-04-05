@@ -110,6 +110,9 @@ public class Keyboard extends KeyAdapter {
    *            being pressed on the given key set.
    */
   public static Direction direction(KeySet set) {
+    if (set == null) {
+      throw new IllegalArgumentException("set must not be null.");
+    }
     ArrayList<Vector> vectorsPressed = new ArrayList<Vector>();
     for (int keyPressed : keysPressed) {
       Vector vectorPressed = set.getVector(keyPressed);

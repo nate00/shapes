@@ -194,6 +194,9 @@ public abstract class Game {
   }
 
   public static void setCounterStyle(TextStyle counterStyle) {
+    if (counterStyle == null) {
+      throw new IllegalArgumentException("counterStyle must not be null.");
+    }
     Game.counterStyle = counterStyle;
   }
 
@@ -206,6 +209,9 @@ public abstract class Game {
   }
 
   public static void setBackgroundColor(Color backgroundColor) {
+    if (backgroundColor == null) {
+      throw new IllegalArgumentException("backgroundColor must not be null.");
+    }
     canvas.setBackground(backgroundColor);
   }
 
@@ -233,6 +239,9 @@ public abstract class Game {
   }
 
   public static void setTitleStyle(TextStyle titleStyle) {
+    if (titleStyle == null) {
+      throw new IllegalArgumentException("titleStyle must not be null.");
+    }
     Game.titleStyle = titleStyle;
   }
 
@@ -263,6 +272,9 @@ public abstract class Game {
   }
 
   public static void setSubtitleStyle(TextStyle subtitleStyle) {
+    if (subtitleStyle == null) {
+      throw new IllegalArgumentException("subtitleStyle must not be null.");
+    }
     Game.subtitleStyle = subtitleStyle;
   }
 
@@ -271,11 +283,11 @@ public abstract class Game {
   }
 
   public static void setSubtitle(String subtitle, int duration) {
-    if (duration < 0) {
-      throw new IllegalArgumentException("Duration cannot be negative.");
-    }
     if (subtitle == null) {
       duration = 0;
+    }
+    if (duration < 0) {
+      throw new IllegalArgumentException("Duration cannot be negative.");
     }
     Game.subtitle = subtitle;
     Game.subtitleDuration = duration;
@@ -325,6 +337,9 @@ public abstract class Game {
    *                  of the window.
    */
   public static void setBorderBehavior(BorderBehavior behavior) {
+    if (behavior == null) {
+      throw new IllegalArgumentException("behavior must not be null.");
+    }
     Game.borderBehavior = behavior;
   }
 

@@ -1,7 +1,6 @@
 Important:
--Fail fast
--Make constructors set up default values better.
 -Images
+-Geometry.distance(Shape, Shape)
 
 Finishing touches:
 -make direction, center, etc. consistently private or protected
@@ -12,16 +11,13 @@ Finishing touches:
 -make naming decisions for accessors [.x() vs .getX()] more consistent
 
 Trivialities:
--make imports consistent (* or not)
 -ensure partitioning of methods between Geometry and Shape subclasses is consistent
 
 Bugs:
 -Make move() and rotate() not always lose gap
--Solids move through other shapes
 -Speech isn't visible when shape goes off the right or top of the screen
 -Very fast mouse clicks (between frames) might not work
 -Pressing Space + Up + Left doesn't work?
--KeyBindings for Mac?
 -insertGap() for rotation doesn't work well for large shapes because the gap is in degrees, not pixels. Fixing it is nontrivial because gap insertion must be per possible intersection point, not per rotation.
 
 Wishlist:

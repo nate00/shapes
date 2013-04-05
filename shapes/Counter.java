@@ -9,6 +9,9 @@ public class Counter {
   private boolean destroyed = false;
 
   public Counter(String name, int initialValue) {
+    if (name == null) {
+      throw new IllegalArgumentException("name must not be null.");
+    }
     this.name = name;
     this.value = initialValue;
     Game.addCounter(this);
@@ -58,6 +61,9 @@ public class Counter {
   /* Getters and settings*/
 
   public void setName(String name) {
+    if (name == null) {
+      throw new IllegalArgumentException("name must not be null.");
+    }
     this.name = name;
   }
 

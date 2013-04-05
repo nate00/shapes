@@ -14,6 +14,8 @@ abstract class ConvexPolygon extends Shape {
 
   public ConvexPolygon() {
     super();
+
+    // set defaults
     setDisplaysRotation(true);
   }
 
@@ -81,7 +83,7 @@ abstract class ConvexPolygon extends Shape {
   }
 
   public boolean contains(Shape shape) {
-    if (this.isDestroyed() || shape.isDestroyed()) {
+    if (this.isDestroyed() || shape == null || shape.isDestroyed()) {
       return false;
     }
     if (shape instanceof ConvexPolygon) {
@@ -110,6 +112,9 @@ abstract class ConvexPolygon extends Shape {
   }
 
   public boolean contains(Point p) {
+    if (p == null) {
+      return false;
+    }
     // the point is inside if all cross products have the same sign
     boolean positive = false;
     boolean first = true;

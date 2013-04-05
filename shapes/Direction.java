@@ -21,6 +21,12 @@ public class Direction {
   }
 
   public Direction(Point origin, Point terminus) {
+    if (origin == null) {
+      throw new IllegalArgumentException("origin must not be null");
+    }
+    if (terminus == null) {
+      throw new IllegalArgumentException("terminus must not be null");
+    }
     double deltaX = terminus.getX() - origin.getX();
     double deltaY = terminus.getY() - origin.getY();
     double radians = Math.atan2(deltaY, deltaX);

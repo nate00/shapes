@@ -149,6 +149,9 @@ public class TextStyle {
   /* Getters and setters */
 
   public void setFontName(String fontName) {
+    if (fontName == null) {
+      throw new IllegalArgumentException("fontName must not be null.");
+    }
     this.fontName = fontName;
   }
 
@@ -157,6 +160,9 @@ public class TextStyle {
   }
 
   public void setFontSize(int fontSize) {
+    if (fontSize <= 0) {
+      throw new IllegalArgumentException("fontSize must be positive");
+    }
     this.fontSize = fontSize;
   }
 
@@ -165,6 +171,9 @@ public class TextStyle {
   }
 
   public void setColor(Color color) {
+    if (color == null) {
+      throw new IllegalArgumentException("color must not be null.");
+    }
     this.color = color;
   }
 
@@ -188,6 +197,7 @@ public class TextStyle {
     return italic;
   }
 
+  // set null for no background
   public void setBackgroundColor(Color background) {
     this.backgroundColor = background;
   }

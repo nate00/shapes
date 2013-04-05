@@ -1,5 +1,5 @@
 import shapes.*;
-import java.awt.Color;
+import java.awt.*;
 
 public class MyGame extends Game {
 

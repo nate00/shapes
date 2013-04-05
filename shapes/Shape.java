@@ -1,7 +1,6 @@
 package shapes;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.util.*;
 
 /**
@@ -96,7 +95,6 @@ public abstract class Shape {
     }
   }
 
-  // Overriding constructors should call super() and call setup() at the end
   /**
    * Constructs a new shape with default values.
    * <p>
@@ -106,10 +104,13 @@ public abstract class Shape {
   public Shape() {
     Game.addShape(this);
     Game.setLayer(this, 0);
+
     // set default values
-    setColor(Color.GREEN);
+    setColor(Color.BLACK);
     setFilled(true);
-    setSpeechStyle(TextStyle.sansSerif());
+    TextStyle defaultSpeech = TextStyle.sansSerif();
+    defaultSpeech.setBackgroundColor(Color.WHITE);
+    setSpeechStyle(defaultSpeech);
     setDirection(Direction.RIGHT);
     destroyed = false;
   }
@@ -137,10 +138,12 @@ public abstract class Shape {
    * Checks if this shape is touching a given segment.
    *
    * @param   seg the segment to check.
-   * @return      true if this shape is touching <code>seg</code>, false 
-   *              otherwise.
+   * @return      <code>true</code> if this shape is touching 
+   *              <code>seg</code>, <code>false</code> otherwise. Returns
+   *              <code>false</code> if <code>seg</code> is <code>null</code>.
    */
   boolean isTouching(Segment seg) {
+    if (seg == null) return false;
     if (isDestroyed()) return false;
     return Geometry.touching(this, seg);
   }
@@ -149,9 +152,13 @@ public abstract class Shape {
    * Checks if this shape is touching another shape.
    *
    * @param   s the shape to check.
-   * @return    true if this shape is touching <code>s</code>, false otherwise.
+   * @return    <code>true</code> if this shape is touching <code>s</code>,
+   *            <code>false</code> otherwise.
+   *            Returns <code>false</code> if <code>s</code> is
+   *            <code>null</code>.
    */
   public boolean isTouching(Shape s) {
+    if (s == null) return false;
     if (isDestroyed() || s.isDestroyed()) {
       return false;
     }
@@ -234,7 +241,8 @@ public abstract class Shape {
    * Moves in the shape's direction.
    * <p>
    * Moves <code>pixels</code> pixels in the direction set using
-   * {@link #setDirection(Direction)}. Won't move through solid shapes.
+   * {@link #setDirection(Direction)}. Won't move through solid shapes, and
+   * won't move if direction hasn't been set.
    *
    * @param   pixels  the distance to move.
    * @see     #move(Direction, double)
@@ -251,7 +259,8 @@ public abstract class Shape {
    * Won't move through solid shapes.
    *
    * @param   pixels    the distance to move.
-   * @param   direction the direction in which to move.
+   * @param   direction the direction in which to move. Won't move if
+   *                    <code>null</code>.
    * @see     #move(double)
    */
   public void move(Direction direction, double pixels) {
@@ -421,7 +430,8 @@ public abstract class Shape {
   /**
    * Display text near this shape.
    * <p>
-   * Continues speaking until this method is called again with new text.
+   * Continues speaking until this method is called again with new text. Stops
+   * speaking if <code>speech</code> is <code>null</code>.
    *
    * @param   speech  what the shape says.
    * @see     #say(String, int)
@@ -430,12 +440,17 @@ public abstract class Shape {
    * @see     #isSpeaking()
    */
   public void say(String speech) {
+    if (speech == null) {
+      this.speechDuration = 0;
+      return;
+    }
     this.speech = speech;
     this.speechDuration = -1;
   }
   
   /**
-   * Displays text near this shape for a limited time.
+   * Displays text near this shape for a limited time. Stops speaking if
+   * <code>speech</code> is <code>null</code>.
    * 
    * @param   speech  what the shape says.
    * @param   frames  how long the shape speaks.
@@ -445,6 +460,13 @@ public abstract class Shape {
    * @see     #isSpeaking()
    */
   public void say(String speech, int frames) {
+    if (speech == null) {
+      this.speechDuration = 0;
+      return;
+    }
+    if (frames < 0) {
+      throw new IllegalArgumentException("frames must be non-negative.");
+    }
     this.speech = speech;
     this.speechDuration = frames;
   }
@@ -474,6 +496,9 @@ public abstract class Shape {
    * @see     #getSpeechStyle()
    */
   public void setSpeechStyle(TextStyle speechStyle) {
+    if (speechStyle == null) {
+      throw new IllegalArgumentException("speechStyle must not be null.");
+    }
     this.speechStyle = speechStyle;
   }
 
@@ -526,7 +551,8 @@ public abstract class Shape {
    *
    * @param   target  the shape to aim towards.
    * @return          the direction of <code>target</code>'s relative to this
-   *                  shape's center.
+   *                  shape's center, or <code>null</code> if
+   *                  <code>target</code> is <code>null</code>.
    * @see             #towards(Point)
    * @see             #move(Direction, double)
    * @see             #setDirection(Direction)
@@ -703,6 +729,9 @@ public abstract class Shape {
    * @param color the color the shape will be drawn in.
    */
   public void setColor(Color color) {
+    if (color == null) {
+      throw new IllegalArgumentException("color must not be null.");
+    }
     this.color = color;
   }
 
@@ -773,6 +802,10 @@ public abstract class Shape {
    *    {@link #setSpeed(double)}).
    *   </li>
    * </ul>
+   *
+   * If this shape's direction is set to <code>null</code>, it will be drawn
+   * facing to the right,
+   * and calls to {@link #move(double)} will not move the shape.
    *
    * @param  direction the direction the shape will face.
    */
@@ -864,6 +897,9 @@ public abstract class Shape {
    * @param center  a point representing the location of the shape's new center.
    */
   public void setCenter(Point center) {
+    if (center == null) {
+      throw new IllegalArgumentException("center must not be null.");
+    }
     this.center = center;
   }
 

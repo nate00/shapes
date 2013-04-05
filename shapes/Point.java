@@ -17,6 +17,9 @@ public class Point //extends Shape {
   }
 
   public Point translation(Vector v) {
+    if (v == null) {
+      throw new IllegalArgumentException("direction must not be null.");
+    }
     Point p = new Point(x, y);
     p.setX(p.getX() + v.getXComponent());
     p.setY(p.getY() + v.getYComponent());

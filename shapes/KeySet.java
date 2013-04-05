@@ -1,6 +1,6 @@
 package shapes;
 
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 
 /**
  * Used in calls to {@link Keyboard#direction(KeySet)} to specify which

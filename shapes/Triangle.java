@@ -13,8 +13,10 @@ public class Triangle extends ConvexPolygon {
 
   public Triangle(Point center, double size) {
     super();
-    this.center = center;
-    this.size = size;
+    setCenter(center);
+    setSize(size);
+
+    // set defaults
     setColor(Color.YELLOW);
   }
 
@@ -49,6 +51,9 @@ public class Triangle extends ConvexPolygon {
    * @param size  the new size of the triangle.
    */
   public void setSize(double size) {
+    if (size <= 0.0) {
+      throw new IllegalArgumentException("size must be positive.");
+    }
     this.size = size;
   }
 

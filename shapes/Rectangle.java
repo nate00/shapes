@@ -11,10 +11,12 @@ public class Rectangle extends ConvexPolygon {
   private double width, height;
 
   public Rectangle(Point center, double width, double height) {
+    setCenter(center);
+    setWidth(width);
+    setHeight(height);
+
+    // set defaults
     setColor(Color.GREEN);
-    this.center = center;
-    this.width = width;
-    this.height = height;
   }
 
   public Rectangle() {
@@ -42,6 +44,9 @@ public class Rectangle extends ConvexPolygon {
   }
 
   public void setUpperLeft(Point upperLeft) {
+    if (upperLeft == null) {
+      throw new IllegalArgumentException("upperLeft must not be null.");
+    }
     setCenter(upperLeft.getX() + width / 2, upperLeft.getY() - height / 2);
   }
 

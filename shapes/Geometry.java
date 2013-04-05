@@ -276,6 +276,7 @@ abstract class Geometry {
                         c1.getRadius() - c2.getRadius();
       return distance;
     } else {
+      // TODO
       return Double.NaN;
     }
   }

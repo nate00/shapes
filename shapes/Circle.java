@@ -1,8 +1,7 @@
 package shapes;
 
 import java.util.*;
-import java.awt.Color;
-import java.awt.Graphics2D;
+import java.awt.*;
 
 /**
  * A circle that appears on screen and interacts with other shapes.
@@ -14,36 +13,28 @@ public class Circle extends Shape {
 
   public Circle(Point center, double radius) {
     super();
-    setDefaults();
     setCenter(center);
     setRadius(radius);
+
+    // set defaults
+    setColor(Color.PINK);
   }
 
   public Circle() {
-    super();
-    setDefaults();
-  }
-
-  // call for a non-displaying circle (for geometrical calculations)
-  Circle(Point center, double radius, boolean display) {
-    System.out.println("No display!");
-    setCenter(center);
-    setRadius(radius);
-  }
-
-  private void setDefaults() {
-    setCenter(new Point(200, 400));
-    setRadius(10);
-    setColor(Color.PINK);
-    setFilled(true);
-    setSpeechStyle(TextStyle.sansSerif());
+    this(new Point(200, 400), 10);
   }
 
   public boolean contains(Point p) {
+    if (p == null) {
+      return false;
+    }
     return Geometry.distance(getCenter(), p) < getRadius();
   }
 
   public boolean contains(Shape s) {
+    if (s == null) {
+      return false;
+    }
     // TODO: move disambiguation into Geometry, make Shape.contains(Shape) non-abstract, remove this code.
     if (this.isDestroyed() || s.isDestroyed()) {
       return false;
