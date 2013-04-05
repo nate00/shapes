@@ -3,6 +3,21 @@ package shapes;
 import java.awt.*;
 import java.awt.geom.*;
 
+/**
+ * Used to change the visual style of text displayed in the game. Can be used
+ * to customize text's font, size, color, etc.
+ * <p>
+ * There are a few places you can display text, including {@link Shape#say},
+ * {@link Game#setTitle}, {@link Game#setSubtitle}, and {@link Counter}.
+ * <p>
+ * <strong>Example usage:</strong>
+ * <p>
+ * <code>
+ *  TextStyle speechStyle = new TextStyle("Helvetica", 12, Color.BLACK);<br />
+ *  circle.setSpeechStyle(speechStyle);<br />
+ *  circle.say("Hello, world!");
+ * </code>
+ */
 public class TextStyle {
   private String fontName;
   private int fontSize;

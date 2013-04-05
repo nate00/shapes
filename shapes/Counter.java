@@ -3,6 +3,10 @@ package shapes;
 import java.awt.*;
 import java.util.*;
 
+/**
+ * Displays numerical values, such as score or lives remaining. Counters are
+ * displayed in the upper-left corner of the game window.
+ */
 public class Counter {
   private String name;
   private int value;

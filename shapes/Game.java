@@ -5,6 +5,7 @@ package shapes;
  */
 
 import java.awt.*;
+import java.applet.*;
 import java.awt.geom.*;
 import java.*;
 import javax.swing.*;
@@ -26,9 +27,10 @@ import java.lang.*;
  * example, you can call <code>Game.getAllShapes()</code> to get all the shapes
  * that currently exist in your game.
  */
-public abstract class Game {
+public abstract class Game extends Applet {
   private static JFrame frame;
   private static Canvas canvas;
+  private static boolean applet;
   private static Set<Shape> solidShapes;
   private static Set<Shape> allShapes;
 
@@ -47,13 +49,29 @@ public abstract class Game {
   private static TextStyle subtitleStyle;
   private static int subtitleDuration;
 
+  /**
+   * Represents the ways in which shapes can react to reaching the edge of the
+   * game window. Enumeration values are:
+   * <ul>
+   *  <li><code>NONE</code> allows shapes to leave the game window.</li>
+   *  <li><code>SOLID</code> prevents shapes from leaving the game window.</li>
+   *  <li><code>BOUNCE</code> makes shapes "bounce" off the edges of the game
+   *  window by changing their direction.</li>
+   * </ul>
+   * <strong>Example usage:</strong>
+   * <p>
+   * <code>
+   *  Game.setBorderBehavior(Game.BorderBehavior.SOLID);
+   * </code>
+   */
   public enum BorderBehavior { NONE, SOLID, BOUNCE };
   private static BorderBehavior borderBehavior;
 
   public static final int HEIGHT = 500;
   public static final int WIDTH = 800;
   
-  public Game() {
+  public Game(boolean web) {
+    this.applet = web;
     canvas = new Canvas(this);
     solidShapes =
       Collections.newSetFromMap(new ConcurrentHashMap<Shape, Boolean>());
@@ -67,12 +85,18 @@ public abstract class Game {
 
     counters = new ArrayList<Counter>();
 
-    frame = new JFrame();
     Mouse mouse = new Mouse();
-    frame.addMouseMotionListener(mouse);
-    frame.addMouseListener(mouse);
-    frame.addKeyListener(new Keyboard());
-    frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
+    if (applet) {
+      addMouseMotionListener(mouse);
+      addMouseListener(mouse);
+      addKeyListener(new Keyboard());
+    } else {
+      frame = new JFrame();
+      frame.addMouseMotionListener(mouse);
+      frame.addMouseListener(mouse);
+      frame.addKeyListener(new Keyboard());
+      frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
+    }
 
     setDefaults();
   }
@@ -87,13 +111,21 @@ public abstract class Game {
     setCounterStyle(TextStyle.sansSerif());
     setSubtitleStyle(TextStyle.sansSerif());
   }
+
+  public void init() {
+    ready();
+  }
   
   protected void ready() {
-    frame.add(canvas);
-    frame.pack();
-    frame.setLocationRelativeTo(null);
-    frame.setResizable(false);
-    frame.setVisible(true);
+    if (applet) {
+      add(canvas);
+    } else {
+      frame.add(canvas);
+      frame.pack();
+      frame.setLocationRelativeTo(null);
+      frame.setResizable(false);
+      frame.setVisible(true);
+    }
   }
 
   // Override this!
@@ -369,6 +401,10 @@ public abstract class Game {
     return borderBehavior;
   }
 
+  /**
+   * Represents a border of the game window. Used by
+   * {@link Shape#touchingBorders}.
+   */
   public enum Border { 
     TOP(Direction.UP, new Segment(0, HEIGHT, WIDTH, HEIGHT)),
     RIGHT(Direction.RIGHT, new Segment(WIDTH, HEIGHT, WIDTH, 0)),

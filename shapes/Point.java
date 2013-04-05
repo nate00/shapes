@@ -4,7 +4,7 @@ package shapes;
 import java.awt.*;
 
 /**
- * Represents a point in the 2D plane. Points are not displayed in the game.
+ * Represents a location in the 2D plane. Points are not displayed in the game.
  */
 // TODO: debugging
 public class Point //extends Shape {
