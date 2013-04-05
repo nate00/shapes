@@ -234,7 +234,7 @@ public abstract class Game {
     return titleDuration > 0;
   }
 
-  public boolean hasSubtitle() {
+  public static boolean hasSubtitle() {
     return subtitleDuration > 0 || subtitleDuration == -1;
   }
 
@@ -300,6 +300,14 @@ public abstract class Game {
       Game.subtitleDuration = -1;
     }
     Game.subtitle = subtitle;
+  }
+
+  public static String getSubtitle() {
+    if (!hasSubtitle()) {
+      return null;
+    }
+
+    return subtitle;
   }
 
   void renderSubtitle(Graphics2D g) {

@@ -66,6 +66,7 @@ public class Rectangle extends ConvexPolygon {
     this.width = width;
   }
 
+  @Override
   public String toString() {
     return "Rectangle at " + getCenter().toString() +
       " with height " + getHeight() + " and width " + getWidth();

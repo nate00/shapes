@@ -41,11 +41,11 @@ public class Direction {
     return new Direction(degrees);
   }
 
-  public double getRadians() {
+  public double toRadians() {
     return degrees / 180.0 * Math.PI;
   }
 
-  public double getDegrees() {
+  public double toDegrees() {
     return degrees;
   }
 
@@ -71,7 +71,7 @@ public class Direction {
   }
 
   public Direction rotationByRadians(double radians) {
-    return Direction.inRadians(getRadians() + radians);
+    return Direction.inRadians(toRadians() + radians);
   }
 
   public Direction rotationByDegrees(double degrees) {
@@ -104,9 +104,9 @@ public class Direction {
 
   boolean isWithinQuarterTurnOf(Direction dir) {
     return
-      Math.abs(dir.getDegrees() - degrees) < 90.0 ||
-      Math.abs(dir.getDegrees() - degrees - 360.0) < 90.0 ||
-      Math.abs(dir.getDegrees() - degrees + 360.0) < 90.0;
+      Math.abs(dir.toDegrees() - degrees) < 90.0 ||
+      Math.abs(dir.toDegrees() - degrees - 360.0) < 90.0 ||
+      Math.abs(dir.toDegrees() - degrees + 360.0) < 90.0;
   }
 
   @Override
@@ -119,7 +119,7 @@ public class Direction {
   }
 
   private boolean equals(Direction that) {
-    return Geometry.equals(this.getDegrees(), that.getDegrees());
+    return Geometry.equals(this.toDegrees(), that.toDegrees());
   }
 
   @Override

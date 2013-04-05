@@ -588,7 +588,7 @@ abstract class Geometry {
   }
 
   static double interiorRadians(Direction dirA, Direction dirB) {
-    double difference = abs(dirA.getRadians() - dirB.getRadians());
+    double difference = abs(dirA.toRadians() - dirB.toRadians());
     if (difference > PI) {
       difference = 2 * PI - difference;
     }
@@ -686,7 +686,7 @@ abstract class Geometry {
 
     for (Point corner : rotator.getCorners()) {
       Direction cornerOrigin = new Direction(rotator.getCenter(), corner);
-      double cornerOffset = cornerOrigin.getRadians() - origin.getRadians();
+      double cornerOffset = cornerOrigin.toRadians() - origin.toRadians();
       Direction cornerTarget = target.rotationByRadians(cornerOffset);
       Direction cornerCandidate = maxRotation(
         corner,
@@ -714,7 +714,7 @@ abstract class Geometry {
 
     for (Point corner : rotator.getCorners()) {
       Direction cornerOrigin = new Direction(rotator.getCenter(), corner);
-      double cornerOffset = cornerOrigin.getRadians() - origin.getRadians();
+      double cornerOffset = cornerOrigin.toRadians() - origin.toRadians();
       Direction cornerTarget = target.rotationByRadians(cornerOffset);
       Direction cornerCandidate = maxRotation(
         corner,
@@ -731,7 +731,7 @@ abstract class Geometry {
     for (Segment side : rotator.getSides()) {
       Direction sideOrigin =
         new Direction(rotator.getCenter(), side.getStart());
-      double sideOffset = sideOrigin.getRadians() - origin.getRadians();
+      double sideOffset = sideOrigin.toRadians() - origin.toRadians();
       Direction sideTarget = target.rotationByRadians(sideOffset);
       Direction sideCandidate = maxRotation(
         side,
@@ -759,7 +759,7 @@ abstract class Geometry {
 
     for (Point corner : rotator.getCorners()) {
       Direction cornerOrigin = new Direction(rotator.getCenter(), corner);
-      double cornerOffset = cornerOrigin.getRadians() - origin.getRadians();
+      double cornerOffset = cornerOrigin.toRadians() - origin.toRadians();
       Direction cornerTarget = target.rotationByRadians(cornerOffset);
       for (Segment obstacleSide : obstacle.getSides()) {
         Direction cornerCandidate = maxRotation(
@@ -778,7 +778,7 @@ abstract class Geometry {
     for (Segment side : rotator.getSides()) {
       Direction sideOrigin =
         new Direction(rotator.getCenter(), side.getStart());
-      double sideOffset = sideOrigin.getRadians() - origin.getRadians();
+      double sideOffset = sideOrigin.toRadians() - origin.toRadians();
       Direction sideTarget = target.rotationByRadians(sideOffset);
       for (Point obstacleCorner : obstacle.getCorners()) {
         Direction sideCandidate = maxRotation(
@@ -838,7 +838,7 @@ abstract class Geometry {
     for (Point revolutionIntersection : revolutionIntersections) {
       Direction d = new Direction(pivot, revolutionIntersection);
       double intersectionOffset =
-        obstacleDirection.getRadians() - d.getRadians();
+        obstacleDirection.toRadians() - d.toRadians();
       Direction candidate =
         origin.rotationByRadians(intersectionOffset);
 
@@ -869,7 +869,7 @@ abstract class Geometry {
       Direction intersectionOriginDirection =
         new Direction(pivot, intersectionOrigin);
       double intersectionOffset =
-        intersectionOriginDirection.getRadians() - origin.getRadians();
+        intersectionOriginDirection.toRadians() - origin.toRadians();
       Direction intersectionDirection = new Direction(pivot, obstacle);
       Direction candidate =
         intersectionDirection.rotationByRadians(-1 * intersectionOffset);
@@ -953,7 +953,7 @@ abstract class Geometry {
     if (origin.equals(target)) {
       return 0.0;
     }
-    double distance = target.getDegrees() - origin.getDegrees();
+    double distance = target.toDegrees() - origin.toDegrees();
     if (distance < 0) {
       distance += 360;
     }

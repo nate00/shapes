@@ -144,6 +144,7 @@ public class Circle extends Shape {
     this.radius = radius;
   }
 
+  @Override
   public String toString() {
     return
       "Circle at " + getCenter().toString() +

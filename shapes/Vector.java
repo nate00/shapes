@@ -44,11 +44,11 @@ class Vector {
   }
 
   public double getXComponent() {
-    return magnitude * Math.cos(direction.getRadians());
+    return magnitude * Math.cos(direction.toRadians());
   }
 
   public double getYComponent() {
-    return magnitude * Math.sin(direction.getRadians());
+    return magnitude * Math.sin(direction.toRadians());
   }
 
   public Direction getDirection() {

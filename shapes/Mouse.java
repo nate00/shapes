@@ -20,15 +20,15 @@ public class Mouse implements MouseMotionListener, MouseListener {
     return click;
   }
 
-  public void mousePressed(MouseEvent event) {
-    updateClick(event);
-  }
-
   private void updateClick(MouseEvent event) {
     click = new Point(
       Geometry.fromCanvasX(event.getX()),
       Geometry.fromCanvasY(event.getY())
     );
+  }
+
+  public void mousePressed(MouseEvent event) {
+    updateClick(event);
   }
 
   public void mouseDragged(MouseEvent event) {

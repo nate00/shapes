@@ -24,12 +24,12 @@ abstract class ConvexPolygon extends Shape {
     if (
       !displaysRotation ||
       getDirection() == null ||
-      Math.abs(getDirection().getRadians()) < Geometry.EPSILON
+      Math.abs(getDirection().toRadians()) < Geometry.EPSILON
     ) {
       return corners;
     }
 
-    double angle = getDirection().getRadians();
+    double angle = getDirection().toRadians();
     for (int i = 0; i < corners.length; i++) {
       double xOffset = corners[i].getX() - getCenter().getX();
       double yOffset = corners[i].getY() - getCenter().getY();

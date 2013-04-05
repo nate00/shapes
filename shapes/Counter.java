@@ -21,10 +21,6 @@ public class Counter {
     this("Score", 0);
   }
 
-  public String toString() {
-    return name + "  " + value;
-  }
-
   public void increaseBy(int amount) {
     value += amount;
   }
@@ -81,5 +77,10 @@ public class Counter {
 
   public boolean isDestroyed() {
     return destroyed;
+  }
+
+  @Override
+  public String toString() {
+    return name + "  " + value;
   }
 }

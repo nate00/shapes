@@ -1,13 +1,11 @@
 Important:
 -Images
+-Mouse location while up
 
 Finishing touches:
 -make direction, center, etc. consistently private or protected
 -commenting, external documentation
 -equals(), toString(), other basic methods
--ensure width consistently comes before height (and x before y)
--write @Override annotations
--make naming decisions for accessors [.x() vs .getX()] more consistent: .getX() for attributes, .toX() for conversion of conceptual object to a new type, .x() for related, computed objects
 
 Trivialities:
 -ensure partitioning of methods between Geometry and Shape subclasses is consistent
