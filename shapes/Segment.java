@@ -1,7 +1,7 @@
 package shapes;
 
 class Segment {
-  Point start, end;
+  private Point start, end;
 
   Segment(Point start, Point end) {
     setEndpoints(start, end);

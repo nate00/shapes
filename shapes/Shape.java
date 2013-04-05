@@ -25,9 +25,9 @@ public abstract class Shape {
   private int speechDuration;
   private TextStyle speechStyle;
   private boolean destroyed;
-  protected Direction direction;
+  private Direction direction;
   private double speed;
-  protected Point center;
+  private Point center;
 
   /**
    * Initializes the Shape. When you subclass shape, you'll

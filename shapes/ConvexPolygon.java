@@ -9,7 +9,7 @@ import java.awt.*;
  */
 abstract class ConvexPolygon extends Shape {
 
-  protected boolean displaysRotation;
+  private boolean displaysRotation;
   abstract Point[] getUnrotatedCorners();
 
   public ConvexPolygon() {
@@ -23,19 +23,19 @@ abstract class ConvexPolygon extends Shape {
     Point[] corners = getUnrotatedCorners();
     if (
       !displaysRotation ||
-      direction == null ||
-      Math.abs(direction.getRadians()) < Geometry.EPSILON
+      getDirection() == null ||
+      Math.abs(getDirection().getRadians()) < Geometry.EPSILON
     ) {
       return corners;
     }
 
-    double angle = direction.getRadians();
+    double angle = getDirection().getRadians();
     for (int i = 0; i < corners.length; i++) {
-      double xOffset = corners[i].getX() - center.getX();
-      double yOffset = corners[i].getY() - center.getY();
+      double xOffset = corners[i].getX() - getCenter().getX();
+      double yOffset = corners[i].getY() - getCenter().getY();
       corners[i] = new Point(
-        center.getX() + xOffset * Math.cos(angle) - yOffset * Math.sin(angle),
-        center.getY() + xOffset * Math.sin(angle) + yOffset * Math.cos(angle)
+        getCenter().getX() + xOffset * Math.cos(angle) - yOffset * Math.sin(angle),
+        getCenter().getY() + xOffset * Math.sin(angle) + yOffset * Math.cos(angle)
       );
     }
 
@@ -45,7 +45,7 @@ abstract class ConvexPolygon extends Shape {
   double maxRadius() {
     double max = 0;
     for (Point corner : getCorners()) {
-      max = Math.max(max, center.distanceTo(corner));
+      max = Math.max(max, getCenter().distanceTo(corner));
     }
     return max;
   }

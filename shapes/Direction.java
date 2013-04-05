@@ -9,7 +9,7 @@ package shapes;
  * circle). For example, up is 90 degrees and left is 180 degrees.
  */
 public class Direction {
-  double degrees;
+  private double degrees;
 
   public static Direction RIGHT = new Direction(0.0);
   public static Direction LEFT = new Direction(180.0);
