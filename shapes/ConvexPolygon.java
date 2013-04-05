@@ -183,11 +183,6 @@ abstract class ConvexPolygon extends Shape {
     return bottom;
   }
 
-  Point getSpeechOrigin() {
-    // TODO: make sure not to overshoot
-    return new Point(getRight() - 5, getTop() - 5);
-  }
-
   /**
    * Set whether this shape displays the direction it is facing. When set to
    * false, calls to {@link #setDirection} will not change the appearance of

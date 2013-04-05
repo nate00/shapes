@@ -70,7 +70,8 @@ public abstract class Shape {
   }
 
   Point getSpeechOrigin() {
-    return getCenter();
+    return
+      (new Point(getRight(), getTop())).translation(new Vector(-5, -5));
   }
 
   /**
@@ -572,11 +573,22 @@ public abstract class Shape {
   }
 
   /**
+   * Returns the distance between this shape and a point.
+   *
+   * @param target  the point whose distance away to find.
+   * @return  distance in pixels from this shape to <code>target</code>.
+   */
+  public double distanceTo(Point target) {
+    return Geometry.distance(this, target);
+  }
+
+  /**
    * Destroys this shape so it will no longer be rendered. Call this method
    * when you have finished using the shape.
-   *
+   * <p>
    * A destroyed shape will not appear on the screen and will not interact with
-   * other shapes. A destroyed shape cannot be undestroyed.
+   * other shapes. A destroyed shape cannot be undestroyed. Continuing to call
+   * this shape's methods after it has been destroyed has undefined results.
    */
   public void destroy() {
     // TODO: who remove the same from Game?

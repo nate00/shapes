@@ -267,23 +267,13 @@ abstract class Geometry {
     }
   }
 
-  // Returns NaN if the code for the given shape pair hasn't been written yet.
-  static double distance(Shape s, Shape t) {
-    if (s instanceof Circle && t instanceof Circle) {
-      Circle c1 = (Circle) s;
-      Circle c2 = (Circle) t;
-      double distance = distance(c1.getCenter(), c2.getCenter()) -
-                        c1.getRadius() - c2.getRadius();
-      return distance;
-    } else {
-      // TODO
-      return Double.NaN;
-    }
-  }
-
   // Returns a segment perpendicular to the original segment, starting at the
   // given point and ending on the segment (or corresponding line).
   static Segment perpendicularThrough(Segment original, Point through) {
+    if (original.length() < EPSILON) {
+      // TODO: WTF do I do in this case?
+      return new Segment(through, original.getStart());
+    }
     // perp is perpendicular and has the correct start, but does not have the
     // correct end
     Segment perp = new Segment(
@@ -292,7 +282,7 @@ abstract class Geometry {
     );
 
     Point intersection = lineIntersection(original, perp);
-
+    
     return new Segment(through, intersection);
   }
 
@@ -955,7 +945,6 @@ abstract class Geometry {
     return t;
   }
 
-  // TODO: test
   static double rotationalDistance(
     Direction origin,
     boolean clockwise,
@@ -985,6 +974,118 @@ abstract class Geometry {
     return false;
   }
 
+  // Returns NaN if the code for the given shape pair hasn't been written yet.
+  static double distance(Shape s, Shape t) {
+    if (touching(s, t)) {
+      return 0.0;
+    }
+    if (s instanceof Circle) {
+      if (t instanceof Circle) {
+        return distance((Circle) s, (Circle) t);
+      } else if (t instanceof ConvexPolygon) {
+        return distance((Circle) s, (ConvexPolygon) t);
+      } else {
+        return Double.NaN;
+      }
+    } else if (s instanceof ConvexPolygon) {
+      if (t instanceof Circle) {
+        return distance((Circle) t, (ConvexPolygon) s);
+      } else if (t instanceof ConvexPolygon) {
+        return distance((ConvexPolygon) s, (ConvexPolygon) t);
+      } else {
+        return Double.NaN;
+      }
+    } else {
+      return Double.NaN;
+    }
+  }
+
+  static double distance(Circle s, Circle t) {
+    double distance =
+      distance(s.getCenter(), t.getCenter()) -
+      (s.getRadius() + t.getRadius());
+    return max(distance, 0);
+  }
+
+  // assumes not touching
+  static double distance(Circle circle, ConvexPolygon poly) {
+    double centerDistance = Double.POSITIVE_INFINITY;
+    for (Segment side : poly.getSides()) {
+      centerDistance = min(
+        centerDistance,
+        segmentDistance(side, circle.getCenter())
+      );
+    }
+    double distance = centerDistance - circle.getRadius();
+    return distance;
+  }
+
+  // assumes not touching
+  static double distance(ConvexPolygon s, ConvexPolygon t) {
+    double distance = Double.POSITIVE_INFINITY;
+    for (Segment side : s.getSides()) {
+      for (Point corner : t.getCorners()) {
+        distance = min(distance, segmentDistance(side, corner));
+      }
+    }
+
+    for (Segment side : t.getSides()) {
+      for (Point corner : s.getCorners()) {
+        distance = min(distance, segmentDistance(side, corner));
+      }
+    }
+
+    return distance;
+  }
+
+  static double distance(Shape shape, Point point) {
+    if (shape.contains(point)) {
+      return 0.0;
+    }
+
+    if (shape instanceof Circle) {
+      return distance((Circle) shape, point);
+    } else if (shape instanceof ConvexPolygon) {
+      return distance((ConvexPolygon) shape, point);
+    } else {
+      return Double.NaN;
+    }
+  }
+
+  // assumes point is outside circle
+  static double distance(Circle circle, Point point) {
+    return distance(circle.getCenter(), point) - circle.getRadius();
+  }
+
+  // assumes point is outside poly
+  static double distance(ConvexPolygon poly, Point point) {
+    double distance = Double.POSITIVE_INFINITY;
+    for (Segment side : poly.getSides()) {
+      distance = min(distance, segmentDistance(side, point));
+    }
+    return distance;
+  }
+
+  static double segmentDistance(Segment seg, Point point) {
+    Segment perp = perpendicularThrough(seg, point);
+    if (seg.contains(perp.getEnd())) {
+      return perp.length();
+    } else {
+      return min(
+        distance(point, seg.getStart()),
+        distance(point, seg.getEnd())
+      );
+    }
+  }
+
+  static double lineDistance(Segment seg, Point point) {
+    return perpendicularThrough(seg, point).length();
+  }
+
+  static double distance(Point s, Point t) {
+    return sqrt(sq(s.getX() - t.getX()) + sq(s.getY() - t.getY()));
+  }
+  
   static double cross(Vector s, Vector t) {
     return s.getXComponent() * t.getYComponent() -
            s.getYComponent() * t.getXComponent();
@@ -1001,10 +1102,6 @@ abstract class Geometry {
 
   static double fromCanvasY(double canvasY) {
     return Game.HEIGHT - canvasY;
-  }
-
-  static double distance(Point s, Point t) {
-    return sqrt(sq(s.getX() - t.getX()) + sq(s.getY() - t.getY()));
   }
 
   static double sq(double x) {
