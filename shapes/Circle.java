@@ -11,6 +11,12 @@ import java.awt.*;
 public class Circle extends Shape {
   private double radius;
 
+  /**
+   * Construct a circle at the given center location with the given radius.
+   *
+   * @param center  the location of the circle's center.
+   * @param radius  the length, in pixels, of the circle's radius.
+   */
   public Circle(Point center, double radius) {
     super();
     setCenter(center);
@@ -20,6 +26,9 @@ public class Circle extends Shape {
     setColor(Color.PINK);
   }
 
+  /**
+   * Construct a circle at a default location and with a default radius.
+   */
   public Circle() {
     this(new Point(200, 400), 10);
   }
@@ -133,10 +142,22 @@ public class Circle extends Shape {
     return getCenter().getY() - getRadius();
   }
 
+  /**
+   * Returns the length of this circle's radius.
+   *
+   * @return  the length of this circle's radius in pixels.
+   * @see     #setRadius(double)
+   */
   public double getRadius() {
     return radius;
   }
 
+  /**
+   * Set the length of this circle's radius.
+   *
+   * @param radius the new length of this circle's radius in pixels.
+   * @see   #getRadius()
+   */
   public void setRadius(double radius) {
     if (radius <= 0) {
       throw new IllegalArgumentException("Radius must be positive.");

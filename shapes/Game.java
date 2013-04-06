@@ -1,9 +1,5 @@
 package shapes;
 
-/**
- * Adapted from http://zetcode.com/tutorials/javagamestutorial/animation/
- */
-
 import java.awt.*;
 import java.applet.*;
 import java.awt.geom.*;
@@ -25,7 +21,10 @@ import java.lang.*;
  * <p>
  * <code>Game</code> also has a few useful static methods and constants. For
  * example, you can call <code>Game.getAllShapes()</code> to get all the shapes
- * that currently exist in your game.
+ * that currently exist in your game. (In case you haven't encountered static
+ * methods before: if you see a method named <code>method</code> listed as
+ * <code>static</code> below, then you can call it with
+ * <code>Game.methodName()</code>.)
  */
 public abstract class Game extends Applet {
   private static JFrame frame;
@@ -67,9 +66,21 @@ public abstract class Game extends Applet {
   public enum BorderBehavior { NONE, SOLID, BOUNCE };
   private static BorderBehavior borderBehavior;
 
+  /**
+   * The height of the game window in pixels.
+   */
   public static final int HEIGHT = 500;
+  /**
+   * The width of the game window in pixels.
+   */
   public static final int WIDTH = 800;
   
+  /**
+   * Constructs a new game.
+   *
+   * @param web <code>true</code> if this game is meant to be an applet (which
+   *            can be played online), and <code>false</code> otherwise.
+   */
   public Game(boolean web) {
     this.applet = web;
     canvas = new Canvas(this);
@@ -112,10 +123,19 @@ public abstract class Game extends Applet {
     setSubtitleStyle(TextStyle.sansSerif());
   }
 
+  /**
+   * You can ignore this method. This method is used internally to initialize
+   * this game as an applet.
+   */
   public void init() {
     ready();
   }
   
+  /**
+   * You can ignore this method. This method gets called by the subclass's
+   * constructor when it has finished initializing, but that call is already
+   * written in <code>MyGame.java</code>.
+   */
   protected void ready() {
     if (applet) {
       add(canvas);
@@ -128,11 +148,21 @@ public abstract class Game extends Applet {
     }
   }
 
-  // Override this!
+  /**
+   * This method gets called when the game begins, and you should override it
+   * in your subclass. Put any code here that you want to execute at the
+   * beginning of the game and never again, such as creating shapes and setting
+   * background color.
+   */
   public void setup() {
   }
 
-  // Override this!
+  /**
+   * This method gets called once per frame, and you should override it
+   * in your subclass. Put any code here that you want to execute every frame
+   * to update the state of the game, such as moving shapes and making shapes
+   * say things.
+   */
   public void update() {
   }
 
@@ -176,6 +206,11 @@ public abstract class Game extends Applet {
     removeFromLayers(shape);
   }
 
+  /**
+   * Returns an array of all shapes currently in the game.
+   *
+   * @return  an array of all shapes currently in the game.
+   */
   public static Shape[] getAllShapes() {
     return allShapes.toArray(new Shape[0]);
   }
@@ -192,7 +227,21 @@ public abstract class Game extends Applet {
     layerOf.remove(shape);
   }
 
-  static void setLayer(Shape shape, int layer) {
+  /**
+   * Set the layer that a given shape will be displayed in. Since the shapes
+   * in this game are two dimensional, it must be decided which will appear "on
+   * top" when two shapes overlap. The shape in the higher layer will appear
+   * on top.
+   * <p>
+   * Setting a shape's layer will only affect how it is displayed; a shape's
+   * layer has no effect on how it interacts with other shapes. (For example,
+   * two shapes can touch even if they are in different layers. See
+   * {@link Shape#isTouching(Shape)}.)
+   *
+   * @param shape the shape whose layer is being set.
+   * @param layer the layer into which this shape will be moved.
+   */
+  public static void setLayer(Shape shape, int layer) {
     removeFromLayers(shape);
 
     // add new stuff
@@ -209,7 +258,16 @@ public abstract class Game extends Applet {
     return layerContents.get(layer);
   }
 
-  static int getLayerOf(Shape shape) {
+  /**
+   * Get the layer that the given shape is in. See {@link #setLayer} for more
+   * information about layers.
+   *
+   * @param shape the shape whose layer index will be returned.
+   * @return      the index of the layer that <code>shape</code> is contained
+   *              in.
+   * @see         #setLayer
+   */
+  public static int getLayerOf(Shape shape) {
     return layerOf.get(shape);
   }
 
@@ -225,6 +283,13 @@ public abstract class Game extends Applet {
     counters.remove(counter);
   }
 
+  /**
+   * Set the text style of all {@link Counter} objects. All counters share
+   * one text style.
+   *
+   * @param counterStyle  the new visual style of this game's counters.
+   * @see   #getCounterStyle
+   */
   public static void setCounterStyle(TextStyle counterStyle) {
     if (counterStyle == null) {
       throw new IllegalArgumentException("counterStyle must not be null.");
@@ -232,14 +297,33 @@ public abstract class Game extends Applet {
     Game.counterStyle = counterStyle;
   }
 
+  /**
+   * Returns the text style of all {@link Counter} objects. All counters share
+   * one text style.
+   *
+   * @return  the visual style of this game's counters.
+   * @see     #setCounterStyle
+   */
   public static TextStyle getCounterStyle() {
     return Game.counterStyle;
   }
 
+  /**
+   * Returns the background color.
+   *
+   * @return  the background color.
+   * @see     #setBackgroundColor
+   */
   public static Color getBackgroundColor() {
     return canvas.getBackground();
   }
 
+  /**
+   * Sets the background color.
+   *
+   * @param backgroundColor the new background color.
+   * @see     #getBackgroundColor
+   */
   public static void setBackgroundColor(Color backgroundColor) {
     if (backgroundColor == null) {
       throw new IllegalArgumentException("backgroundColor must not be null.");
@@ -266,10 +350,26 @@ public abstract class Game extends Applet {
     return titleDuration > 0;
   }
 
+  /**
+   * Return whether a subtitle is currently being displayed.
+   *
+   * @return  <code>true</code> if a subtitle is currently being displayed,
+   *          <code>false</code> if not.
+   * @see     #setSubtitle
+   * @see     #getSubtitle
+   */
   public static boolean hasSubtitle() {
     return subtitleDuration > 0 || subtitleDuration == -1;
   }
 
+  /**
+   * Set the visual style of the game's title. See {@link #setTitle} for more
+   * about titles.
+   *
+   * @param titleStyle  the new visual style of the game's title.
+   * @see   #setTitle
+   * @see   #getTitleStyle
+   */
   public static void setTitleStyle(TextStyle titleStyle) {
     if (titleStyle == null) {
       throw new IllegalArgumentException("titleStyle must not be null.");
@@ -277,10 +377,28 @@ public abstract class Game extends Applet {
     Game.titleStyle = titleStyle;
   }
 
+  /**
+   * Returns the visual style of the game's title. See {@link #setTitle} for more
+   * about titles.
+   *
+   * @return  the visual style of the game's title.
+   * @see     #setTitle
+   * @see     #setTitleStyle
+   */
   public static TextStyle getTitleStyle() {
     return titleStyle;
   }
 
+  /**
+   * Displays the given title in the game window. Displays <code>title</code>
+   * in the center of the screen. While the title is being displayed, no shapes
+   * or other text will be displayed, and no <code>update()</code> functions
+   * will be called. To display text while other things are displayed, see
+   * {@link #setSubtitle} or {@link Shape#say}.
+   *
+   * @param title     the text to display.
+   * @param duration  the number of frames the title will be displayed.
+   */
   public static void setTitle(String title, int duration) {
     if (duration < 0) {
       throw new IllegalArgumentException("Duration cannot be negative.");
@@ -303,6 +421,14 @@ public abstract class Game extends Applet {
     );
   }
 
+  /**
+   * Sets the visual style of the game's subtitles. See {@link #setSubtitle}
+   * for more about subtitles.
+   *
+   * @param subtitleStyle the new visual style of the game's subtitles.
+   * @see   #setSubtitle
+   * @see   #getSubtitleStyle
+   */
   public static void setSubtitleStyle(TextStyle subtitleStyle) {
     if (subtitleStyle == null) {
       throw new IllegalArgumentException("subtitleStyle must not be null.");
@@ -310,10 +436,29 @@ public abstract class Game extends Applet {
     Game.subtitleStyle = subtitleStyle;
   }
 
+  /**
+   * Returns the visual style of the game's subtitles. See {@link #setSubtitle}
+   * for more about subtitles.
+   *
+   * @return  the visual style of the game's subtitles.
+   * @see     #setSubtitle
+   * @see     #setSubtitleStyle
+   */
   public static TextStyle getSubtitleStyle() {
     return subtitleStyle;
   }
 
+  /**
+   * Displays the given subtitle for a given duration. Displays
+   * <code>subtitle</code> centered in the bottom of the screen. Only one
+   * subtitle can be displayed at a time.
+   *
+   * @param subtitle  the text to display. Won't display any subtitle if 
+   *                  <code>subtitle</code> is <code>null</code>.
+   * @param duration  the number of frames the subtitle will be displayed.
+   * @see   #setSubtitle(String)
+   * @see   #getSubtitle
+   */
   public static void setSubtitle(String subtitle, int duration) {
     if (subtitle == null) {
       duration = 0;
@@ -325,6 +470,17 @@ public abstract class Game extends Applet {
     Game.subtitleDuration = duration;
   }
 
+  /**
+   * Displays the given subtitle until it is cleared. Displays
+   * <code>subtitle</code> centered in the bottom of the screen. Only one
+   * subtitle can be displayed at a time. To clear the subtitle, either set
+   * a new subtitle or set it to <code>null</code>.
+   *
+   * @param subtitle  the text to display. Won't display any subtitle if 
+   *                  <code>subtitle</code> is <code>null</code>.
+   * @see   #setSubtitle(String, int)
+   * @see   #getSubtitle
+   */
   public static void setSubtitle(String subtitle) {
     if (subtitle == null) {
       Game.subtitleDuration = 0;
@@ -334,6 +490,13 @@ public abstract class Game extends Applet {
     Game.subtitle = subtitle;
   }
 
+  /**
+   * Returns the subtitle currently being displayed.
+   *
+   * @return  the subtitle currently being displayed, or <code>null</code> if
+   *          no subtitle is being displayed.
+   * @see     #setSubtitle
+   */
   public static String getSubtitle() {
     if (!hasSubtitle()) {
       return null;
@@ -358,7 +521,8 @@ public abstract class Game extends Applet {
   }
 
   /**
-   * Set the behavior of the window borders. The options are:
+   * Set the behavior of shapes when they reach the game window's borders.
+   * The options are:
    * <ul>
    *  <li><code>NONE</code>: allow shapes to leave the window.</li>
    *  <li><code>SOLID</code>: prevent shapes from leaving the window. (See
@@ -368,7 +532,7 @@ public abstract class Game extends Applet {
    *  border.</li>
    * </ul>
    * <p>
-   * Syntax example:
+   * Usage example:
    * <code>
    *  Game.setBorderBehavior(Game.BorderBehavior.SOLID);
    * </code>
@@ -384,7 +548,8 @@ public abstract class Game extends Applet {
   }
 
   /**
-   * Returns the behavior of the border windows. The options are:
+   * Returns the behavior of shapes at the game window's borders.
+   * The options are:
    * <ul>
    *  <li><code>NONE</code>: allow shapes to leave the window.</li>
    *  <li><code>SOLID</code>: prevent shapes from leaving the window. (See
@@ -420,6 +585,15 @@ public abstract class Game extends Applet {
       segment = seg;
     }
 
+    /**
+     * Returns the direction pointing towards this border. For example,
+     * <code>Game.Border.LEFT.getDirection()</code> returns a direction
+     * pointing left.
+     *
+     * @return  the direction pointing towards this border, or
+     *          <code>null</code> if this <code>Border</code> is
+     *          <code>OFFSCREEN</code>.
+     */
     public Direction getDirection() {
       return direction;
     }
@@ -428,6 +602,12 @@ public abstract class Game extends Applet {
       return segment;
     }
 
+    /**
+     * Returns an array of all four borders. Doesn't include
+     * <code>OFFSCREEN</code>.
+     *
+     * @return  an array of all four borders.
+     */
     public static Border[] all() {
       return new Border[] { TOP, RIGHT, BOTTOM, LEFT };
     }

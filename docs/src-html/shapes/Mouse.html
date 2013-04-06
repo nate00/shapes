@@ -22,36 +22,114 @@
 <span class="sourceLineNo">014</span> */<a name="line.14"></a>
 <span class="sourceLineNo">015</span>public class Mouse implements MouseMotionListener, MouseListener {<a name="line.15"></a>
 <span class="sourceLineNo">016</span>  private static Point click;<a name="line.16"></a>
-<span class="sourceLineNo">017</span>  <a name="line.17"></a>
-<span class="sourceLineNo">018</span>  // will be null when mouse is not down<a name="line.18"></a>
-<span class="sourceLineNo">019</span>  public static Point clickLocation() {<a name="line.19"></a>
-<span class="sourceLineNo">020</span>    return click;<a name="line.20"></a>
-<span class="sourceLineNo">021</span>  }<a name="line.21"></a>
-<span class="sourceLineNo">022</span><a name="line.22"></a>
-<span class="sourceLineNo">023</span>  public void mousePressed(MouseEvent event) {<a name="line.23"></a>
-<span class="sourceLineNo">024</span>    updateClick(event);<a name="line.24"></a>
-<span class="sourceLineNo">025</span>  }<a name="line.25"></a>
-<span class="sourceLineNo">026</span><a name="line.26"></a>
-<span class="sourceLineNo">027</span>  private void updateClick(MouseEvent event) {<a name="line.27"></a>
-<span class="sourceLineNo">028</span>    click = new Point(<a name="line.28"></a>
-<span class="sourceLineNo">029</span>      Geometry.fromCanvasX(event.getX()),<a name="line.29"></a>
-<span class="sourceLineNo">030</span>      Geometry.fromCanvasY(event.getY())<a name="line.30"></a>
-<span class="sourceLineNo">031</span>    );<a name="line.31"></a>
-<span class="sourceLineNo">032</span>  }<a name="line.32"></a>
-<span class="sourceLineNo">033</span><a name="line.33"></a>
-<span class="sourceLineNo">034</span>  public void mouseDragged(MouseEvent event) {<a name="line.34"></a>
-<span class="sourceLineNo">035</span>    updateClick(event);<a name="line.35"></a>
-<span class="sourceLineNo">036</span>  }<a name="line.36"></a>
-<span class="sourceLineNo">037</span><a name="line.37"></a>
-<span class="sourceLineNo">038</span>  public void mouseReleased(MouseEvent event) {<a name="line.38"></a>
-<span class="sourceLineNo">039</span>    click = null;<a name="line.39"></a>
-<span class="sourceLineNo">040</span>  }<a name="line.40"></a>
-<span class="sourceLineNo">041</span><a name="line.41"></a>
-<span class="sourceLineNo">042</span>  public void mouseMoved(MouseEvent event) {}<a name="line.42"></a>
-<span class="sourceLineNo">043</span>  public void mouseExited(MouseEvent event) {}<a name="line.43"></a>
-<span class="sourceLineNo">044</span>  public void mouseEntered(MouseEvent event) {}<a name="line.44"></a>
-<span class="sourceLineNo">045</span>  public void mouseClicked(MouseEvent event) {}<a name="line.45"></a>
-<span class="sourceLineNo">046</span>}<a name="line.46"></a>
+<span class="sourceLineNo">017</span>  private static Point mouse;<a name="line.17"></a>
+<span class="sourceLineNo">018</span>  private static boolean inWindow = false;<a name="line.18"></a>
+<span class="sourceLineNo">019</span>  <a name="line.19"></a>
+<span class="sourceLineNo">020</span>  /**<a name="line.20"></a>
+<span class="sourceLineNo">021</span>   * Returns the location of a mouse click. If the mouse button is pressed and<a name="line.21"></a>
+<span class="sourceLineNo">022</span>   * then the mouse is dragged (without releasing the button), the new location<a name="line.22"></a>
+<span class="sourceLineNo">023</span>   * of the mouse is returned. Unlike {@link #mouseLocation}, this function<a name="line.23"></a>
+<span class="sourceLineNo">024</span>   * will return &lt;code&gt;null&lt;/code&gt; if the mouse button isn't pressed.<a name="line.24"></a>
+<span class="sourceLineNo">025</span>   *<a name="line.25"></a>
+<span class="sourceLineNo">026</span>   * @return  the location of the mouse cursor, if the mouse button is pressed.<a name="line.26"></a>
+<span class="sourceLineNo">027</span>   *          Returns &lt;code&gt;null&lt;/code&gt; if the mouse button isn't pressed.<a name="line.27"></a>
+<span class="sourceLineNo">028</span>   */<a name="line.28"></a>
+<span class="sourceLineNo">029</span>  public static Point clickLocation() {<a name="line.29"></a>
+<span class="sourceLineNo">030</span>    return click;<a name="line.30"></a>
+<span class="sourceLineNo">031</span>  }<a name="line.31"></a>
+<span class="sourceLineNo">032</span><a name="line.32"></a>
+<span class="sourceLineNo">033</span>  /**<a name="line.33"></a>
+<span class="sourceLineNo">034</span>   * Returns the location of the mouse cursor. Unlike {@link #clickLocation},<a name="line.34"></a>
+<span class="sourceLineNo">035</span>   * this function will return the mouse's location even if the mouse button<a name="line.35"></a>
+<span class="sourceLineNo">036</span>   * isn't pressed.<a name="line.36"></a>
+<span class="sourceLineNo">037</span>   *<a name="line.37"></a>
+<span class="sourceLineNo">038</span>   * @return  the location of the mouse cursor. If the mouse cursor hasn't yet<a name="line.38"></a>
+<span class="sourceLineNo">039</span>   *          entered the game window, returns &lt;code&gt;null&lt;/code&gt;. If the cursor<a name="line.39"></a>
+<span class="sourceLineNo">040</span>   *          was in the window but has left, returns the location of the mouse<a name="line.40"></a>
+<span class="sourceLineNo">041</span>   *          just before it left the window.<a name="line.41"></a>
+<span class="sourceLineNo">042</span>   */<a name="line.42"></a>
+<span class="sourceLineNo">043</span>  public static Point mouseLocation() {<a name="line.43"></a>
+<span class="sourceLineNo">044</span>    return mouse;<a name="line.44"></a>
+<span class="sourceLineNo">045</span>  }<a name="line.45"></a>
+<span class="sourceLineNo">046</span><a name="line.46"></a>
+<span class="sourceLineNo">047</span>  /**<a name="line.47"></a>
+<span class="sourceLineNo">048</span>   * Returns whether the mouse cursor is in the game window.<a name="line.48"></a>
+<span class="sourceLineNo">049</span>   *<a name="line.49"></a>
+<span class="sourceLineNo">050</span>   * @return  &lt;code&gt;false&lt;/code&gt; if the mouse cursor is outside the game window,<a name="line.50"></a>
+<span class="sourceLineNo">051</span>   *          &lt;code&gt;true&lt;/code&gt; if inside.<a name="line.51"></a>
+<span class="sourceLineNo">052</span>   */<a name="line.52"></a>
+<span class="sourceLineNo">053</span>  public static boolean isInWindow() {<a name="line.53"></a>
+<span class="sourceLineNo">054</span>    return inWindow;<a name="line.54"></a>
+<span class="sourceLineNo">055</span>  }<a name="line.55"></a>
+<span class="sourceLineNo">056</span><a name="line.56"></a>
+<span class="sourceLineNo">057</span>  private void updateClick(MouseEvent event) {<a name="line.57"></a>
+<span class="sourceLineNo">058</span>    click = new Point(<a name="line.58"></a>
+<span class="sourceLineNo">059</span>      Geometry.fromCanvasX(event.getX()),<a name="line.59"></a>
+<span class="sourceLineNo">060</span>      Geometry.fromCanvasY(event.getY())<a name="line.60"></a>
+<span class="sourceLineNo">061</span>    );<a name="line.61"></a>
+<span class="sourceLineNo">062</span>  }<a name="line.62"></a>
+<span class="sourceLineNo">063</span><a name="line.63"></a>
+<span class="sourceLineNo">064</span>  private void updateMouse(MouseEvent event) {<a name="line.64"></a>
+<span class="sourceLineNo">065</span>    mouse = new Point(<a name="line.65"></a>
+<span class="sourceLineNo">066</span>      Geometry.fromCanvasX(event.getX()),<a name="line.66"></a>
+<span class="sourceLineNo">067</span>      Geometry.fromCanvasY(event.getY())<a name="line.67"></a>
+<span class="sourceLineNo">068</span>    );<a name="line.68"></a>
+<span class="sourceLineNo">069</span>  }<a name="line.69"></a>
+<span class="sourceLineNo">070</span><a name="line.70"></a>
+<span class="sourceLineNo">071</span>  /**<a name="line.71"></a>
+<span class="sourceLineNo">072</span>   * You can ignore this method. This method gets called when the mouse<a name="line.72"></a>
+<span class="sourceLineNo">073</span>   * button is pressed, and is used internally.<a name="line.73"></a>
+<span class="sourceLineNo">074</span>   */<a name="line.74"></a>
+<span class="sourceLineNo">075</span>  public void mousePressed(MouseEvent event) {<a name="line.75"></a>
+<span class="sourceLineNo">076</span>    updateClick(event);<a name="line.76"></a>
+<span class="sourceLineNo">077</span>    updateMouse(event);<a name="line.77"></a>
+<span class="sourceLineNo">078</span>  }<a name="line.78"></a>
+<span class="sourceLineNo">079</span><a name="line.79"></a>
+<span class="sourceLineNo">080</span>  /**<a name="line.80"></a>
+<span class="sourceLineNo">081</span>   * You can ignore this method. This method gets called when the mouse<a name="line.81"></a>
+<span class="sourceLineNo">082</span>   * is dragged, and is used internally.<a name="line.82"></a>
+<span class="sourceLineNo">083</span>   */<a name="line.83"></a>
+<span class="sourceLineNo">084</span>  public void mouseDragged(MouseEvent event) {<a name="line.84"></a>
+<span class="sourceLineNo">085</span>    updateClick(event);<a name="line.85"></a>
+<span class="sourceLineNo">086</span>    updateMouse(event);<a name="line.86"></a>
+<span class="sourceLineNo">087</span>  }<a name="line.87"></a>
+<span class="sourceLineNo">088</span><a name="line.88"></a>
+<span class="sourceLineNo">089</span>  /**<a name="line.89"></a>
+<span class="sourceLineNo">090</span>   * You can ignore this method. This method gets called when the mouse<a name="line.90"></a>
+<span class="sourceLineNo">091</span>   * button is released, and is used internally.<a name="line.91"></a>
+<span class="sourceLineNo">092</span>   */<a name="line.92"></a>
+<span class="sourceLineNo">093</span>  public void mouseReleased(MouseEvent event) {<a name="line.93"></a>
+<span class="sourceLineNo">094</span>    click = null;<a name="line.94"></a>
+<span class="sourceLineNo">095</span>  }<a name="line.95"></a>
+<span class="sourceLineNo">096</span><a name="line.96"></a>
+<span class="sourceLineNo">097</span>  /**<a name="line.97"></a>
+<span class="sourceLineNo">098</span>   * You can ignore this method. This method gets called when the mouse<a name="line.98"></a>
+<span class="sourceLineNo">099</span>   * is moved, and is used internally.<a name="line.99"></a>
+<span class="sourceLineNo">100</span>   */<a name="line.100"></a>
+<span class="sourceLineNo">101</span>  public void mouseMoved(MouseEvent event) {<a name="line.101"></a>
+<span class="sourceLineNo">102</span>    updateMouse(event);<a name="line.102"></a>
+<span class="sourceLineNo">103</span>  }<a name="line.103"></a>
+<span class="sourceLineNo">104</span><a name="line.104"></a>
+<span class="sourceLineNo">105</span>  /**<a name="line.105"></a>
+<span class="sourceLineNo">106</span>   * You can ignore this method. This method gets called when the mouse<a name="line.106"></a>
+<span class="sourceLineNo">107</span>   * exits the window, and is used internally.<a name="line.107"></a>
+<span class="sourceLineNo">108</span>   */<a name="line.108"></a>
+<span class="sourceLineNo">109</span>  public void mouseExited(MouseEvent event) {<a name="line.109"></a>
+<span class="sourceLineNo">110</span>    Mouse.inWindow = false;<a name="line.110"></a>
+<span class="sourceLineNo">111</span>  }<a name="line.111"></a>
+<span class="sourceLineNo">112</span>  /**<a name="line.112"></a>
+<span class="sourceLineNo">113</span>   * You can ignore this method. This method gets called when the mouse<a name="line.113"></a>
+<span class="sourceLineNo">114</span>   * enters the window, and is used internally.<a name="line.114"></a>
+<span class="sourceLineNo">115</span>   */<a name="line.115"></a>
+<span class="sourceLineNo">116</span>  public void mouseEntered(MouseEvent event) {<a name="line.116"></a>
+<span class="sourceLineNo">117</span>    Mouse.inWindow = true;<a name="line.117"></a>
+<span class="sourceLineNo">118</span>  }<a name="line.118"></a>
+<span class="sourceLineNo">119</span>  /**<a name="line.119"></a>
+<span class="sourceLineNo">120</span>   * You can ignore this method. This method gets called when the mouse<a name="line.120"></a>
+<span class="sourceLineNo">121</span>   * button is pressed, and is used internally.<a name="line.121"></a>
+<span class="sourceLineNo">122</span>   */<a name="line.122"></a>
+<span class="sourceLineNo">123</span>  public void mouseClicked(MouseEvent event) {}<a name="line.123"></a>
+<span class="sourceLineNo">124</span>}<a name="line.124"></a>
 
 
 

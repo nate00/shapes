@@ -1,6 +1,5 @@
 Important:
 -Images
--Mouse location while up
 
 Finishing touches:
 -make direction, center, etc. consistently private or protected

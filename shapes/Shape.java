@@ -946,4 +946,14 @@ public abstract class Shape {
     if (d.equals(Direction.DOWN)) return getBottom();
     return 0;
   }
+
+  /**
+   * Returns a string representing this shape.
+   *
+   * @return  a string representing this shape.
+   */
+  @Override
+  public String toString() {
+    return "Shape with center at " + center.toString();
+  }
 }
