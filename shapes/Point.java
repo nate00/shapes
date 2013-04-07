@@ -149,24 +149,24 @@ public class Point //extends Shape {
     return String.format("(%f, %f)", x, y);
   }
 
-  // TODO: for debugging
-  public Point maxMovement(Point p, Shape s) { return Point.random(); }
-  public boolean isOffscreen() { return false; }
-  public boolean contains(Point p) { return false; }
-  public boolean contains(Shape s) { return false; }
-  public void render(Graphics2D g) {
-    if (!visible) return;
-    g.setColor(Color.YELLOW);
-    g.fillOval((int)getCanvasX() - 2, (int)getCanvasY() - 2, 4, 4);
-  }
-  private boolean visible = false;
-  public void update() { }
-  public void setup() { }
-  public void setVisible() {visible = true;}
-  public double getBottom() {return 0;}
-  public double getTop() {return 0;}
-  public double getLeft() {return 0;}
-  public double getRight() {return 0;}
-  public Point maxMovement(Point p, Segment s) {return p;}
+//  // TODO: for debugging
+//  public Point maxMovement(Point p, Shape s) { return Point.random(); }
+//  public boolean isOffscreen() { return false; }
+//  public boolean contains(Point p) { return false; }
+//  public boolean contains(Shape s) { return false; }
+//  public void render(Graphics2D g) {
+//    if (!visible) return;
+//    g.setColor(Color.YELLOW);
+//    g.fillOval((int)getCanvasX() - 2, (int)getCanvasY() - 2, 4, 4);
+//  }
+//  private boolean visible = false;
+//  public void update() { }
+//  public void setup() { }
+//  public void setVisible() {visible = true;}
+//  public double getBottom() {return 0;}
+//  public double getTop() {return 0;}
+//  public double getLeft() {return 0;}
+//  public double getRight() {return 0;}
+//  public Point maxMovement(Point p, Segment s) {return p;}
 
 }
