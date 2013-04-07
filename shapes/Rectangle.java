@@ -10,6 +10,13 @@ import java.awt.*;
 public class Rectangle extends ConvexPolygon {
   private double width, height;
 
+  /**
+   * Construct a rectangle with a given center, width and height.
+   *
+   * @param center  the location of the center of the rectangle.
+   * @param width   the width of the rectangle in pixels.
+   * @param height  the height of the rectangle in pixels.
+   */
   public Rectangle(Point center, double width, double height) {
     setCenter(center);
     setWidth(width);
@@ -19,6 +26,9 @@ public class Rectangle extends ConvexPolygon {
     setColor(Color.GREEN);
   }
 
+  /**
+   * Returns a default rectangle.
+   */
   public Rectangle() {
     this(new Point(100, 100), 50, 100);
   }
@@ -43,6 +53,13 @@ public class Rectangle extends ConvexPolygon {
     return Geometry.hypoteneuse(width / 2, height / 2);
   }
 
+  /**
+   * Sets the location of the upper-left corner of this rectangle. Does not
+   * modify the width or height of the rectangle.
+   *
+   * @param upperLeft the new location of the upper-left corner of this
+   *                  rectangle.
+   */
   public void setUpperLeft(Point upperLeft) {
     if (upperLeft == null) {
       throw new IllegalArgumentException("upperLeft must not be null.");
@@ -50,18 +67,38 @@ public class Rectangle extends ConvexPolygon {
     setCenter(upperLeft.getX() + width / 2, upperLeft.getY() - height / 2);
   }
 
+  /**
+   * Returns the height of this rectangle.
+   *
+   * @return  the height of this rectangle in pixels.
+   */
   public double getHeight() {
     return height;
   }
 
+  /**
+   * Sets the height of this rectangle.
+   *
+   * @param height  the new height of this rectangle in pixels.
+   */
   public void setHeight(double height) {
     this.height = height;
   }
 
+  /**
+   * Returns the width of this rectangle.
+   *
+   * @return  the width of this rectangle in pixels.
+   */
   public double getWidth() {
     return width;
   }
 
+  /**
+   * Sets the width of this rectangle.
+   *
+   * @param width  the new width of this rectangle in pixels.
+   */
   public void setWidth(double width) {
     this.width = width;
   }

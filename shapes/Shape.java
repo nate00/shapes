@@ -117,10 +117,14 @@ public abstract class Shape {
   }
 
   /**
-   * TODO
-   * Checks which border of the window the shape is touching.
+   * Returns which borders of the game window this shape is touching.
    *
-   * @return  a Border enum indicating which border if any the shape is touching.
+   * @return  an array of {@link shapes.Game.Border}s representing the borders that
+   *          this
+   *          shape is touching. If the shape is entirely within the game
+   *          window, returns an empty array. If the shape is entirely outside
+   *          the game window, returns an array containing only
+   *          {@link shapes.Game.Border#OFFSCREEN}.
    */
   public Game.Border[] touchingBorders() {
     if (isOffscreen()) {
@@ -167,7 +171,11 @@ public abstract class Shape {
   }
 
   /**
-   * TODO
+   * Checks whether this shape is entirely offscreen.
+   *
+   * @return  <code>true</code> if this shape is entirely outside the game
+   *          window, <code>false</code> if not.
+   * @see     #isTouchingBorder
    */
   abstract public boolean isOffscreen();
 
@@ -177,6 +185,8 @@ public abstract class Shape {
    * @return  true if any part of the shape is touching the border of the
    *          window, or if the shape is entirely outside the window, and false
    *          otherwise.
+   * @see     #isOffscreen
+   * @see     #touchingBorders
    */
   public boolean isTouchingBorder() {
     if (isOffscreen()) {

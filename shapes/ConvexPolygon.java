@@ -19,6 +19,12 @@ abstract class ConvexPolygon extends Shape {
     setDisplaysRotation(true);
   }
 
+  /**
+   * Returns the location of the corners of this shape.
+   *
+   * @return  an array of points, each of which represents the location of one
+   *          vertex of this polygon.
+   */
   public Point[] getCorners() {
     Point[] corners = getUnrotatedCorners();
     if (
@@ -74,6 +80,7 @@ abstract class ConvexPolygon extends Shape {
   }
 
   public boolean isOffscreen() {
+    // TODO: corner case is handled incorrectly!
     for (Point corner : getCorners()) {
       if (!Geometry.offscreen(corner)) {
         return false;
@@ -196,6 +203,13 @@ abstract class ConvexPolygon extends Shape {
     this.displaysRotation = displaysRotation;
   }
 
+  /**
+   * Returns whether this shape displays the direction it is facing. For more
+   * information, see {@link #setDisplaysRotation}.
+   *
+   * @return  <code>true</code> if this shape displays its rotation,
+   *          <code>false</code> if not.
+   */
   public boolean displaysRotation() {
     return displaysRotation;
   }
