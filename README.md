@@ -6,4 +6,4 @@ To get started, compile everything and run `MyGame`. You should see an empty win
 
 To see some example code, open `ExampleGame.java` and `ExampleCircle.java`. You can compile and run `ExampleGame.java` to see how it works. (Use the arrow keys.)
 
-Make sure to check out the (partially completed) [documentation](shapes101.herokuapp.com/docs/index.html).
+Make sure to check out the (partially completed) [documentation](http://shapes101.herokuapp.com/docs/index.html).
