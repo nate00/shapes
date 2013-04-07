@@ -4,8 +4,8 @@ import java.awt.*;
 
 /**
  * A rectangle that appears on screen and interacts with other shapes.
- * Many of <code>Rectangles</code>'s useful methods are in its superclasses
- * {@link Shape} and {@link ConvexPolygon}.
+ * Many of <code>Rectangle</code>'s useful methods are in its superclass
+ * {@link Shape}.
  */
 public class Rectangle extends ConvexPolygon {
   private double width, height;

@@ -28,6 +28,14 @@ public class TextStyle {
 
   enum ReferencePointLocation { CENTER, BOTTOM_LEFT, TOP_LEFT, BOTTOM_CENTER };
 
+  /**
+   * Constructs a new text style with the given font, size and color.
+   *
+   * @param fontName  the text style's font. (<code>"Helvetica"</code>, for
+   *                  example.
+   * @param fontSize  the text style's size in points.
+   * @param color     the text's color.
+   */
   public TextStyle(String fontName, int fontSize, Color color) {
     setFontName(fontName);
     setFontSize(fontSize);
@@ -146,16 +154,37 @@ public class TextStyle {
     }
   }
 
+  /**
+   * Returns a default text style with a monospaced font.
+   *
+   * @return  a default text style with a monospaced font.
+   * @see     #sansSerif
+   * @see     #serif
+   */
   public static TextStyle monospaced() {
     Font font = new Font(Font.MONOSPACED, Font.PLAIN, 16);
     return new TextStyle(font.getFontName(), 16, Color.BLACK);
   }
 
+  /**
+   * Returns a default text style with a serif font.
+   *
+   * @return  a default text style with a serif font.
+   * @see     #sansSerif
+   * @see     #monospaced
+   */
   public static TextStyle serif() {
     Font font = new Font(Font.SERIF, Font.PLAIN, 16);
     return new TextStyle(font.getFontName(), 16, Color.BLACK);
   }
   
+  /**
+   * Returns a default text style with a sans serif font.
+   *
+   * @return  a default text style with a sans serif font.
+   * @see     #serif
+   * @see     #monospaced
+   */
   public static TextStyle sansSerif() {
     Font font = new Font(Font.SANS_SERIF, Font.PLAIN, 16);
     return new TextStyle(font.getFontName(), 16, Color.BLACK);
@@ -163,6 +192,12 @@ public class TextStyle {
   
   /* Getters and setters */
 
+  /**
+   * Sets this text style's font. <code>"Helvetica"</code>, for example.
+   *
+   * @param fontName  the name of this text style's new font.
+   * @see   #getFontName
+   */
   public void setFontName(String fontName) {
     if (fontName == null) {
       throw new IllegalArgumentException("fontName must not be null.");
@@ -170,10 +205,22 @@ public class TextStyle {
     this.fontName = fontName;
   }
 
+  /**
+   * Returns the name of this text style's font.
+   *
+   * @return  the name of this text style's font.
+   * @see     #setFontName
+   */
   public String getFontName() {
     return fontName;
   }
 
+  /**
+   * Sets the text size.
+   *
+   * @param fontSize  this text style's new size (in points).
+   * @see   #getFontSize
+   */
   public void setFontSize(int fontSize) {
     if (fontSize <= 0) {
       throw new IllegalArgumentException("fontSize must be positive");
@@ -181,10 +228,22 @@ public class TextStyle {
     this.fontSize = fontSize;
   }
 
+  /**
+   * Returns the text size.
+   *
+   * @return  this text style's size (in points).
+   * @see     #setFontSize
+   */
   public int getFontSize() {
     return fontSize;
   }
 
+  /**
+   * Set the text color. Text will be displayed in this color.
+   *
+   * @param color this text style's new text color.
+   * @see   #getColor
+   */
   public void setColor(Color color) {
     if (color == null) {
       throw new IllegalArgumentException("color must not be null.");
@@ -192,31 +251,77 @@ public class TextStyle {
     this.color = color;
   }
 
+  /**
+   * Returns the text color.
+   *
+   * @return  this text style's color.
+   * @see     #setColor
+   */
   public Color getColor() {
     return color;
   }
 
+  /**
+   * Set whether this text style is bold.
+   *
+   * @param bold  <code>true</code> makes text display bold.
+   * @see   #isBold
+   */
   public void setBold(boolean bold) {
     this.bold = bold;
   }
 
+  /**
+   * Returns whether this text style is bold.
+   *
+   * @return  <code>true</code> if text displays in bold.
+   * @see     #setBold
+   */
   public boolean isBold() {
     return bold;
   }
 
+  /**
+   * Set whether this text style is italic.
+   *
+   * @param italic  <code>true</code> makes text display italic.
+   * @see   #isItalic
+   */
   public void setItalic(boolean italic) {
     this.italic = italic;
   }
 
+  /**
+   * Returns whether this text style is italic.
+   *
+   * @return  <code>true</code> if text displays in italic.
+   * @see     #setItalic
+   */
   public boolean isItalic() {
     return italic;
   }
 
-  // set null for no background
+  /**
+   * Set the background color. For shape's speech, the speech bubble is colored
+   * the background color (see {@link Shape#setSpeechStyle}. For all other
+   * text, a rectangle appears behind the text, colored with the background
+   * color.
+   * <p>
+   * For no background, set the background color to <code>null</code>.
+   *
+   * @param background  the color displayed behind the text.
+   * @see   #getBackgroundColor
+   */
   public void setBackgroundColor(Color background) {
     this.backgroundColor = background;
   }
 
+  /**
+   * Returns the background color. This color is displayed behind the text.
+   *
+   * @return  the color displayed behind the text.
+   * @see     #setBackgroundColor
+   */
   public Color getBackgroundColor() {
     return backgroundColor;
   }
