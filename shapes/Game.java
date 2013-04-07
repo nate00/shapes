@@ -22,9 +22,9 @@ import java.lang.*;
  * <code>Game</code> also has a few useful static methods and constants. For
  * example, you can call <code>Game.getAllShapes()</code> to get all the shapes
  * that currently exist in your game. (In case you haven't encountered static
- * methods before: if you see a method named <code>method</code> listed as
+ * methods before: if you see a method named <code>xx</code> listed as
  * <code>static</code> below, then you can call it with
- * <code>Game.methodName()</code>.)
+ * <code>Game.xx()</code>.)
  */
 public abstract class Game extends Applet {
   private static JFrame frame;
