@@ -74,7 +74,7 @@ public class TextStyle {
     String[] lines = string.split("\n");
     double width = 0.0;
     for (String line : lines) {
-      width = Math.max(width, metrics.stringWidth(string));
+      width = Math.max(width, metrics.stringWidth(line));
     }
     // getAscent() includes room for accents, etc., so we shrink it (by
     // an arbitrary amount)
@@ -150,7 +150,7 @@ public class TextStyle {
         textBottomLeft.getCanvasX(),
         textBottomLeft.getCanvasY()
       );
-      bottomLeft = bottomLeft.translation(lineOffset);
+      textBottomLeft = textBottomLeft.translation(lineOffset);
     }
   }
 
