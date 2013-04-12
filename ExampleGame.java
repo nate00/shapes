@@ -2,14 +2,14 @@ import shapes.*;
 import java.awt.Color;
 
 public class ExampleGame extends Game {
-  Rectangle[] walls;
+  Rectangle[] walls = new Rectangle[2];
   Rectangle finish;
   ExampleCircle hero;
 
   @Override
   public void setup() {
     // make walls
-    walls = new Rectangle[2];
+//    walls = new Rectangle[2];
     for (int i = 0; i < walls.length; i++) {
       walls[i] = new Rectangle();
       walls[i].setWidth(700);

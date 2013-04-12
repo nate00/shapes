@@ -8,7 +8,7 @@ public class ExampleCircle extends Circle {
     setCenter(new Point(750, 450));
     setRadius(20);
 
-    setColor(Color.PINK);
+    setColor(Color.ORANGE);
   }
 
   @Override
