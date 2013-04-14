@@ -80,7 +80,7 @@ abstract class ConvexPolygon extends Shape {
   }
 
   public boolean isOffscreen() {
-    // TODO: corner case is handled incorrectly!
+    // nate: corner case is handled incorrectly!
     for (Point corner : getCorners()) {
       if (!Geometry.offscreen(corner)) {
         return false;

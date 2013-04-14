@@ -124,7 +124,7 @@ public class TextStyle {
 
       // render speech bubble "foot"
       if (speechOrigin != null) {
-        Point third = bottomLeft.translation(new Vector(7, 0));  // TODO: height?
+        Point third = bottomLeft.translation(new Vector(7, 0));  // nate: height?
         int[] x = new int[] {
           bottomLeft.getCanvasX(),
           speechOrigin.getCanvasX(),

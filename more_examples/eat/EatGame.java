@@ -1,3 +1,5 @@
+package more_examples.eat;
+
 import shapes.*;
 import java.awt.Color;
 import java.util.*;

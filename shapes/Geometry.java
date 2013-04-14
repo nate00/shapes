@@ -136,7 +136,7 @@ abstract class Geometry {
   }
 
   // Returns false if the code for the given shape pair hasn't been written yet.
-  // TODO: test
+  // nate: test
   static boolean touching(Shape shape, Segment seg) {
     if (shape instanceof Circle) {
       return touching((Circle) shape, seg);
@@ -192,7 +192,7 @@ abstract class Geometry {
     return intersections;
   }
 
-  // TODO: test
+  // nate: test
   // line intersection, not segment intersection
   // returns empty array for no intersection
   static Point[] lineIntersection(BasicCircle circle, Segment line) {
@@ -271,7 +271,7 @@ abstract class Geometry {
   // given point and ending on the segment (or corresponding line).
   static Segment perpendicularThrough(Segment original, Point through) {
     if (original.length() < EPSILON) {
-      // TODO: WTF do I do in this case?
+      // nate: WTF do I do in this case?
       return new Segment(through, original.getStart());
     }
     // perp is perpendicular and has the correct start, but does not have the
@@ -326,7 +326,7 @@ abstract class Geometry {
       return target;   // no collision
     }
 
-    // TODO: rename variables
+    // nate: rename variables
     // closest is the point on path closest to obstacle center
     // stopPoint is where the center of mover will be after moving
     Point closest = obstacleToPath.getEnd();
@@ -420,7 +420,7 @@ abstract class Geometry {
       ConvexPolygon obstacle
   ) {
     Point maxMove = target;
-    // TODO: maybe parameters should be maxMovement(mover, path, obstacle)
+    // nate: maybe parameters should be maxMovement(mover, path, obstacle)
     // to avoid recreating path?
     Segment path = new Segment(mover.getCenter(), target);
 
@@ -556,7 +556,7 @@ abstract class Geometry {
   }
 
   static Point insertGap(Shape mover, Segment path, Point maxMove) {
-    // TODO: put buffer between mover and obstacle, not along mover's path?
+    // nate: put buffer between mover and obstacle, not along mover's path?
     Vector backwards =
       new Vector(path.vector().getDirection().reverse(), TOLERANCE / 4.0);
     Point ret = maxMove.translation(backwards);
@@ -845,7 +845,6 @@ abstract class Geometry {
       maxRotate = closer(origin, clockwise, candidate, maxRotate);
     }
 
-    // TODO CODING
     return maxRotate;
   }
 

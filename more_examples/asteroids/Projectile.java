@@ -1,3 +1,5 @@
+package more_examples.asteroids;
+
 import shapes.*;
 import java.awt.Color;
 

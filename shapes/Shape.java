@@ -215,9 +215,9 @@ public abstract class Shape {
    *                    can move towards <code>target</code>.
    */
   abstract Point maxMovement(Point target, Shape obstacle);
-  // TODO: move code here
+  // nate: move code here
 
-  // TODO
+  // nate:
   abstract Point maxMovement(Point target, Segment obstacle);
 
   private Direction maxRotation(
@@ -357,7 +357,7 @@ public abstract class Shape {
       double change = getLimit(borders[i].getDirection()) - oldLimit[i];
       Direction correctionDirection = borders[i].getDirection();
       if (borders[i] == Game.Border.RIGHT || borders[i] == Game.Border.TOP) {
-        // TODO: nicer way to do this?
+        // nate: nicer way to do this?
         correctionDirection = correctionDirection.reverse();
       }
       setCenter(getCenter().translation(correctionDirection, change));
@@ -601,7 +601,7 @@ public abstract class Shape {
    * this shape's methods after it has been destroyed has undefined results.
    */
   public void destroy() {
-    // TODO: who remove the same from Game?
+    // nate: who remove the same from Game?
     destroyed = true;
   }
 

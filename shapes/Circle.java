@@ -44,7 +44,7 @@ public class Circle extends Shape {
     if (s == null) {
       return false;
     }
-    // TODO: move disambiguation into Geometry, make Shape.contains(Shape) non-abstract, remove this code.
+    // nate: move disambiguation into Geometry, make Shape.contains(Shape) non-abstract, remove this code.
     if (this.isDestroyed() || s.isDestroyed()) {
       return false;
     }

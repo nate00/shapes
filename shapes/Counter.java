@@ -53,7 +53,7 @@ public class Counter {
    * A destroyed counter will not appear on the screen. A destroyed counter
    * cannot be undestroyed.
    */
-  // TODO: test whether this works
+  // nate: test whether this works
   public void destroy() {
     destroyed = true;
     Game.removeCounter(this);

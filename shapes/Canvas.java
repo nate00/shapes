@@ -1,7 +1,6 @@
 package shapes;
 
 import java.awt.*;
-import java.util.*;
 import javax.swing.*;
 
 class Canvas extends JPanel implements Runnable {
@@ -9,7 +8,7 @@ class Canvas extends JPanel implements Runnable {
   private Thread animator;
   private Game game;
 
-  private final int DELAY = 20; // TODO: FPS should be a global constant
+  private final int DELAY = 20; // nate: FPS should be a global constant
 
   Canvas(Game game) {
     super();
