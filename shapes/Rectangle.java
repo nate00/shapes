@@ -56,6 +56,9 @@ public class Rectangle extends ConvexPolygon {
   /**
    * Sets the location of the upper-left corner of this rectangle. Does not
    * modify the width or height of the rectangle.
+   * <p>
+   * The upper-left corner of the rectangle is the corner that is in the
+   * upper left when the rectangle is facing right.
    *
    * @param upperLeft the new location of the upper-left corner of this
    *                  rectangle.
