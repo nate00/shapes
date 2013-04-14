@@ -79,7 +79,8 @@ public abstract class Game extends Applet {
    * Constructs a new game.
    *
    * @param web <code>true</code> if this game is meant to be an applet (which
-   *            can be played online), and <code>false</code> otherwise.
+   *            can be played online), and <code>false</code> otherwise. Note:
+   *            this doesn't work yet.
    */
   public Game(boolean web) {
     this.applet = web;
@@ -241,7 +242,7 @@ public abstract class Game extends Applet {
    * @param shape the shape whose layer is being set.
    * @param layer the layer into which this shape will be moved.
    */
-  public static void setLayer(Shape shape, int layer) {
+  static void setLayer(Shape shape, int layer) {
     removeFromLayers(shape);
 
     // add new stuff
@@ -267,7 +268,7 @@ public abstract class Game extends Applet {
    *              in.
    * @see         #setLayer
    */
-  public static int getLayerOf(Shape shape) {
+  static int getLayerOf(Shape shape) {
     return layerOf.get(shape);
   }
 

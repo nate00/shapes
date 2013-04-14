@@ -9,7 +9,6 @@ public class ExampleGame extends Game {
   @Override
   public void setup() {
     // make walls
-//    walls = new Rectangle[2];
     for (int i = 0; i < walls.length; i++) {
       walls[i] = new Rectangle();
       walls[i].setWidth(700);
