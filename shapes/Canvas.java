@@ -62,7 +62,9 @@ class Canvas extends JPanel implements Runnable {
     while (true) {
 
       game.autoUpdate();
-      game.update();
+      if (!game.hasTitle()) {
+        game.update();
+      }
       repaint();
 
       timeDiff = System.currentTimeMillis() - beforeTime;

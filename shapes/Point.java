@@ -26,6 +26,13 @@ public class Point //extends Shape {
     this.y = y;
   }
 
+  /**
+   * Constructs a new point in the center of the game window.
+   */
+  public Point() {
+    this(Game.WIDTH / 2.0, Game.HEIGHT / 2);
+  }
+
   Point translation(Vector v) {
     if (v == null) {
       throw new IllegalArgumentException("direction must not be null.");

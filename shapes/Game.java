@@ -168,6 +168,10 @@ public abstract class Game extends Applet {
   }
 
   void autoUpdate() {
+    if (hasTitle()) {
+      return;
+    }
+
     for (Shape s : allShapes) {
       s.autoUpdate();
     }
